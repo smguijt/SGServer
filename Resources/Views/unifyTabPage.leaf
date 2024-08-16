@@ -1,0 +1,47 @@
+#extend("unifyTemplate"):
+
+    #export("main"):
+        <div class="row gx-3">
+            <div class="col-xxl-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+
+                        <!-- TABS -->
+                        <div class="custom-tabs-container">
+
+                            <ul class="nav nav-tabs" id="customTab" role="tablist">
+                                #import("tabheaders")
+                            </ul>
+
+
+                            <div class="tab-content" id="customTabContent">
+                                <div class="tab-pane fade show active" id="one" role="tabpanel">
+                                    #import("tabcontent1")
+                                </div>
+                                <div class="tab-pane fade" id="two" role="tabpanel">
+                                    #import("tabcontent2")
+                                </div>
+                                <div class="tab-pane fade" id="three" role="tabpanel">
+                                    #import("tabcontent3")
+                                </div>
+                                <div class="tab-pane fade" id="four" role="tabpanel">
+                                    #import("tabcontent4")
+                                </div>
+                                <div class="tab-pane fade" id="five" role="tabpanel">
+                                    #import("tabcontent5")
+                                </div>
+                                <div class="tab-pane fade" id="six" role="tabpanel">
+                                    #import("tabcontent6")
+                                </div>
+                               
+                            </div> <!-- // customTabContent -->
+                        </div> <!-- // custom-tabs-container -->
+                        <!-- TABS END -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    #endexport
+
+#endextend

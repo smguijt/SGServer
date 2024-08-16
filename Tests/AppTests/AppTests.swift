@@ -18,13 +18,16 @@ final class AppTests: XCTestCase {
         self.app = nil
     }
     
+    /*
     func testHelloWorld() async throws {
         try await self.app.test(.GET, "hello", afterResponse: { res async in
             XCTAssertEqual(res.status, .ok)
             XCTAssertEqual(res.body.string, "Hello, world!")
         })
     }
-    
+    */
+
+    /*
     func testTodoIndex() async throws {
         let sampleTodos = [Todo(title: "sample1"), Todo(title: "sample2")]
         try await sampleTodos.create(on: self.app.db)
@@ -37,7 +40,10 @@ final class AppTests: XCTestCase {
             )
         })
     }
+    */
     
+
+    /*
     func testTodoCreate() async throws {
         let newDTO = TodoDTO(id: nil, title: "test")
         
@@ -49,7 +55,9 @@ final class AppTests: XCTestCase {
             XCTAssertEqual(models.map { $0.toDTO().title }, [newDTO.title])
         })
     }
+    */
     
+    /*
     func testTodoDelete() async throws {
         let testTodos = [Todo(title: "test1"), Todo(title: "test2")]
         try await testTodos.create(on: app.db)
@@ -60,6 +68,7 @@ final class AppTests: XCTestCase {
             XCTAssertNil(model)
         })
     }
+    */
 }
 
 

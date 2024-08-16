@@ -1,0 +1,131 @@
+#extend("baseTemplate"):
+    #export("body"):
+        
+        <div class="app-header d-flex align-items-center">
+            <!-- Toggle buttons start -->
+            <div class="d-flex">
+                <button class="toggle-sidebar" id="toggle-sidebar">
+                    <i class="bi bi-list lh-1"></i>
+                </button>
+                <button class="pin-sidebar" id="pin-sidebar">
+                    <i class="bi bi-list lh-1"></i>
+                </button>
+            </div>
+            <!-- Toggle buttons end -->
+                
+            <!-- App brand starts -->
+            <div class="app-brand py-2 ms-3">
+                <a href="#" class="d-sm-block d-none">
+                    <div class="d-flex">
+                        <img class="logo" src="/assets/favicon_io/apple-touch-icon.png" alt="SG Software" style="height:50px; width:50px;"/>
+                        <h4 class="m-2">#(title)</h4>
+                    </div>
+                </a>
+                <a href="#" class="d-sm-none d-block">
+                    <div class="d-flex">
+                        <img class="logo" src="/assets/favicon_io/apple-touch-icon.png" alt="SG Software" style="height:50px; width:50px;"/>
+                    </div>
+                </a>
+            </div>
+            <!-- App brand ends -->
+            
+            <!-- App header actions start -->
+            <div class="header-actions col">
+                <div class="d-lg-flex d-none">
+                    #import("header")
+                </div>
+                #if(settings.ShowUserBox):
+                <div class="dropdown ms-2">
+                    <!-- user settings -->
+                    <a id="userSettings" class="dropdown-toggle d-flex py-2 align-items-center text-decoration-none" href="#!"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!--<img src="/assets/images/user.png" class="rounded-2 img-3x" alt="SG Software" />-->
+                        <div class="fs-2 mb-1"><i class="bi bi-person-bounding-box"></i></div>
+                        <span class="ms-2 text-truncate d-lg-block d-none">
+                            Some User
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end shadow-lg">
+                        #(settings.userId)
+                        <div class="header-action-links mx-3 gap-2">
+                            <a class="dropdown-item" href="#profile"><i class="bi bi-person text-primary"></i>Profile</a>
+                            <a class="dropdown-item" href="/view/usersettings"><i class="bi bi-gear text-danger"></i>Settings</a>
+                            <a class="dropdown-item" href="#widgets"><i class="bi bi-box text-success"></i>Widgets</a>
+                        </div>
+                        <div class="mx-3 mt-2 d-grid">
+                            <a href="#logout" class="btn btn-primary btn-sm">Logout</a>
+                        </div>
+                    </div>
+                    <!-- user settings end -->
+                </div>
+                #endif
+            </div>
+            <!-- App header actions end -->
+           
+        </div>
+    
+        <div class="main-container">
+            <nav id="sidebar" class="sidebar-wrapper">
+                <!-- Sidebar profile starts -->
+                <div class="shop-profile">
+                    <p class="mb-1 fw-bold text-primary">
+                        <h4 class="m-2 d-sm-none d-block"">#(title)</h4>
+                    </p>
+                </div>
+                <!-- Sidebar profile ends -->
+                
+                <!-- Sidebar menu starts -->
+                <div class="sidebarMenuScroll">
+                    <ul class="sidebar-menu">
+                        #import("sidebar")
+                    </ul>
+                </div>
+                <!-- Sidebar menu ends -->
+            </nav>
+            <div class="app-container">
+                <!-- App container starts -->
+                <div class="app-container">
+                    
+                    <!-- hero header -->
+                    <div class="app-hero-header d-flex align-items-center">
+                        <!-- Breadcrumb start -->
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
+                                <a href="/view/tasks" class="text-decoration-none">Home</a>
+                            </li>
+                            #import("breadcrumbs")
+                        </ol>
+                        <!-- Breadcrumb end -->
+                        <!-- Sales stats start -->
+                        <div class="ms-auto d-lg-flex d-none flex-row">
+                            <div class="d-flex flex-row gap-2">
+                                #if(settings.ShowToolbar):
+                                    #import("toolbar")
+                                #endif
+                            </div>
+                        </div>
+                        <!-- Sales stats end -->
+                    </div>
+                    <!-- hero header end -->
+                    
+                    <!-- App body starts -->
+                    <div class="app-body">
+                        #import("main")
+                    </div>
+                    <!-- App body starts end -->
+                    
+                    
+                    <!-- App footer start -->
+                    <div class="app-footer text-center">
+                        <span>© SG Software - created with Swift &copy;2024</span>
+                    </div>
+                    <!-- App footer end -->
+                </div>
+                <!-- App container ends -->
+            </div>
+        </div>
+    
+    #endexport
+#endextend
+

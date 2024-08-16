@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>#(title)</title>
+
+        <meta name="description" content="SGSoftware" />
+        <meta name="author" content="Sietse Guijt" />
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon_io/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon_io/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon_io/favicon-16x16.png">
+
+        <link rel="stylesheet" href="/assets/fonts/bootstrap/bootstrap-icons.css" />
+        <link rel="stylesheet" href="/assets/css/main.min.css" />
+        <link rel="stylesheet" href="/assets/vendor/overlay-scroll/OverlayScrollbars.min.css" />
+        <link rel="stylesheet" href="/assets/vendor/toastify/toastify.css" />
+        
+        <!-- Date Range CSS -->
+        <link rel="stylesheet" href="/assets/vendor/daterange/daterange.css" />
+
+    </head>
+
+    <body>
+
+        <div class="page-wrapper">
+            #import("body")
+        </div>
+
+        <!-- Required jQuery first, then Bootstrap Bundle JS -->
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/moment.min.js"></script>
+        
+        <!-- Form validations -->
+        <script src="/assets/js/validations.js"></script>
+
+        <!-- Overlay Scroll JS -->
+        <script src="/assets/vendor/overlay-scroll/jquery.overlayScrollbars.min.js"></script>
+        <script src="/assets/vendor/overlay-scroll/custom-scrollbar.js"></script>
+
+        <!-- Toastify JS -->
+        <script src="/assets/vendor/toastify/toastify.js"></script>
+        <!--<script src="/assets/vendor/toastify/custom.js"></script>-->
+        
+        <!-- Date Range JS -->
+        <script src="/assets/vendor/daterange/daterange.js"></script>
+        <script src="/assets/vendor/daterange/custom-daterange.js"></script>
+
+        <!-- Custom JS files -->
+        <script src="/assets/js/custom.js"></script>
+        <script src="/assets/js/todays-date.js"></script>
+        
+        <script>
+            #import("script")
+            $(document).ready(function() {
+                // executed after page fully loaded
+                //alert('ready')
+            })
+        </script>
+
+    </body>
+
+</html>

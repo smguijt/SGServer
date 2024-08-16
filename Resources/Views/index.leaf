@@ -1,12 +1,158 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+#extend("unifyTemplate"):
 
-  <title>#(title)</title>
-</head>
+    #export("header"):
 
-<body>
-  <h1>#(title)</h1>
-</body>
-</html>
+        #if(settings.ShowApps):
+        <div class="dropdown">
+            <a class="dropdown-toggle d-flex px-3 py-4 position-relative" href="#!" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-grid fs-4 lh-1 text-secondary"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end shadow-lg">
+                <!-- Row start -->
+                <div class="d-flex gap-2 m-2">
+                    <!-- example apps -->
+                    <a href="javascript:void(0)" class="g-col-4 p-2 border rounded-2">
+                        <img src="assets/images/brand-behance.svg" class="img-3x" alt="Admin Themes" />
+                    </a>
+                    <a href="javascript:void(0)" class="g-col-4 p-2 border rounded-2">
+                        <img src="assets/images/brand-gatsby.svg" class="img-3x" alt="Admin Themes" />
+                    </a>
+                    <!-- example apps end -->
+                </div>
+                <!-- Row end -->
+            </div>
+        </div>
+        #endif
+
+        #if(settings.ShowNotifications):
+        <div class="dropdown border-start">
+            <a class="dropdown-toggle d-flex px-3 py-4 position-relative" href="#!" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-exclamation-triangle fs-4 lh-1 text-secondary"></i>
+                <span class="count-label warning"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end shadow-lg">
+                <h5 class="fw-semibold px-3 py-2 text-primary">
+                    Notifications
+                </h5>
+                <!-- example notification item -->
+                <div class="dropdown-item">
+                    <div class="d-flex py-2 border-bottom">
+                        <div class="icon-box md bg-success rounded-circle me-3">
+                            <i class="bi bi-exclamation-triangle text-white fs-4"></i>
+                        </div>
+                        <div class="m-0">
+                            <h6 class="mb-1 fw-semibold">Rosalie Deleon</h6>
+                            <p class="mb-1">You have new order.</p>
+                            <p class="small m-0 text-secondary">30 mins ago</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- example notification item end -->
+                <div class="d-grid mx-3 my-1">
+                    <a href="javascript:void(0)" class="btn btn-primary">View all</a>
+                </div>
+            </div>
+        </div>
+        #endif
+        
+        #if(settings.ShowUpdates):
+        <div class="dropdown border-start">
+            <a class="dropdown-toggle d-flex px-3 py-4 position-relative" href="#!" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-bell fs-4 lh-1 text-secondary"></i>
+                <span class="count-label info"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end shadow-lg">
+                <h5 class="fw-semibold px-3 py-2 text-primary">Updates</h5>
+                <div class="dropdown-item">
+                    <!-- example update item -->
+                    <div class="d-flex py-2 border-bottom">
+                        <div class="icon-box md bg-success rounded-circle me-3">
+                            <span class="fw-bold text-white">DS</span>
+                        </div>
+                        <div class="m-0">
+                            <h6 class="mb-1 fw-semibold">Douglass Shaw</h6>
+                            <p class="mb-1">
+                                Membership has been ended.
+                            </p>
+                            <p class="small m-0 text-secondary">Today, 07:30pm</p>
+                        </div>
+                    </div>
+                    <!-- example item end -->
+                </div>
+                <div class="d-grid mx-3 my-1">
+                    <a href="javascript:void(0)" class="btn btn-primary">View all</a>
+                </div>
+            </div>
+        </div>
+        #endif
+
+        #if(settings.ShowMessages):
+        <div class="dropdown border-start">
+            <a class="dropdown-toggle d-flex px-3 py-4 position-relative" href="#!" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-envelope-open fs-4 lh-1 text-secondary"></i>
+                <span class="count-label"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end shadow-lg">
+                <h5 class="fw-semibold px-3 py-2 text-primary">Messages</h5>
+                <!-- example message item -->
+                <div class="dropdown-item">
+                    <div class="d-flex py-2 border-bottom">
+                        <img src="assets/images/user3.png" class="img-3x me-3 rounded-5" alt="Admin Theme" />
+                        <div class="m-0">
+                            <h6 class="mb-1 fw-semibold">Angelia Payne</h6>
+                            <p class="mb-1">
+                                Membership has been ended.
+                            </p>
+                            <p class="small m-0 text-secondary">Today, 07:30pm</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- example message item end -->
+                <div class="d-grid mx-3 my-1">
+                    <a href="javascript:void(0)" class="btn btn-primary">View all</a>
+                </div>
+            </div>
+        </div>
+        #endif
+
+    #endexport
+
+    #export("sidebar"):
+        <li class="active current-page">
+            <a href="/view/tasks">
+                <i class="bi bi-pie-chart"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="/view/systemsettings">
+                <i class="bi bi-gear"></i>
+                <span class="menu-text">Settings</span>
+            </a>
+        </li>
+    #endexport
+
+    #export("breadcrumbs"):
+        <li class="breadcrumb-item text-secondary" aria-current="page">
+            Dashboard
+        </li>
+    #endexport
+
+    #export("toolbar"):
+        <button class="btn btn-sm btn-primary">Button</button>
+        <button class="btn btn-sm btn-white">Button</button>
+    #endexport
+
+    #export("main"):
+        <!-- Row start -->
+        <div class="row gx-3">
+            <h3>Content Here</h3>
+        </div>
+        <!-- Row start end -->
+    #endexport
+
+#endextend
