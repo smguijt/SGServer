@@ -23,7 +23,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "App",
+            name: "SGServer",
             dependencies: [
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
@@ -41,7 +41,7 @@ let package = Package(
         .testTarget(
             name: "AppTests",
             dependencies: [
-                .target(name: "App"),
+                .target(name: "SGServer"),
                 .product(name: "XCTVapor", package: "vapor"),
             ],
             swiftSettings: swiftSettings
