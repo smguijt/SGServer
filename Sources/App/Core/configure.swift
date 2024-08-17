@@ -4,6 +4,7 @@ import FluentSQLiteDriver
 import Leaf
 import LeafErrorMiddleware
 import Vapor
+import JWT
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -32,10 +33,10 @@ public func configure(_ app: Application) async throws {
     
     /* Create database objects */
     app.logger.info("Create database objects")
-    //....
+    try CreateDatabaseModels(app)
 
-    /* Seed database objects */
-    //....
+    app.logger.info("Seed database objects")
+    try SeedDatabaseModels(app)
 
      /* auto migrate */
     app.logger.info("automigration executed")
@@ -52,7 +53,7 @@ public func configure(_ app: Application) async throws {
     app.leaf.tags["appNameTag"] = AppNameTag()
 
     // configure default port
-    app.logger.info("Default port set to 8080 for SGServer Service")
+    app.logger.info("Default port set to 8080 for SGServer - Backend Service")
     app.http.server.configuration.port = 8080
 
     // register routes
