@@ -1,8 +1,6 @@
 import Fluent
 import Foundation
 
-import Fluent
-
 extension DataMigration.v1 {
 
     struct CreateSGServerSettings: AsyncMigration {
