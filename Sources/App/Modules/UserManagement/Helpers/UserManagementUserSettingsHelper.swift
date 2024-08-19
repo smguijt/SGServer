@@ -4,9 +4,9 @@ import Vapor
 
 func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSettingsDTO {
      
-    var myUserSettingDTO: SGServerUserSettingsDTO = SGServerUserSettingsDTO(userId: userId)
+    var myUserSettingDTO: UserManagementUserSettingsDTO = UserManagementUserSettingsDTO(userId: userId)
 
-     _ = try await SGServerUserSettings
+     _ = try await UserManagementUserSettingsModel
             .query(on: req.db)
             .filter(\.$userId == userId)
             .all()
@@ -17,37 +17,37 @@ func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSetting
                 myUserSettingDTO.userId = userId
                 
                 /* ShowMessages*/
-                if setting.key == SGServerEnumSettings.ShowMessages.rawValue {
+                if setting.key == UserManagementEnumSettings.ShowMessages.rawValue {
                     myUserSettingDTO.ShowMessages = Bool(setting.value.lowercased()) ?? false
                 }
 
                 /* ShowApps*/
-                if setting.key == SGServerEnumSettings.ShowApps.rawValue {
-                    myUserSettingDTO.ShowApps = Bool(setting.value.lowercased()) ?? false
-                }
+                //if setting.key == UserManagementEnumSettings.ShowApps.rawValue {
+                //    myUserSettingDTO.ShowApps = Bool(setting.value.lowercased()) ?? false
+                //}
                 
                 /* ShowNotifications*/
-                if setting.key == SGServerEnumSettings.ShowNotifications.rawValue {
+                if setting.key == UserManagementEnumSettings.ShowNotifications.rawValue {
                     myUserSettingDTO.ShowNotifications = Bool(setting.value.lowercased()) ?? false
                 }
                 
                 /* ShowUpdates*/
-                if setting.key == SGServerEnumSettings.ShowUpdates.rawValue {
+                if setting.key == UserManagementEnumSettings.ShowUpdates.rawValue {
                     myUserSettingDTO.ShowUpdates = Bool(setting.value.lowercased()) ?? false
                 }
                 
                 /* ShowUseOAUTH02 */
-                if setting.key == SGServerEnumSettings.UseOAUTH02.rawValue {
+                if setting.key == UserManagementEnumSettings.UseOAUTH02.rawValue {
                     myUserSettingDTO.UseOAUTH02 = Bool(setting.value.lowercased()) ?? false
                 }
                 
                 /* ClientId */
-                if setting.key == SGServerEnumSettings.ClientId.rawValue {
+                if setting.key == UserManagementEnumSettings.ClientId.rawValue {
                     myUserSettingDTO.ClientId = String(setting.value)
                 }
                 
                 /* ClientSecret */
-                if setting.key == SGServerEnumSettings.ClientSecret.rawValue {
+                if setting.key == UserManagementEnumSettings.ClientSecret.rawValue {
                     myUserSettingDTO.ClientSecret = String(setting.value)
                 }
 
@@ -58,7 +58,7 @@ func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSetting
     let mySystemSettings: SGServerSettingsDTO = try await getSettings(req: req)
     let mySettingDTO: SGServerSettingsDTO = SGServerSettingsDTO(ShowToolbar: mySystemSettings.ShowToolbar,
                                                 ShowMessages: myUserSettingDTO.ShowMessages,
-                                                ShowApps: myUserSettingDTO.ShowApps,
+                                                ShowApps: mySystemSettings.ShowApps,
                                                 ShowNotifications: myUserSettingDTO.ShowNotifications,
                                                 ShowUpdates: myUserSettingDTO.ShowUpdates,
                                                 ShowUserBox: mySystemSettings.ShowUserBox,

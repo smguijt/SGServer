@@ -1,8 +1,8 @@
 import Foundation
 import Fluent
 
-final class SGServerUserSettings: Model, @unchecked Sendable {
-    static let schema = "SGServerUserSettings"
+final class UserManagementUserSettingsModel: Model, @unchecked Sendable {
+    static let schema = "UserManagementUserSettings"
     
     @ID(key: .id)
     var id: UUID?
@@ -25,7 +25,7 @@ final class SGServerUserSettings: Model, @unchecked Sendable {
         self.userId = userId
     }
     
-    func toDTO() -> SGServerDictDTO {
+    func toDTO() -> UserManagementDictDTO {
         .init(
             ID: self.id,
             key: self.key,

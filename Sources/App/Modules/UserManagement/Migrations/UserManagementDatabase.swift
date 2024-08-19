@@ -50,6 +50,13 @@ extension DataMigration.v1 {
                 .field("updatedAt", .datetime)
                 .field("userId", .uuid)
                 .create()
+
+            try await db.schema(UserManagementUserSettingsModel.schema)
+                .id()
+                .field("key", .string, .required)
+                .field("value", .string, .required)
+                .field("userId", .uuid )
+                .create()
         }
 
         func revert(on db: Database) async throws {
@@ -57,6 +64,7 @@ extension DataMigration.v1 {
             try await db.schema(UserManagementDetailModel.schema).delete()
             try await db.schema(UserManagementAddressModel.schema).delete()  
             try await db.schema(UserManagementRoleModel.schema).delete()
+            try await db.schema(UserManagementUserSettingsModel.schema).delete()
         }
     }
 

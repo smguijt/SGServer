@@ -1,11 +1,11 @@
 import Fluent
 import Vapor
 
-struct SGServerUserSettingsDTO: Content {
+struct UserManagementUserSettingsDTO: Content {
     
     //var ID: UUID?
     var ShowMessages: Bool
-    var ShowApps: Bool
+    //var ShowApps: Bool
     var ShowNotifications : Bool
     var ShowUpdates: Bool
     var userId: UUID
@@ -16,7 +16,7 @@ struct SGServerUserSettingsDTO: Content {
     init(//ID: UUID?,
          userId: UUID,
          ShowMessages: Bool = false,
-         ShowApps: Bool = false,
+         //ShowApps: Bool = false,
          ShowNotifications: Bool = false,
          ShowUpdates: Bool = false,
          UseOAUTH02: Bool = false,
@@ -25,7 +25,7 @@ struct SGServerUserSettingsDTO: Content {
         
         //self.ID = ID
         self.ShowMessages = ShowMessages
-        self.ShowApps = ShowApps
+        //self.ShowApps = ShowApps
         self.ShowNotifications = ShowNotifications
         self.ShowUpdates = ShowUpdates
         self.userId = userId
