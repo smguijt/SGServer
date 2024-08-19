@@ -5,7 +5,7 @@
 
     #export("sidebar"):
         <li>
-            <a href="/view/tasks">
+            <a href="/view/">
                 <i class="bi bi-pie-chart"></i>
                 <span class="menu-text">Dashboard</span>
             </a>

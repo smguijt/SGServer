@@ -33,6 +33,7 @@ public func configure(_ app: Application) async throws {
     
     /* Create database objects */
     app.logger.info("Create database objects")
+    app.migrations.add(SessionRecord.migration)
     try CreateDatabaseModels(app)
 
     app.logger.info("Seed database objects")

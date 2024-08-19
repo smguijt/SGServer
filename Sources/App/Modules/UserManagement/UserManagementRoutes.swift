@@ -7,4 +7,11 @@ func UserManagementRoutes(_ app: Application) throws {
     pg.get { req async throws in
         try await req.view.render("landingpage")
     }
+
+    /* setup API controllers */
+    //...
+    
+    /* setup VIEW controllers */
+    try app.register(collection: UserManagementUserSettingsController())
+
 }

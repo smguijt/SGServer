@@ -92,7 +92,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-                                <a href="/view/tasks" class="text-decoration-none">Home</a>
+                                <a href="/view/" class="text-decoration-none">Home</a>
                             </li>
                             #import("breadcrumbs")
                         </ol>

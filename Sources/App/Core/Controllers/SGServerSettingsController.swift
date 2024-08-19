@@ -18,7 +18,7 @@ struct SGServerSettingsController: RouteCollection {
     func renderSystemSettings(req: Request) async throws -> View {
         req.logger.info("calling SGServer.systemsettings")
         let mySettingsDTO = try await getSettings(req: req)
-        return try await req.view.render("SGServerSystemSettings", BaseContext(title: "SGServer", settings: mySettingsDTO))
+        return try await req.view.render("SystemSettings", BaseContext(title: "SGServer", settings: mySettingsDTO))
     }
     
     @Sendable
