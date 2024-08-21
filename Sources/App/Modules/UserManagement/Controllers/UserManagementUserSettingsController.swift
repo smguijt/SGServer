@@ -6,10 +6,10 @@ struct UserManagementUserSettingsController: RouteCollection {
     
     /* ROUTES */
     func boot(routes: RoutesBuilder) throws {
-        let pg = routes.grouped("view")
+        let pg = routes.grouped("view").grouped("user")
 
-        pg.get("usersettings", use: self.renderUserSettings)
-        pg.post("usersettings", use: self.updateUserSetting)
+        pg.get("settings", use: self.renderUserSettings)
+        pg.post("settings", use: self.updateUserSetting)
     }
 
     @Sendable

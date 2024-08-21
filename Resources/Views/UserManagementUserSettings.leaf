@@ -36,7 +36,11 @@
 
     #export("breadcrumbs"):
         <li class="breadcrumb-item text-secondary" aria-current="page">
-            User Settings
+            User Management
+        </li>
+        
+        <li class="breadcrumb-item text-secondary" aria-current="page">
+            Settings
         </li>
     #endexport
 
