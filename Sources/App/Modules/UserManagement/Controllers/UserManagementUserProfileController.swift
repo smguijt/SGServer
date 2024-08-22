@@ -27,12 +27,12 @@ struct UserManagementUserProfileController: RouteCollection {
 
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
-            userIdString = req.session.data["sgsoftware_systemuser"] ?? ""
+            userIdString = req.session.data["sgsoftware_system_user"] ?? ""
             req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
         }
-        let userId = UUID(uuidString: userIdString ?? "") ?? UUID()
+        let userId = UUID(uuidString: userIdString ?? "") ?? nil
 
-        var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId)
+        var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
         req.logger.info("userProfile retrieved: \(mySettingsDTO)")
         return try await req.view.render("UserManagementUserProfile", 
@@ -48,7 +48,7 @@ struct UserManagementUserProfileController: RouteCollection {
 
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
-            userIdString = req.session.data["sgsoftware_systemuser"] ?? ""
+            userIdString = req.session.data["sgsoftware_system_user"] ?? ""
             req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
         }
         let userId = UUID(uuidString: userIdString ?? "") ?? UUID()
@@ -75,7 +75,7 @@ struct UserManagementUserProfileController: RouteCollection {
 
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
-            userIdString = req.session.data["sgsoftware_systemuser"] ?? ""
+            userIdString = req.session.data["sgsoftware_system_user"] ?? ""
             req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
         }
         let userId = UUID(uuidString: userIdString ?? "") ?? UUID()

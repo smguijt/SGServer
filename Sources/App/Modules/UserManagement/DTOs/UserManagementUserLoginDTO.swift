@@ -2,6 +2,7 @@
 import Foundation
 
 public struct UserManagementUserLoginDTO: Codable {
+    
     public var username: String?
     public var password: String?
     public var orgId: String?

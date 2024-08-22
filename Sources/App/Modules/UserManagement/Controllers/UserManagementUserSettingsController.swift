@@ -19,7 +19,7 @@ struct UserManagementUserSettingsController: RouteCollection {
         
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
-            userIdString = req.session.data["sgsoftware_systemuser"] ?? ""
+            userIdString = req.session.data["sgsoftware_system_user"] ?? ""
             req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
         }
         let userId = UUID(uuidString: userIdString ?? "") ?? UUID()

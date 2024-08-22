@@ -9,6 +9,9 @@ func getSettings(req: Request) async throws -> SGServerSettingsDTO {
         
             /* map ID */
             //mySettingDTO.ID = setting.id
+            if let sessionName = req.session.data["sgsoftware_system_user"] {
+                mySettingDTO.userId = UUID(sessionName)
+            }
         
             /* ShowToolbar*/
             if setting.key == SGServerEnumSettings.ShowToolbar.rawValue {

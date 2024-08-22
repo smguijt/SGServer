@@ -10,7 +10,7 @@ struct UserManagementUserLoginController: RouteCollection {
         let pg = routes.grouped("view").grouped("user")
 
         pg.get("login", use: self.renderUserLogin)
-        //pg.post("login", "general", use: self.updateUserProfileGeneral)
+        pg.post("login", use: self.validateUserLogin)
         pg.get("logout", use: self.renderUserLogout)
     }
 
@@ -21,7 +21,6 @@ struct UserManagementUserLoginController: RouteCollection {
 
         var mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
         mySettingsDTO.ShowUserBox = false
-        req.logger.info("userProfile retrieved: \(mySettingsDTO)")
         return try await req.view.render("UserManagementUserLogin", 
                                     BaseContext(title: "UserManagement", 
                                                    settings: mySettingsDTO))
@@ -44,27 +43,49 @@ struct UserManagementUserLoginController: RouteCollection {
         req.logger.info("calling UserManagement.validateUserLogin")
         req.logger.info("incomming request: \(req.body)")
 
-
         let user: UserManagementUserLoginDTO = try req.content.decode(UserManagementUserLoginDTO.self)
+        var orgId: String? = ""
+        if user.orgId == nil  {
+            orgId = user.orgId ?? ""
+        }
+        if user.username == "" {
+            req.logger.info("UserManagement.validateUserLogin -> missing clientId!!")
+            let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
+                return try await req.view.render("UserManagementUserLogin", 
+                                    BaseContext(title: "UserManagement", 
+                                                errorMessage: "Missing value for clientId",
+                                                settings: mySettingsDTO))
+                    .encodeResponse(for: req)
+        }
+        if user.password == "" {
+            req.logger.info("UserManagement.validateUserLogin -> missing clientSecret!!")
+            let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
+                return try await req.view.render("UserManagementUserLogin", 
+                                    BaseContext(title: "UserManagement", 
+                                                errorMessage: "Missing value for clientSecret",
+                                                settings: mySettingsDTO))
+                    .encodeResponse(for: req)
+        }
         
         guard let existingUser: UserManagementAccountModel = try await UserManagementAccountModel
             .query(on: req.db)
             .filter(\.$email == user.username!)
-            .filter(\.$orgId == user.orgId!)
+            .filter(\.$orgId == orgId)
             .first() 
         else {
             /* user could not be found */
+            req.logger.info("UserManagement.validateUserLogin -> invalid clientId!!")
            let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
                 return try await req.view.render("UserManagementUserLogin", 
                                     BaseContext(title: "UserManagement", 
                                                 errorMessage: "Invalid user credentials",
                                                 settings: mySettingsDTO))
                     .encodeResponse(for: req)
-
         }
 
         guard try existingUser.verify(password: user.password ?? "") else {
             /* invalid password provided */
+            req.logger.info("UserManagement.validateUserLogin -> invalid clientSecret!!")
             let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
                 return try await req.view.render("UserManagementUserLogin", 
                                     BaseContext(title: "UserManagement", 
@@ -74,10 +95,11 @@ struct UserManagementUserLoginController: RouteCollection {
         }
 
         /* all is ok set session */
-        req.session.data["name"] = existingUser.id?.uuidString
-        req.session.data["ops"] = existingUser.orgId
+        req.logger.info("UserManagement.validateUserLogin -> user validated. SET session!!")
+        req.session.data["sgsoftware_system_user"] = existingUser.id?.uuidString
+        req.session.data["sgsoftware_system_ops"] = existingUser.orgId
+        req.logger.info("UserManagement.validateUserLogin -> user validated. redirect to main page!!")
         return req.redirect(to: "/view/?id=\(existingUser.id?.uuidString ?? "")&ops=\(existingUser.orgId ?? "")")
-
     }
 
 }

@@ -10,11 +10,11 @@ struct AuthenticationSessionMiddleware: AsyncMiddleware {
         //request.session.data["name"] ?? "n/a"  // get session value
         //request.session.destroy() // remove session value
         
-        print("[ SESSION MIDDLEWARE ] session [name]: ", request.session.data["name"] ?? "n/a")
-        print("[ SESSION MIDDLEWARE ] session [ops]: ", request.session.data["ops"] ?? "n/a")
+        print("[ SESSION MIDDLEWARE ] session [name]: ", request.session.data["sgsoftware_system_user"] ?? "n/a")
+        print("[ SESSION MIDDLEWARE ] session [ops]: ", request.session.data["sgsoftware_system_ops"] ?? "n/a")
         
         // determine ops (orgId).
-        var orgId:String = request.session.data["ops"] ?? ""
+        var orgId:String = request.session.data["sgsoftware_system_ops"] ?? ""
         if orgId == "" {
             orgId = request.query[String.self, at: "ops"] ?? ""
             print("[ SESSION MIDDLEWARE ] check query param ops: \(orgId)")
@@ -26,7 +26,7 @@ struct AuthenticationSessionMiddleware: AsyncMiddleware {
             }
         }
         
-        if request.session.data["name"] ?? "n/a" == "n/a" {
+        if request.session.data["sgsoftware_system_user"] ?? "n/a" == "n/a" {
             print("[ SESSION MIDDLEWARE ] ops=\(orgId)")
             throw Abort.redirect(to: "/view/user/login?ops=\(orgId)")
         }
