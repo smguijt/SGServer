@@ -13,24 +13,24 @@
                                 #import("tabheaders")
                             </ul>
 
-
+                            
                             <div class="tab-content" id="customTabContent">
-                                <div class="tab-pane fade show active" id="one" role="tabpanel">
+                                <div class="tab-pane fade #if(tab1Active):show active#endif id="one" role="tabpanel">
                                     #import("tabcontent1")
                                 </div>
-                                <div class="tab-pane fade" id="two" role="tabpanel">
+                                <div class="tab-pane fade" #if(tab2Active):show active#endif id="two" role="tabpanel">
                                     #import("tabcontent2")
                                 </div>
-                                <div class="tab-pane fade" id="three" role="tabpanel">
+                                <div class="tab-pane fade" #if(tab3Active):show active#endif id="three" role="tabpanel">
                                     #import("tabcontent3")
                                 </div>
-                                <div class="tab-pane fade" id="four" role="tabpanel">
+                                <div class="tab-pane fade" #if(tab4Active):show active#endif id="four" role="tabpanel">
                                     #import("tabcontent4")
                                 </div>
-                                <div class="tab-pane fade" id="five" role="tabpanel">
+                                <div class="tab-pane fade" #if(tab5Active):show active#endif id="five" role="tabpanel">
                                     #import("tabcontent5")
                                 </div>
-                                <div class="tab-pane fade" id="six" role="tabpanel">
+                                <div class="tab-pane fade" #if(tab6Active):show active#endif d="six" role="tabpanel">
                                     #import("tabcontent6")
                                 </div>
                                

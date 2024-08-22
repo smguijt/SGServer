@@ -23,8 +23,10 @@ struct UserManagementUserSettingsController: RouteCollection {
             req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
         }
         let userId = UUID(uuidString: userIdString ?? "") ?? UUID()
+        print("DEBUG INFO: UserManagement.usersettings.GET.userId -> \(userIdString!) --> \(userId.uuidString)")
 
-        let mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId)
+        var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId)
+        mySettingsDTO.ShowToolbar = true
         req.logger.info("userSettings retrieved: \(mySettingsDTO)")
         return try await req.view.render("UserManagementUserSettings", BaseContext(title: "UserManagement", settings: mySettingsDTO))
     }
@@ -35,28 +37,23 @@ struct UserManagementUserSettingsController: RouteCollection {
         req.logger.info("calling UserManagement.usersettings POST")
         req.logger.info("incomming request: \(req.body)")
 
-        var userIdString = try? req.query.get(String.self, at: "userid")
-        var userId = UUID()
-
-        if (userIdString == nil) {
-            userIdString = req.session.data["sgsoftware_systemuser"]
-            req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "no value")")
-        }
-        if userIdString != nil {
-            userId = UUID(uuidString: userIdString ?? "") ?? UUID()
-        } 
-        
         let body: UserManagementDictDTO = try req.content.decode(UserManagementDictDTO.self)
         guard let record: UserManagementUserSettingsModel = try await UserManagementUserSettingsModel
             .query(on: req.db)
             .filter(\.$key == body.key!)
-            .filter(\.$userId == userId)
+            .filter(\.$userId == body.userId!)
             .first() 
         else {
-            req.logger.error("\(body.key!) has not been updated with value: \(body.value!)")
+
+            /* no value found for given record so create */
+            let newRecord: UserManagementUserSettingsModel = 
+                UserManagementUserSettingsModel(key: body.key!, value: body.value!, userId: body.userId!)
+            _ = try await newRecord.save(on: req.db)
+
+
             let ret: Response = Response()
-            ret.status = HTTPResponseStatus.notModified
-            ret.body = Response.Body(string: "\(body.key!) has not been updated with value: \(body.value!)")
+            ret.status = HTTPResponseStatus.created
+            ret.body = Response.Body(string: "\(body.key!) has been created with value: \(body.value!)")
             return ret
         }
         record.value = body.value ?? ""

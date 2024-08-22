@@ -77,14 +77,29 @@ extension DataMigration.v1 {
              UserManagementAccountModel(email: email,
                                         password: try Bcrypt.hash(password))
             try await user.create(on: db)
+            print("DEBUG INFO: userId -> \(user.id!)")
             
-            /* create user role */
+            /* create user role / user permission */
             let userRole1 = UserManagementRoleModel(role:UserManagementRoleEnum.admin.rawValue, createdAt: nil, updatedAt: nil, userId:user.id)
             try await userRole1.create(on: db)
             
-            /* create user role */
+            /* create user role / user permission */
             let userRole2 = UserManagementRoleModel(role:UserManagementRoleEnum.user.rawValue, createdAt: nil, updatedAt: nil, userId:user.id)
             try await userRole2.create(on: db)
+
+            /* set user settings */
+            /* create entry OAUTH02 */
+            let settingUseOAUTH02: UserManagementUserSettingsModel = UserManagementUserSettingsModel(key: UserManagementEnumSettings.UseOAUTH02.rawValue, value: "true", userId: user.id!)
+            try await settingUseOAUTH02.create(on: db)
+            
+            /* create entry CLIENTID*/
+            let settingClientId = UserManagementUserSettingsModel(key: UserManagementEnumSettings.ClientId.rawValue, value: "XXXXXXXXXX", userId: user.id!)
+            try await settingClientId.create(on: db)
+            
+            /* create entry CLIENTSECRET */
+            let settingClientSecret = UserManagementUserSettingsModel(key: UserManagementEnumSettings.ClientSecret.rawValue, value: "XXXXXXXXXX", userId: user.id!)
+            try await settingClientSecret.create(on: db)
+
         }
         
         func revert(on db: Database) async throws {

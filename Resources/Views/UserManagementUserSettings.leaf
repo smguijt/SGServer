@@ -45,10 +45,11 @@
     #endexport
 
     #export("toolbar"):
-        <!--
-        <button class="btn btn-sm btn-primary" id="button1">Button</button>
-        <button class="btn btn-sm btn-white" id="button2">Button</button>
-        -->
+        <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+        <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+        <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Account Details</button></a>
+        <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnAddressDetails">Permissions</button></a>
+        <a href="#"><button class="btn btn-sm btn-primary" id="btnOther">Settings</button></a>
     #endexport
 
     #export("main"):
@@ -60,10 +61,9 @@
                     <div class="card-body">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Show Applications
-                                <div class="form-check form-switch m-0">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="switchShowApps"
-                                        value="#(settings.ShowApps)" #if(settings.ShowApps):checked#endif />
+                                <label class="form-label">userId</label>
+                                <div class="form-check m-0">
+                                    <input id="userId" name="userId" type="text" class="form-control" placeholder="userId" value="#(settings.userId)" readonly/>
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -125,70 +125,77 @@
 
     #export("script"):
         $(document).on('change','#switchShowMessages',function() {
-            $.post("usersettings",
+            $.post("/view/user/settings",
             {
               key: "ShowMessages",
-              value: this.checked
+              value: this.checked,
+              userId: "#(settings.userId)"
             },
             function(data, status){
               alert("Data: " + data + "\nStatus: " + status);
             });
         });
         $(document).on('change','#switchShowApps',function() {
-            $.post("usersettings",
+            $.post("/view/user/settings",
             {
               key: "ShowApps",
-              value: this.checked
+              value: this.checked,
+              userId: "#(settings.userId)"
             },
             function(data, status){
               alert("Data: " + data + "\nStatus: " + status);
             });
         });
         $(document).on('change','#switchShowNotifications',function() {
-            $.post("usersettings",
+            $.post("/view/user/settings",
             {
               key: "ShowNotifications",
-              value: this.checked
+              value: this.checked,
+              userId: "#(settings.userId)"
             },
             function(data, status){
               alert("Data: " + data + "\nStatus: " + status);
             });
         });
         $(document).on('change','#switchShowUpdates',function() {
-            $.post("usersettings",
+            $.post("/view/user/settings",
             {
               key: "ShowUpdates",
-              value: this.checked
+              value: this.checked,
+              userId: "#(settings.userId)"
             },
             function(data, status){
               alert("Data: " + data + "\nStatus: " + status);
             });
         });
         $(document).on('change','#switchUseOAUTH02',function() {
-            $.post("usersettings",
+            $.post("/view/user/settings",
             {
               key: "UseOAUTH02",
-              value: this.checked
+              value: this.checked,
+              userId: "#(settings.userId)"
             },
             function(data, status){
               alert("Data: " + data + "\nStatus: " + status);
             });
         });
         $(document).on('change','#ClientId',function() {
-            $.post("usersettings",
+            $.post("/view/user/settings",
             {
               key: "ClientId",
-              value: this.value
+              value: this.value,
+              userId: "#(settings.userId)"
             },
             function(data, status){
               alert("Data: " + data + "\nStatus: " + status);
             });
         });
         $(document).on('change','#ClientSecret',function() {
-            $.post("usersettings",
+            $.post("/view/user/settings",
             {
               key: "ClientSecret",
-              value: this.value
+              value: this.value,
+              userId: "#(settings.userId)"
             },
             function(data, status){
               alert("Data: " + data + "\nStatus: " + status);

@@ -62,8 +62,8 @@ func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSetting
                                                 ShowNotifications: myUserSettingDTO.ShowNotifications,
                                                 ShowUpdates: myUserSettingDTO.ShowUpdates,
                                                 ShowUserBox: mySystemSettings.ShowUserBox,
-                                                userId: mySystemSettings.userId,
-                                                UseOAUTH02: mySystemSettings.UseOAUTH02,
+                                                userId: myUserSettingDTO.userId,
+                                                UseOAUTH02: myUserSettingDTO.UseOAUTH02,
                                                 ClientId: myUserSettingDTO.ClientId,
                                                 ClientSecret: myUserSettingDTO.ClientSecret)
 

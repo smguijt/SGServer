@@ -1,4 +1,4 @@
-#extend("unifyTabPage"):
+#extend("unifyTemplate"):
 
     #export("header"):
     #endexport
@@ -27,7 +27,6 @@
     #endexport
 
     #export("breadcrumbs"):
-        
         <li class="breadcrumb-item text-secondary" aria-current="page">
             User Management
         </li>
@@ -38,510 +37,59 @@
     #endexport
 
     #export("toolbar"):
+        #if(tabIndicator == "general"):
+            <button class="btn btn-sm btn-primary" id="btnOverview">Overview</button>
+            <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+            <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
+            <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+            <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
+        #endif
+        #if(tabIndicator == "addressdetails"):
+            <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+            <a href="#"><button class="btn btn-sm btn-primary" id="btnAddressDetails">Address Details</button></a>
+            <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
+            <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+            <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
+        #endif
+        #if(tabIndicator == "accountdetails"):
+            <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+            <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+            <a href="#"><button class="btn btn-sm btn-primary" id="btnAccountDetails">Account Details</button></a>
+            <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+            <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnOther">Settings</button></a>
+        #endif
+        #if(tabIndicator == "permissions"):
+            <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+            <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+            <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
+            <a href="#"><button class="btn btn-sm btn-primary" id="btnPermissions">Permissions</button></a>
+            <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnOther">Settings</button></a>
+        #endif
+        #if(tabIndicator == "settings"):
+            <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+            <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+            <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Account Details</button></a>
+            <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnAddressDetails">Permissions</button></a>
+            <a href="#"><button class="btn btn-sm btn-primary" id="btnOther">Settings</button></a>
+        #endif
     #endexport
 
-    #export("tabheaders"):
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="tab-one" data-bs-toggle="tab" href="#one" role="tab"
-                aria-controls="one" aria-selected="true">General</a>
-        </li>
-        
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="tab-two" data-bs-toggle="tab" href="#two" role="tab"
-                aria-controls="two" aria-selected="false">Custom Fields</a>
-        </li>
-
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="tab-three" data-bs-toggle="tab" href="#three" role="tab"
-                aria-controls="three" aria-selected="false">Entities</a>
-        </li>
-    #endexport
-
-    #export("tabcontent1"):
-        
-            
-        <form method="POST"
-              id="formPlaygroundItemDetail"
-              action="/view/user/profile/general"
-              class="row g-2 needs-validation d-flex"
-              novalidate>
-
-            <!-- Col 1 -->
-            <div class="row gx-3">
-                <div class="col-sm-4 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <label for="paramId" class="form-label">Id</label>
-                                <input type="text" class="form-control bg-light" id="paramId" name="paramId" required readonly value="#(paramId)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row gx-3">
-                <div class="col-sm-4 col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="col-md-12 mt-1">
-                                <label for="text_1" class="form-label">Code</label>
-                                <input type="text" class="form-control" id="code" name="code" required value="#(general.title)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <label for="text_1" class="form-label">Description</label>
-                                <input type="text" class="form-control" id="description" name="description" required    value="#(general.description)"/>
-                                
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-
-                           
-
-                        </div>
-                    </div>
-                </div>
-            
-            
-                <!-- Col 2 -->
-                <div class="col-sm-4 col-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Col 3 -->
-                <div class="col-sm-4 col-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <div class="d-flex gap-2 justify-content-start">
-                        <div class="text-danger">
-                            #(errorMessage)
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 justify-content-end">
-                        <a href="/view/user/profile#">
-                            <button id="btnFormCancel" type="button" class="btn btn-outline-secondary">
-                                Cancel
-                            </button>
-                        </a>
-                        <button id="btFormSave" type="submit" class="btn btn-success">
-                            Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    #endexport
-
-    #export("tabcontent2"):
-        <form method="POST"
-              id="formPlaygroundItemDetail"
-              action="/view/user/profile/customfields"
-              class="row g-2 needs-validation d-flex"
-              novalidate>
-
-            <div class="row gx-3">
-                <!-- Col 1 -->
-                <input type="hidden" class="form-control bg-light" id="paramId" name="paramId" required readonly value="#(paramId)"/>
-            </div>
-            <div class="row gx-3">
-                <!-- Col 1 -->
-                <div class="col-sm-4 col-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="col-md-12 mt-1">
-                                <label for="text_1" class="form-label">Text_1</label>
-                                <input type="text" class="form-control" id="text_1" name="text_1" value="#(additionaldata.text_1)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <label for="text_2" class="form-label">Text_2</label>
-                                <input type="text" class="form-control" id="text_2" name="text_2" value="#(additionaldata.text_2)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <label for="text_3" class="form-label">Text_3</label>
-                                <input type="text" class="form-control" id="text_3" name="text_3" value="#(additionaldata.text_3)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <label for="text_4" class="form-label">Text_4</label>
-                                <input type="text" class="form-control" id="text_4" name="text_4" value="#(additionaldata.text_4)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <label for="text_5" class="form-label">Text_5</label>
-                                <input type="text" class="form-control" id="text_5" name="text_5" value="#(additionaldata.text_5)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Col 2 -->
-                <div class="col-sm-4 col-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="col-md-12 mt-1">
-                                <label for="int_1" class="form-label">Num 1</label>
-                                <input type="number" class="form-control" id="int_1" name="int_1" step="0.01"          pattern="^\d+(?:\.\d{1,2})?" value="#(additionaldata.num_1)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-1">
-                                <label for="int_2" class="form-label">Num 2</label>
-                                <input type="number" class="form-control" id="int_2" name="int_2" step="0.01"          pattern="^\d+(?:\.\d{1,2})?" value="#(additionaldata.num_2)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-1">
-                                <label for="int_3" class="form-label">Num 3</label>
-                                <input type="number" class="form-control" id="int_3" name="int_3" step="0.01"          pattern="^\d+(?:\.\d{1,2})?" value="#(additionaldata.num_3)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-1">
-                                <label for="int_4" class="form-label">Num 4</label>
-                                <input type="number" class="form-control" id="int_4" name="int_4" step="0.01"          pattern="^\d+(?:\.\d{1,2})?" value="#(additionaldata.num_4)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-1">
-                                <label for="int_5" class="form-label">Num 5</label>
-                                <input type="number" class="form-control" id="int_5" name="int_5" step="0.01"          pattern="^\d+(?:\.\d{1,2})?" value="#(additionaldata.num_5)"/>
-                                <div class="invalid-feedback">
-                                    Please provide a valid value.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Col 3 -->
-                <div class="col-sm-4 col-12">
-                    <div class="card mb-3">
-                        <div class="card-body">
-
-                            <div class="col-md-12">
-                                <div class="form-label">Date 1</div>
-                                <div class="input-group">
-                                    <input type="text"
-                                           id="date_1"
-                                           name="date_1"
-                                           class="form-control datepicker-week-numbers"
-                                           value="#(additionaldata.date_1)"/>
-                                    <span class="input-group-text">
-                                        <i class="bi bi-calendar4"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <div class="form-label">Date 2</div>
-                                <div class="input-group">
-                                    <input type="text"
-                                           id="date_2"
-                                           name="date_2"
-                                           class="form-control datepicker-week-numbers"
-                                           value="#(additionaldata.date_2)"/>
-                                    <span class="input-group-text">
-                                        <i class="bi bi-calendar4"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <div class="form-label">Date 3</div>
-                                <div class="input-group">
-                                    <input type="text"
-                                           id="date_3"
-                                           name="date_3"
-                                           class="form-control datepicker-time"
-                                           value="#(additionaldata.date_3)" />
-
-                                    <span class="input-group-text">
-                                        <i class="bi bi-calendar4"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <div class="form-label">Date 4</div>
-                                <div class="input-group">
-                                    <input type="text"
-                                           id="date_4"
-                                           name="date_4"
-                                           class="form-control datepicker-time"
-                                           value="#(additionaldata.date_4)" />
-
-                                    <span class="input-group-text">
-                                        <i class="bi bi-calendar4"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 mt-1">
-                                <div class="form-label">Date 5</div>
-                                <div class="input-group">
-                                    <input type="text"
-                                           id="date_5"
-                                           name="date_5"
-                                           class="form-control datepicker-time"
-                                           value="#(additionaldata.date_5)"/>
-
-                                    <span class="input-group-text">
-                                        <i class="bi bi-calendar4"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <div class="d-flex gap-2 justify-content-start">
-                        <div class="text-danger">
-                            #(errorMessage)
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 justify-content-end">
-                        <a href="/view/user/profile#">
-                            <button id="btnFormCancel" type="button" class="btn btn-outline-secondary">
-                                Cancel
-                            </button>
-                        </a>
-                        <button id="btFormSave" type="submit" class="btn btn-success">
-                            Save
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    #endexport
-
-    #export("tabcontent3"):
-
-        <div class="row gx-3">
-            <input type="hidden" class="form-control bg-light" id="paramId" name="paramId" required readonly value="#(paramId)"/>
-        </div>
-        
-            <div class="">
-                    <!-- loop start -->
-                        <div class="col-sm-12 col-12">
-                            <div class="card mb-3">
-                                <div class="card-header">
-                                    <div class="d-flex gap-2 justify-content-start">
-                                        <div class="text-danger">
-                                            #(errorMessage)
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-2 justify-content-end">
-                                       <a href="#" onClick="addItem('XX');">
-                                            <button class="me-1 p-2 bg-secondary bg-opacity-10 rounded-circle">
-                                                <i class="bi bi-plus-circle lh-4"></i>
-                                            </button>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                
-                                
-                                    <!-- accordion -->
-                                    <div class="accordion" id="accordionPanelsStayOpenExample">
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                                                        aria-controls="panelsStayOpen-collapseOne">
-                                                        Accordion Item #1
-                                                    </button>
-                                                </h2>
-                                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                                                    aria-labelledby="panelsStayOpen-headingOne">
-                                                    <div class="accordion-body">
-                                                    
-                                                        <div class="d-flex gap-2 justify-content-start">
-                                                            <div class="text-danger">
-                                                                XXXXX XXXX XXXX
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex gap-2 justify-content-end">
-                                                            <a href="#" onClick="deleteItem('XX');">
-                                                                <button class="me-1 p-2 bg-secondary bg-opacity-10 rounded-circle">
-                                                                    <i class="bi bi-trash lh-4"></i>
-                                                                </button>
-                                                            </a>
-                                                            <a href="#" onClick="saveItem('XX');">
-                                                                <button class="me-1 p-2 bg-secondary bg-opacity-10 rounded-circle">
-                                                                    <i class="bi bi-save2 lh-4"></i>
-                                                                </button>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            
-                                            
-                                                                                        
-                                                                                        
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header d-flex" id="panelsStayOpen-headingTwo">
-                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                                                        aria-controls="panelsStayOpen-collapseTwo">
-                                                        Accordion Item #2
-                                                    </button>
-                                                </h2>
-                                                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
-                                                    aria-labelledby="panelsStayOpen-headingTwo">
-                                                    <div class="accordion-body">
-                                                        
-                                                       <div class="d-flex gap-2 justify-content-start">
-                                                            <div class="text-danger">
-                                                                YYYYY YYYY YYYY
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex gap-2 justify-content-end">
-                                                            <a href="#" onClick="deleteItem('YY');">
-                                                                <button class="me-1 p-2 bg-secondary bg-opacity-10 rounded-circle">
-                                                                    <i class="bi bi-trash lh-4"></i>
-                                                                </button>
-                                                            </a>
-                                                            <a href="#" onClick="saveItem('YY');">
-                                                                <button class="me-1 p-2 bg-secondary bg-opacity-10 rounded-circle">
-                                                                    <i class="bi bi-save2 lh-4"></i>
-                                                                </button>
-                                                            </a>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            
-                                    </div> <!-- // accordion end -->
-                                </div>
-                                
-                               <!--
-                               <div class="card-footer">
-                                    <div class="d-flex gap-2 justify-content-start">
-                                        <div class="text-danger">
-                                            #(errorMessage)
-                                        </div>
-                                    </div>
-                                    <div class="d-flex gap-2 justify-content-end">
-                                        <button id="btnFormCancel" type="button" class="btn btn-outline-secondary">
-                                            Cancel
-                                        </button>
-                                        <button id="btFormSave" type="submit" class="btn btn-success">
-                                            Save
-                                        </button>
-                                    </div>
-                                </div>
-                                -->
-                                
-                                
-                            </div>
-                        </div>
-                    <!-- loop end -->
-            </div>
-        <hr/>
-
-        <!--
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#exampleModalCenter">
-            Vertically centered modal
-        </button>
-        -->
-
-        <!-- Modal
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">
-                            Modal title
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>This is a vertically centered modal.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            Save changes
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
-
-    #endexport
-
-    #export("tabcontent4"):
-    #endexport
-
-    #export("tabcontent5"):
-    #endexport
-
-    #export("tabcontent6"):
+    #export("main"):
+        #if(tabIndicator == "general"):
+            General
+        #endif
+         #if(tabIndicator == "addressdetails"):
+            Address Details
+        #endif
+         #if(tabIndicator == "accountdetails"):
+            Account Details
+        #endif
+         #if(tabIndicator == "permissions"):
+            Permissions
+        #endif
     #endexport
 
     #export("script"):
-        function addItem(pageid)
-        {
-           alert('add:' + pageid);
-        }
-        function deleteItem(pageid)
-        {
-           alert('delete:' + pageid);
-        }
-        function saveItem(pageid)
-        {
-           alert('save:' + pageid);
-        }
     #endexport
 
 

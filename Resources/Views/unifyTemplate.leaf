@@ -50,7 +50,7 @@
                         <div class="header-action-links mx-3 gap-2">
                             <a class="dropdown-item" href="/view/user/profile"><i class="bi bi-person text-primary"></i>Profile</a>
                             <a class="dropdown-item" href="/view/user/settings"><i class="bi bi-gear text-danger"></i>Settings</a>
-                            <a class="dropdown-item" href="#widgets"><i class="bi bi-box text-success"></i>Widgets</a>
+                            <!--<a class="dropdown-item" href="#widgets"><i class="bi bi-box text-success"></i>Widgets</a>-->
                         </div>
                         <div class="mx-3 mt-2 d-grid">
                             <a href="#logout" class="btn btn-primary btn-sm">Logout</a>
