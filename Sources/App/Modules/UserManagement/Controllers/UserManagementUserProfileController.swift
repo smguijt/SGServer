@@ -34,6 +34,7 @@ struct UserManagementUserProfileController: RouteCollection {
 
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
+        mySettingsDTO.ShowUserBox = true
         req.logger.info("userProfile retrieved: \(mySettingsDTO)")
         return try await req.view.render("UserManagementUserProfile", 
                                     TabBaseContext(title: "UserManagement", 

@@ -14,7 +14,12 @@ struct SGServerController: RouteCollection {
     
     @Sendable
     func index(req: Request) async throws -> View {
-        let mySettingsDTO = try await getSettings(req: req)
+        var mySettingsDTO = try await getSettings(req: req)
+        if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
+            let userId = UUID(req.session.data["sgsoftware_system_user"] ?? "")
+            mySettingsDTO = try await getUserSettings(req: req, userId: userId!)
+            mySettingsDTO.ShowUserBox = true
+        }
         return try await req.view.render("Index", BaseContext(title: "SGServer", settings: mySettingsDTO))
     }
 

@@ -27,6 +27,7 @@ struct UserManagementUserSettingsController: RouteCollection {
 
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId)
         mySettingsDTO.ShowToolbar = true
+        mySettingsDTO.ShowUserBox = true
         req.logger.info("userSettings retrieved: \(mySettingsDTO)")
         return try await req.view.render("UserManagementUserSettings", BaseContext(title: "UserManagement", settings: mySettingsDTO))
     }
