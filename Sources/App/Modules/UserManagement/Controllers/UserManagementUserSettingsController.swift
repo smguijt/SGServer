@@ -6,7 +6,7 @@ struct UserManagementUserSettingsController: RouteCollection {
     
     /* ROUTES */
     func boot(routes: RoutesBuilder) throws {
-        let pg = routes.grouped("view").grouped("user")
+        let pg = routes.grouped("view").grouped("user").grouped(AuthenticationSessionMiddleware())
 
         pg.get("settings", use: self.renderUserSettings)
         pg.post("settings", use: self.updateUserSetting)

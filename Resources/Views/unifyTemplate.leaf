@@ -53,7 +53,7 @@
                             <!--<a class="dropdown-item" href="#widgets"><i class="bi bi-box text-success"></i>Widgets</a>-->
                         </div>
                         <div class="mx-3 mt-2 d-grid">
-                            <a href="#logout" class="btn btn-primary btn-sm">Logout</a>
+                            <a href="/view/user/logout" class="btn btn-primary btn-sm">Logout</a>
                         </div>
                     </div>
                     <!-- user settings end -->

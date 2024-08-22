@@ -28,8 +28,7 @@ struct AuthenticationSessionMiddleware: AsyncMiddleware {
         
         if request.session.data["name"] ?? "n/a" == "n/a" {
             print("[ SESSION MIDDLEWARE ] ops=\(orgId)")
-            
-            throw Abort.redirect(to: "/auth/login?ops=\(orgId)")
+            throw Abort.redirect(to: "/view/user/login?ops=\(orgId)")
         }
         
         return try await next.respond(to: request)

@@ -12,6 +12,7 @@ func UserManagementRoutes(_ app: Application) throws {
     //...
     
     /* setup VIEW controllers */
+    try app.register(collection: UserManagementUserLoginController())
     try app.register(collection: UserManagementUserSettingsController())
     try app.register(collection: UserManagementUserProfileController())
 

@@ -5,7 +5,7 @@ struct SGServerSettingsApiController: RouteCollection {
     
     func boot(routes: RoutesBuilder) throws {
         
-        let api = routes.grouped("api")
+        let api = routes.grouped("api").grouped(AuthenticationTokenMiddleware())
         let settings = api.grouped("settings")
         settings.get(use: self.index2)
         

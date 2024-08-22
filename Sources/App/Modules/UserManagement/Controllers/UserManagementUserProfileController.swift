@@ -7,7 +7,7 @@ struct UserManagementUserProfileController: RouteCollection {
     
     /* ROUTES */
     func boot(routes: RoutesBuilder) throws {
-        let pg = routes.grouped("view").grouped("user")
+        let pg = routes.grouped("view").grouped("user").grouped(AuthenticationSessionMiddleware())
 
         pg.get("profile", use: self.renderUserProfile)
         pg.post("profile", "general", use: self.updateUserProfileGeneral)

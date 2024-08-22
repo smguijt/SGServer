@@ -1,0 +1,30 @@
+#extend("unifyTemplate"):
+
+    #export("header"):
+    #endexport
+
+    #export("sidebar"):
+        <li class="active current-page">
+            <a href="#">
+                <i class="bi bi-person-bounding-box"></i>
+                <span class="menu-text">User Login</span>
+            </a>
+        </li>
+    #endexport
+
+    #export("breadcrumbs"):
+        <li class="breadcrumb-item text-secondary" aria-current="page">
+            User Management
+        </li>
+    #endexport
+
+    #export("toolbar"):
+    #endexport
+
+    #export("main"):
+    #endexport
+
+    #export("script"):
+    #endexport
+
+#endextend

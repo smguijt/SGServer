@@ -7,7 +7,7 @@ struct SGServerController: RouteCollection {
     /* ROUTES */
     func boot(routes: RoutesBuilder) throws {
         let pg = routes.grouped("view")
-        
+            .grouped(AuthenticationSessionMiddleware())
         pg.get(use: self.index)
     }
 

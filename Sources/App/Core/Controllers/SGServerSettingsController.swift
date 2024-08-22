@@ -7,6 +7,7 @@ struct SGServerSettingsController: RouteCollection {
     /* ROUTES */
     func boot(routes: RoutesBuilder) throws {
         let pg = routes.grouped("view")
+            .grouped(AuthenticationSessionMiddleware())
         
         pg.get("systemsettings", use: self.renderSystemSettings)
         pg.post("systemsettings", use: self.updateSystemSetting)

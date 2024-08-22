@@ -10,6 +10,7 @@ extension DataMigration.v1 {
                 .id()
                 .field("email", .string, .required)
                 .field("password", .string, .required)
+                .field("orgId", .string)
                 .field("createdAt", .datetime)
                 .field("updatedAt", .datetime)
                 .unique(on: "email")
@@ -73,9 +74,11 @@ extension DataMigration.v1 {
             /* create user */
             let email = "root@localhost.com"
             let password = "ChangeMe!"
+            let orgId: String = ""
             let user = 
              UserManagementAccountModel(email: email,
-                                        password: try Bcrypt.hash(password))
+                                        password: try Bcrypt.hash(password), 
+                                        orgId: orgId)
             try await user.create(on: db)
             print("DEBUG INFO: userId -> \(user.id!)")
             
