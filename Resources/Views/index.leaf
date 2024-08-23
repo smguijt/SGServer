@@ -148,6 +148,7 @@
     #endexport
 
     #export("main"):
+        <h4 style="background-color:white; text-align: center;">Dashboard</h4>
         <!-- Row start -->
         <div class="row gx-3">
             <h3>Content Here</h3>

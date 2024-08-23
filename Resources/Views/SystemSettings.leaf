@@ -38,6 +38,7 @@
     #endexport
 
     #export("main"):
+        <h4 style="background-color:white; text-align: center;">Settings</h4>
         <!-- Row start -->
         <div class="row gx-3">
             <!-- Col 1 -->

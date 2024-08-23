@@ -25,11 +25,18 @@ struct UserManagementUserSettingsController: RouteCollection {
         let userId = UUID(uuidString: userIdString ?? "") ?? UUID()
         print("DEBUG INFO: UserManagement.usersettings.GET.userId -> \(userIdString!) --> \(userId.uuidString)")
 
+        var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
+        if (tabIndicator == nil) { 
+            tabIndicator = "general"
+        } 
+
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId)
         mySettingsDTO.ShowToolbar = true
         mySettingsDTO.ShowUserBox = true
         req.logger.info("userSettings retrieved: \(mySettingsDTO)")
-        return try await req.view.render("UserManagementUserSettings", BaseContext(title: "UserManagement", settings: mySettingsDTO))
+        return try await req.view.render("UserManagementUserSettings", TabBaseContext(title: "SGServer", 
+                                                   settings: mySettingsDTO, 
+                                                   tabIndicator: tabIndicator))
     }
     
     @Sendable
@@ -45,7 +52,6 @@ struct UserManagementUserSettingsController: RouteCollection {
             .filter(\.$userId == body.userId!)
             .first() 
         else {
-
             /* no value found for given record so create */
             let newRecord: UserManagementUserSettingsModel = 
                 UserManagementUserSettingsModel(key: body.key!, value: body.value!, userId: body.userId!)

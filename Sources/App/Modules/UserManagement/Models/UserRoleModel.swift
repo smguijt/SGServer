@@ -34,10 +34,23 @@ final class UserManagementRoleModel: Model, @unchecked Sendable {
     @OptionalField(key: "userId")
     var userId: UUID?
 
-    
+    func validateRole(role: String) -> Bool {
+        if self.role == role { return true }
+        return false
+    }
+
     func toDTO() -> UserManagementRoleModelDTO {
         .init(
-            ID: self.id
+            userId: self.id!,
+            isAdminUser: validateRole(role: "admin"),
+            isUser: validateRole(role: "user"),
+            isSuperUser: validateRole(role: "superuser"),
+            isSystemUser: validateRole(role: "system"),
+            isApiUser: validateRole(role: "api"),
+            isAllowedToUseUserManagementModule: validateRole(role: "UserManagement"),
+            isAllowedToUseTimeManagementModule: validateRole(role: "TimeManagement"),
+            isAllowedToUseEventManagementModule: validateRole(role: "EventManagement"),
+            isAllowedToUseTaskManagementModule: validateRole(role: "TaskManagement")
         )
     }
 

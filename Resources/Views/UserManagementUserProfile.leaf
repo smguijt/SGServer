@@ -75,17 +75,141 @@
     #endexport
 
     #export("main"):
+        <div class="d-lg-none mb-2">
+            #if(tabIndicator == "general"):
+                <button class="btn btn-sm btn-primary" id="btnOverview">Overview</button>
+                <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+                <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
+                <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+                <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
+            #endif
+            #if(tabIndicator == "addressdetails"):
+                <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+                <a href="#"><button class="btn btn-sm btn-primary" id="btnAddressDetails">Address Details</button></a>
+                <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
+                <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+                <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
+            #endif
+            #if(tabIndicator == "accountdetails"):
+                <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+                <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+                <a href="#"><button class="btn btn-sm btn-primary" id="btnAccountDetails">Account Details</button></a>
+                <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+                <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnOther">Settings</button></a>
+            #endif
+            #if(tabIndicator == "permissions"):
+                <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+                <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+                <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
+                <a href="#"><button class="btn btn-sm btn-primary" id="btnPermissions">Permissions</button></a>
+                <a href="/view/user/settings"><button class="btn btn-sm btn-white" id="btnOther">Settings</button></a>
+            #endif
+            #if(tabIndicator == "settings"):
+                <a href="/view/user/profile/?tabid=general"><button class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
+                <a href="/view/user/profile/?tabid=addressdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+                <a href="/view/user/profile/?tabid=accountdetails"><button class="btn btn-sm btn-white" id="btnAddressDetails">Account Details</button></a>
+                <a href="/view/user/profile/?tabid=permissions"><button class="btn btn-sm btn-white" id="btnAddressDetails">Permissions</button></a>
+                <a href="#"><button class="btn btn-sm btn-primary" id="btnOther">Settings</button></a>
+            #endif
+        </div>
+
+
         #if(tabIndicator == "general"):
-            General
+             <!--<h4 style="background-color:white; text-align: center;">Overview</h4>-->
         #endif
          #if(tabIndicator == "addressdetails"):
-            Address Details
+             <!--<h4 style="background-color:white; text-align: center;">Address Details</h4>-->
         #endif
          #if(tabIndicator == "accountdetails"):
-            Account Details
+            <!--<h4 style="background-color:white; text-align: center;">Account Details</h4>-->
         #endif
          #if(tabIndicator == "permissions"):
-            Permissions
+            <!--<h4 style="background-color:white; text-align: center;">Permissions</h4>-->
+            <div class="row gx-3">
+                <!-- Col 1 -->
+                <div class="col-sm-6 col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Administrator
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleAdministrator" 
+                                                value="#(userPermissions.isAdminUser)" #if(userPermissions):checked#endif/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    User
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUser" 
+                                                value="#(userPermissions.isUser)" #if(userPermissions.isUser):checked#endif/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Super User
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSuperUser" 
+                                                disabled value="#(userPermissions.isSuperUser)" #if(userPermissions.isSuperUser):checked#endif/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    System User
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSystemUser" 
+                                                value="#(userPermissions.isSystemUser)" #if(userPermissions.isSystemUser):checked#endif/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    API User
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleApiUser" 
+                                                value="#(userPermissions.isApiUser)" #if(userPermissions.isApiUser):checked#endif/>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Col 2 -->
+                <div class="col-sm-6 col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    User Management
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUserManagement" 
+                                                value="#(userPermissions.isAllowedToUseUserManagementModule)" #if(userPermissions.isAllowedToUseUserManagementModule):checked#endif/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Time Management
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTimeManagement" 
+                                                value="#(userPermissions.isAllowedToUseTimeManagementModule)" #if(userPermissions.isAllowedToUseTimeManagementModule):checked#endif/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Event Management
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleEventManagement" 
+                                                value="#(userPermissions.isAllowedToUseEventManagementModule)" #if(userPermissions.isAllowedToUseEventManagementModule):checked#endif/>
+                                    </div>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Task Management
+                                    <div class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTaskManagement" 
+                                                value="#(userPermissions.isAllowedToUseTaskManagementModule)" #if(userPermissions.isAllowedToUseTaskManagementModule):checked#endif/>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         #endif
     #endexport
 

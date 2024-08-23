@@ -71,10 +71,11 @@ extension DataMigration.v1 {
 
     struct SeedDataModelsForModuleUserManagement: AsyncMigration {
         func prepare(on db: Database) async throws {
+            
             /* create user */
             let email = "root@localhost.com"
             let password = "ChangeMe!"
-            let orgId: String = ""
+            let orgId: String = "system"
             let user = 
              UserManagementAccountModel(email: email,
                                         password: try Bcrypt.hash(password), 
@@ -83,13 +84,9 @@ extension DataMigration.v1 {
             print("DEBUG INFO: userId -> \(user.id!)")
             
             /* create user role / user permission */
-            let userRole1 = UserManagementRoleModel(role:UserManagementRoleEnum.admin.rawValue, createdAt: nil, updatedAt: nil, userId:user.id)
-            try await userRole1.create(on: db)
+            let userRole1a = UserManagementRoleModel(role:UserManagementRoleEnum.superuser.rawValue, createdAt: nil, updatedAt: nil, userId:user.id)
+            try await userRole1a.create(on: db)
             
-            /* create user role / user permission */
-            let userRole2 = UserManagementRoleModel(role:UserManagementRoleEnum.user.rawValue, createdAt: nil, updatedAt: nil, userId:user.id)
-            try await userRole2.create(on: db)
-
             /* set user settings */
             /* create entry OAUTH02 */
             let settingUseOAUTH02: UserManagementUserSettingsModel = UserManagementUserSettingsModel(key: UserManagementEnumSettings.UseOAUTH02.rawValue, value: "true", userId: user.id!)
@@ -102,6 +99,27 @@ extension DataMigration.v1 {
             /* create entry CLIENTSECRET */
             let settingClientSecret = UserManagementUserSettingsModel(key: UserManagementEnumSettings.ClientSecret.rawValue, value: "XXXXXXXXXX", userId: user.id!)
             try await settingClientSecret.create(on: db)
+
+
+            /* create user 2 */
+            let email2 = "admin@bvv.sgsoftware.com"
+            let password2 = "ChangeMe!"
+            let orgId2: String = "system"
+            let user2 = UserManagementAccountModel(email: email2,
+                                                  password: try Bcrypt.hash(password2), 
+                                                  orgId: orgId2)
+            try await user2.create(on: db)
+            print("DEBUG INFO: user2Id -> \(user2.id!)")
+
+            /* create user role / user permission */
+            let userRole2a = UserManagementRoleModel(role:UserManagementRoleEnum.admin.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)
+            try await userRole2a.create(on: db)
+
+            let userRole2b = UserManagementRoleModel(role:UserManagementRoleEnum.api.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)
+            try await userRole2b.create(on: db)
+
+            let userRole2c = UserManagementRoleModel(role:UserManagementRoleEnum.UserManagement.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)
+            try await userRole2c.create(on: db)
 
         }
         

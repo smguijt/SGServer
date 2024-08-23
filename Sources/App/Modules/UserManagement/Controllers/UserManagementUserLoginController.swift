@@ -22,7 +22,7 @@ struct UserManagementUserLoginController: RouteCollection {
         var mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
         mySettingsDTO.ShowUserBox = false
         return try await req.view.render("UserManagementUserLogin", 
-                                    BaseContext(title: "UserManagement", 
+                                    BaseContext(title: "SGServer", 
                                                    settings: mySettingsDTO))
     }
 
@@ -34,7 +34,7 @@ struct UserManagementUserLoginController: RouteCollection {
         var mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
         mySettingsDTO.ShowUserBox = false
         return try await req.view.render("UserManagementUserLogin", 
-                                    BaseContext(title: "UserManagement", 
+                                    BaseContext(title: "SGServer", 
                                                    settings: mySettingsDTO))
     }
 
@@ -44,15 +44,15 @@ struct UserManagementUserLoginController: RouteCollection {
         req.logger.info("incomming request: \(req.body)")
 
         let user: UserManagementUserLoginDTO = try req.content.decode(UserManagementUserLoginDTO.self)
-        var orgId: String? = ""
-        if user.orgId == nil  {
+        var orgId: String? = "system"
+        if user.orgId != nil  {
             orgId = user.orgId ?? ""
         }
         if user.username == "" {
             req.logger.info("UserManagement.validateUserLogin -> missing clientId!!")
             let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
                 return try await req.view.render("UserManagementUserLogin", 
-                                    BaseContext(title: "UserManagement", 
+                                    BaseContext(title: "SGServer", 
                                                 errorMessage: "Missing value for clientId",
                                                 settings: mySettingsDTO))
                     .encodeResponse(for: req)
@@ -61,7 +61,7 @@ struct UserManagementUserLoginController: RouteCollection {
             req.logger.info("UserManagement.validateUserLogin -> missing clientSecret!!")
             let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
                 return try await req.view.render("UserManagementUserLogin", 
-                                    BaseContext(title: "UserManagement", 
+                                    BaseContext(title: "SGServer", 
                                                 errorMessage: "Missing value for clientSecret",
                                                 settings: mySettingsDTO))
                     .encodeResponse(for: req)
@@ -77,7 +77,7 @@ struct UserManagementUserLoginController: RouteCollection {
             req.logger.info("UserManagement.validateUserLogin -> invalid clientId!!")
            let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
                 return try await req.view.render("UserManagementUserLogin", 
-                                    BaseContext(title: "UserManagement", 
+                                    BaseContext(title: "SGServer", 
                                                 errorMessage: "Invalid user credentials",
                                                 settings: mySettingsDTO))
                     .encodeResponse(for: req)
@@ -88,7 +88,7 @@ struct UserManagementUserLoginController: RouteCollection {
             req.logger.info("UserManagement.validateUserLogin -> invalid clientSecret!!")
             let mySettingsDTO: SGServerSettingsDTO = try await getSettings(req: req)
                 return try await req.view.render("UserManagementUserLogin", 
-                                    BaseContext(title: "UserManagement", 
+                                    BaseContext(title: "SGServer", 
                                                 errorMessage: "Invalid user credentials",
                                                 settings: mySettingsDTO))
                     .encodeResponse(for: req)

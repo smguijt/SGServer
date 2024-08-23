@@ -18,13 +18,14 @@ struct UserManagementUserProfileController: RouteCollection {
     func renderUserProfile(req: Request) async throws -> View {
 
         req.logger.info("calling UserManagement.userProfile")
-
-
+        
+        /* retrieve tabSettings */
         var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
         if (tabIndicator == nil) { 
             tabIndicator = "general"
         } 
 
+        /* retrieve user information */
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
             userIdString = req.session.data["sgsoftware_system_user"] ?? ""
@@ -32,14 +33,23 @@ struct UserManagementUserProfileController: RouteCollection {
         }
         let userId = UUID(uuidString: userIdString ?? "") ?? nil
 
+        /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
         mySettingsDTO.ShowUserBox = true
         req.logger.info("userProfile retrieved: \(mySettingsDTO)")
+
+        /* retrieve user permissions */
+        let myUserPermissionsDTO: UserManagementRoleModelDTO = 
+            try await getUserPermissionSettings(req: req, userId: userId!)
+
+
+        /* return */
         return try await req.view.render("UserManagementUserProfile", 
-                                    TabBaseContext(title: "UserManagement", 
+                                    UserBaseContext(title: "SGServer", 
                                                    settings: mySettingsDTO, 
-                                                   tabIndicator: tabIndicator))
+                                                   tabIndicator: tabIndicator,
+                                                   userPermissions: myUserPermissionsDTO))
     }
 
     @Sendable
