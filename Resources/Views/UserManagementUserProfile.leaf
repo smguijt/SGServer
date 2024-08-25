@@ -241,19 +241,26 @@
 
     #export("script"):
 
+
     function handleChange(name, e) {
         const {checked} = e.target;
-        alert(checked + '..' + name)
 
-        $.post("/view/user/profile/permissions",
-        {
-            key: name,
-            value: checked,
-            userId: "#(settings.userId)"
-        },
-        function(data, status){
-            alert("Data: " + data + "\nStatus: " + status);
-        });
+        $.post( "/view/user/profile/permissions", 
+            {  
+                key: name, 
+                value: checked, 
+                userId: "#(settings.userId)" 
+            })
+            .done(function( data ) {
+                alert( "Data Loaded: " + data );
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                alert( "Error -> status: " + jqXHR.status + " reason: " + textStatus + ". " + errorThrown);
+                //console.log(jqXHR)
+            })
+            .always(function() {
+                //alert( "finished" );
+            });
     }
 
     #endexport

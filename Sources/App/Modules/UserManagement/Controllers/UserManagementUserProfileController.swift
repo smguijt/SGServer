@@ -116,7 +116,7 @@ struct UserManagementUserProfileController: RouteCollection {
         let body: UserManagementDictDTO = try req.content.decode(UserManagementDictDTO.self)
 
         let ret: Response = Response()
-        ret.status = HTTPResponseStatus.conflict
+        ret.status = HTTPResponseStatus.badRequest
         ret.body = Response.Body(string: "\(body.key!) is not a valid key!")
         req.logger.info("\(body.key!) is not a valid key!")
 
