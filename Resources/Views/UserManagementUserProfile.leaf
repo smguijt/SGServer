@@ -135,35 +135,49 @@
                                     Administrator
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleAdministrator" 
-                                                value="#(userPermissions.isAdminUser)" #if(userPermissions):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                value="#(userPermissions.isAdminUser)" 
+                                                #if(userPermissions.isAdminUser):checked#endif 
+                                                onchange="handleChange('isAdminUser', event)"/> 
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     User
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUser" 
-                                                value="#(userPermissions.isUser)" #if(userPermissions.isUser):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif  
+                                                value="#(userPermissions.isUser)" 
+                                                #if(userPermissions.isUser):checked#endif 
+                                                onchange="handleChange('isUser', event)" />
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Super User
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSuperUser" 
-                                                disabled value="#(userPermissions.isSuperUser)" #if(userPermissions.isSuperUser):checked#endif/>
+                                                disabled 
+                                                #if(userPermissions.isSuperUser):checked#endif 
+                                                onchange="handleChange('isSuperUser', event)"/>
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     System User
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSystemUser" 
-                                                value="#(userPermissions.isSystemUser)" #if(userPermissions.isSystemUser):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                value="#(userPermissions.isSystemUser)" 
+                                                #if(userPermissions.isSystemUser):checked#endif 
+                                                onchange="handleChange('isSystemUser', event)"/>
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     API User
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleApiUser" 
-                                                value="#(userPermissions.isApiUser)" #if(userPermissions.isApiUser):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                value="#(userPermissions.isApiUser)" 
+                                                #if(userPermissions.isApiUser):checked#endif 
+                                                onchange="handleChange('isApiUser', event)"/>
                                     </div>
                                 </li>
                             </ul>
@@ -181,28 +195,40 @@
                                     User Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUserManagement" 
-                                                value="#(userPermissions.isAllowedToUseUserManagementModule)" #if(userPermissions.isAllowedToUseUserManagementModule):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                value="#(userPermissions.isAllowedToUseUserManagementModule)" 
+                                                #if(userPermissions.isAllowedToUseUserManagementModule):checked#endif 
+                                                onchange="handleChange('isAllowedToUseUserManagementModule', event)"/>
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Time Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTimeManagement" 
-                                                value="#(userPermissions.isAllowedToUseTimeManagementModule)" #if(userPermissions.isAllowedToUseTimeManagementModule):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif
+                                                value="#(userPermissions.isAllowedToUseTimeManagementModule)" 
+                                                #if(userPermissions.isAllowedToUseTimeManagementModule):checked#endif 
+                                                onchange="handleChange('isAllowedToUseTimeManagementModule', event)"/>
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Event Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleEventManagement" 
-                                                value="#(userPermissions.isAllowedToUseEventManagementModule)" #if(userPermissions.isAllowedToUseEventManagementModule):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif
+                                                value="#(userPermissions.isAllowedToUseEventManagementModule)" 
+                                                #if(userPermissions.isAllowedToUseEventManagementModule):checked#endif 
+                                                onchange="handleChange('isAllowedToUseEventManagementModule', event)"/>
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     Task Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTaskManagement" 
-                                                value="#(userPermissions.isAllowedToUseTaskManagementModule)" #if(userPermissions.isAllowedToUseTaskManagementModule):checked#endif/>
+                                                #if(userPermissions.isSuperUser):disabled#endif
+                                                value="#(userPermissions.isAllowedToUseTaskManagementModule)"
+                                                #if(userPermissions.isAllowedToUseTaskManagementModule):checked#endif 
+                                                onchange="handleChange('isAllowedToUseTaskManagementModule', event)"/>
                                     </div>
                                 </li>
                             </ul>
@@ -214,6 +240,22 @@
     #endexport
 
     #export("script"):
+
+    function handleChange(name, e) {
+        const {checked} = e.target;
+        alert(checked + '..' + name)
+
+        $.post("/view/user/profile/permissions",
+        {
+            key: name,
+            value: checked,
+            userId: "#(settings.userId)"
+        },
+        function(data, status){
+            alert("Data: " + data + "\nStatus: " + status);
+        });
+    }
+
     #endexport
 
 
