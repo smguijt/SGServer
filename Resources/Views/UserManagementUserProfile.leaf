@@ -119,9 +119,150 @@
         #endif
          #if(tabIndicator == "addressdetails"):
              <!--<h4 style="background-color:white; text-align: center;">Address Details</h4>-->
+             <div class="row gx-3">
+                <form method="POST" action="/view/profile/address" class="">
+                    <div class="card">
+                        <!--
+                        <div class="card-header">
+                            <h5 class="card-title"></h5>
+                        </div>
+                        -->
+                        <div class="card-body">
+
+
+                                <!-- Row start -->
+                                <div class="row gx-3">
+                                    <div class="col-lg-3 col-sm-4 col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Street Address</label>
+                                            <input type="text" class="form-control" placeholder="Street Address" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-4 col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">House No.</label>
+                                            <input type="text" class="form-control" placeholder="House No" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row gx-3">
+                                    <div class="col-lg-3 col-sm-4 col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Postal Code</label>
+                                            <input type="text" class="form-control" placeholder="Postal code" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-4 col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">City</label>
+                                            <input type="text" class="form-control" placeholder="City" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-4 col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Country</label>
+                                            <input type="text" class="form-control" placeholder="Country" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3">
+                                    <div class="col-lg-3 col-sm-4 col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Telephone</label>
+                                            <input type="number" class="form-control" placeholder="Telephone" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-sm-4 col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Mobile</label>
+                                            <input type="number" class="form-control" placeholder="Mobile Phone" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row gx-3">
+                                    <!--
+                                    <div class="col-xxl-12">
+                                        <div class="bg-light bg-opacity-50 p-3 mt-4 mb-3 fw-bold">
+                                            Organizations
+                                        </div>
+                                    </div>
+                                    -->
+                                    <div class="col-lg-6 col-sm-6 col-12 p3- mt-4 mb-3">
+                                         <label class="form-label">Organizations</label>
+                                        <select id="multiple-checkboxes" name="multiple-checkboxes" multiple="multiple">
+                                            <option value="php">PHP</option>
+                                            <option value="javascript">JavaScript</option>
+                                            <option value="java">Java</option>
+                                            <option value="sql">SQL</option>
+                                            <option value="jquery">Jquery</option>
+                                            <option value=".net">.Net</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex gap-2 justify-content-end">
+                                <button type="button" class="btn btn-outline-secondary">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-lg btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form> 
+             </div>
         #endif
          #if(tabIndicator == "accountdetails"):
             <!--<h4 style="background-color:white; text-align: center;">Account Details</h4>-->
+            <div class="row gx-3">
+                <form method="POST" action="/view/profile/account" class="">
+                    <div class="card">
+                        <!--
+                        <div class="card-header">
+                            <h5 class="card-title"></h5>
+                        </div>
+                        -->
+                        <div class="card-body">
+                            <!-- Row start -->
+                            <div class="row gx-3">
+                                <div class="col-lg-3 col-sm-4 col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" placeholder="Enter fullname" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4 col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" placeholder="Enter email address" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-sm-4 col-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control" placeholder="Password" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Row end -->
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex gap-2 justify-content-end">
+                                <button type="submit" class="btn btn-lg btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form> 
+             </div>
         #endif
          #if(tabIndicator == "permissions"):
             <!--<h4 style="background-color:white; text-align: center;">Permissions</h4>-->
@@ -136,8 +277,8 @@
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleAdministrator" 
                                                 #if(userPermissions.isSuperUser):disabled#endif 
-                                                value="#(userPermissions.isAdminUser)" 
-                                                #if(userPermissions.isAdminUser):checked#endif 
+                                                value="#(userPermissions.IsAdminUser)" 
+                                                #if(userPermissions.IsAdminUser):checked#endif 
                                                 onchange="handleChange('isAdminUser', event)"/> 
                                     </div>
                                 </li>
@@ -152,7 +293,7 @@
                                     </div>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Super User
+                                    <i>Super User</i>
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSuperUser" 
                                                 disabled 
@@ -256,12 +397,18 @@
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 alert( "Error -> status: " + jqXHR.status + " reason: " + textStatus + ". " + errorThrown);
-                //console.log(jqXHR)
             })
             .always(function() {
                 //alert( "finished" );
             });
     }
+
+    $( '#multiple-checkboxes' ).select2( {
+        theme: "bootstrap-5",
+        width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+        placeholder: $( this ).data( 'placeholder' ),
+        closeOnSelect: false,
+    } );
 
     #endexport
 

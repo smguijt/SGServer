@@ -122,3 +122,33 @@ func getUserPermissionSettings(req: Request, userId: UUID) async throws -> UserM
                 }
     return myUserPermissionsDTO
 }
+
+func setUserPermissionSetting(req: Request, form: UserManagementDictDTO, role: UserManagementRoleEnum) async throws -> Response {
+    
+    let ret: Response = Response()
+    let record: [UserManagementRoleModel] = try await UserManagementRoleModel
+        .query(on: req.db)
+        .filter(\.$role == role.rawValue)
+        .filter(\.$userId == form.userId!)
+        .all()
+
+    if record.count > 0 {
+        // record found so it has to be removed / disabled
+        try await record.delete(on: req.db)
+
+        ret.status = HTTPResponseStatus.accepted
+        ret.body = Response.Body(string: "\(form.key!) key removed")
+        req.logger.info("\(form.key!) key removed!")
+    } else {
+        // record not found so it must be created
+        let newRecord: UserManagementRoleModel = UserManagementRoleModel(
+                                                    role: role.rawValue, 
+                                                    userId: form.userId!)
+        try await newRecord.save(on: req.db)
+
+        ret.status = HTTPResponseStatus.accepted
+        ret.body = Response.Body(string: "\(form.key!) key added")
+        req.logger.info("\(form.key!) key added!")
+    }
+    return ret
+}

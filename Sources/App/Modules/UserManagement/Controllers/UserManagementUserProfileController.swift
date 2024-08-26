@@ -11,7 +11,9 @@ struct UserManagementUserProfileController: RouteCollection {
 
         pg.get("profile", use: self.renderUserProfile)
         pg.post("profile", "general", use: self.updateUserProfileGeneral)
-        pg.post("profile", "customfields", use: self.updateUserProfileCustomFields)
+        //pg.post("profile", "customfields", use: self.updateUserProfileCustomFields)
+        pg.post("profile", "address", use: self.updateUserProfileAddressFields)
+        pg.post("profile", "account", use: self.updateUserProfileAccountFields)
         pg.post("profile", "permissions", use: self.updateUserProfilePermissions)
     }
 
@@ -113,15 +115,6 @@ struct UserManagementUserProfileController: RouteCollection {
         req.logger.info("calling UserManagementUserProfile.updateUserProfilePermissions POST")
         req.logger.info("incomming request: \(req.body)")
 
-        let body: UserManagementDictDTO = try req.content.decode(UserManagementDictDTO.self)
-
-        let ret: Response = Response()
-        ret.status = HTTPResponseStatus.badRequest
-        ret.body = Response.Body(string: "\(body.key!) is not a valid key!")
-        req.logger.info("\(body.key!) is not a valid key!")
-
-/*
-
         /* determine user */
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
@@ -131,53 +124,80 @@ struct UserManagementUserProfileController: RouteCollection {
         let userId = UUID(uuidString: userIdString ?? "") ?? UUID()
         req.logger.info("calling UserManagementUserProfile.updateUserProfilePermissions.id POST: \(userId)")
 
-        /* decode */
+        /* decode body */
         let body: UserManagementDictDTO = try req.content.decode(UserManagementDictDTO.self)
 
-        /* translate value */
-        
-        var record: UserManagementRoleModel? = nil
+        /* capture key */
+        var ret: Response = Response()
+        var bFound: Bool = false
         switch body.key {
             case "isAdminUser":
-                
-                record = try await UserManagementRoleModel
-                            .query(on: req.db)
-                            .filter(\.$role == UserManagementRoleEnum.admin.rawValue)
-                            .filter(\.$userId == body.userId!)
-                            .first() ?? UserManagementRoleModel(role: UserManagementRoleEnum.admin.rawValue, 
-                                                                userId: body.userId!)
-                
-
-                break
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.admin)
+                bFound = true
+                break;
+            case "isUser": 
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.user)
+                bFound = true
+                break;
+            case "isApiUser": 
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.api)
+                bFound = true
+                break;
+            case "isSuperUser": 
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.superuser)
+                bFound = true
+                break;
+            case "isSystemUser": 
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.system)
+                bFound = true
+                break;
+            case "isAllowedToUseUserManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.UserManagement)
+                bFound = true
+                break;
+            case "isAllowedToUseTimeManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.TimeManagement)
+                bFound = true
+                break;
+            case "isAllowedToUseEventManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.EventManagement)
+                bFound = true
+                break;
+            case "isAllowedToUseTaskManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.TaskManagement)
+                bFound = true
+                break;
             default:
-                ret.status = HTTPResponseStatus.conflict
-                ret.body = Response.Body(string: "\(body.key!) is not a valid key!")
-                req.logger.info("\(body.key!) is not a valid key!")
-                break
+                bFound = false;
+                break;
         }
 
-        /*
-        if record == nil {
-            let newRecord: UserManagementRoleModel = 
-                UserManagementRoleModel(role: body.key!, userId: body.userId!)
-            _ = try await newRecord.save(on: req.db)
-
-            let ret: Response = Response()
-            ret.status = HTTPResponseStatus.created
-            ret.body = Response.Body(string: "\(body.key!) has been created with value: \(body.value!)")
-            return ret
+        if !bFound {
+            ret.status = HTTPResponseStatus.badRequest
+            ret.body = Response.Body(string: "\(body.key!) is not a valid key!")
+            req.logger.info("\(body.key!) is not a valid key!")
         }
-        */
 
-        /* update record */
-        //record.$role = body.value 
-        //_ = try await record.save(on: req.db)
+        return ret
+    }
 
-        /* return response */
-        ret.status = HTTPResponseStatus.accepted
-        ret.body = Response.Body(string: "\(body.key!) has been updated with value: \(body.value!)")
-        req.logger.info("\(body.key!) has been updated with value: \(body.value!)")
-*/
+    @Sendable
+    func updateUserProfileAddressFields(_ req: Request) async throws -> Response {
+        req.logger.info("calling UserManagementUserProfile.updateUserProfileAddressFields POST")
+        req.logger.info("incomming request: \(req.body)")
+
+        let ret: Response = Response()
+        ret.status = HTTPResponseStatus.notImplemented
+        return ret
+    }
+
+    @Sendable
+    func updateUserProfileAccountFields(_ req: Request) async throws -> Response {
+        req.logger.info("calling UserManagementUserProfile.updateUserProfileAccountFields POST")
+        req.logger.info("incomming request: \(req.body)")
+
+        let ret: Response = Response()
+        ret.status = HTTPResponseStatus.notImplemented
         return ret
     }
 
