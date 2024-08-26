@@ -120,13 +120,14 @@
          #if(tabIndicator == "addressdetails"):
              <!--<h4 style="background-color:white; text-align: center;">Address Details</h4>-->
              <div class="row gx-3">
-                <form method="POST" action="/view/profile/address" class="">
+                <form method="POST" action="/view/user/profile/address" class="">
                     <div class="card">
-                        <!--
+                        
                         <div class="card-header">
-                            <h5 class="card-title"></h5>
+                            <h5 class="mb-5 text-danger">#(errorMessage)</h5>
                         </div>
-                        -->
+                        
+
                         <div class="card-body">
 
 

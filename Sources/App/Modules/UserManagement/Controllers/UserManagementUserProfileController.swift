@@ -186,9 +186,42 @@ struct UserManagementUserProfileController: RouteCollection {
         req.logger.info("calling UserManagementUserProfile.updateUserProfileAddressFields POST")
         req.logger.info("incomming request: \(req.body)")
 
-        let ret: Response = Response()
-        ret.status = HTTPResponseStatus.notImplemented
-        return ret
+        //let ret: Response = Response()
+        //ret.status = HTTPResponseStatus.notImplemented
+        //return ret
+
+
+
+        /* retrieve tabSettings */
+        let tabIndicator: String? = "addressdetails"
+
+        /* retrieve user information */
+        var userIdString = try? req.query.get(String.self, at: "userid")
+        if (userIdString == nil) {
+            userIdString = req.session.data["sgsoftware_system_user"] ?? ""
+            req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
+        }
+        let userId = UUID(uuidString: userIdString ?? "") ?? nil
+
+        /* retrieve user permissions */
+        let myUserPermissionsDTO: UserManagementRoleModelDTO = 
+            try await getUserPermissionSettings(req: req, userId: userId!)
+
+        /* retrieve system / user settings */
+        var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
+        mySettingsDTO.ShowToolbar = true
+        mySettingsDTO.ShowUserBox = true
+        req.logger.info("userProfile retrieved: \(mySettingsDTO)")
+
+        /* create return message */        
+        return try await req.view.render("UserManagementUserProfile", 
+                            UserBaseContext(title: "SGServer", 
+                                            errorMessage: "Under Construction!",
+                                            settings: mySettingsDTO, 
+                                            tabIndicator: tabIndicator,
+                                            userPermissions: myUserPermissionsDTO))
+            .encodeResponse(for: req)
+       
     }
 
     @Sendable
