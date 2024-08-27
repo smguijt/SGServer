@@ -123,6 +123,15 @@ func getUserPermissionSettings(req: Request, userId: UUID) async throws -> UserM
     return myUserPermissionsDTO
 }
 
+func getUserOrganizations(req: Request) async throws -> [UserManagementOrganizationModelDTO] {
+    let record: [UserManagementOrganizationModelDTO] = try await UserManagementOrganizationModel
+        .query(on: req.db)
+        .all()
+        .map { $0.toDTO() }
+    return record
+}
+        
+
 func setUserPermissionSetting(req: Request, form: UserManagementDictDTO, role: UserManagementRoleEnum) async throws -> Response {
     
     let ret: Response = Response()

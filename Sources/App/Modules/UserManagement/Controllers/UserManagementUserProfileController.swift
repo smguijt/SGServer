@@ -207,6 +207,9 @@ struct UserManagementUserProfileController: RouteCollection {
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
             try await getUserPermissionSettings(req: req, userId: userId!)
 
+        /* retrieve organizations */
+        let myOrganizations = try await getUserOrganizations(req: req)
+
         /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
@@ -219,7 +222,8 @@ struct UserManagementUserProfileController: RouteCollection {
                                             errorMessage: "Under Construction!",
                                             settings: mySettingsDTO, 
                                             tabIndicator: tabIndicator,
-                                            userPermissions: myUserPermissionsDTO))
+                                            userPermissions: myUserPermissionsDTO,
+                                            userOrganizations: myOrganizations))
             .encodeResponse(for: req)
        
     }
@@ -244,6 +248,9 @@ struct UserManagementUserProfileController: RouteCollection {
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
             try await getUserPermissionSettings(req: req, userId: userId!)
 
+        /* retrieve organizations */
+        let myOrganizations = try await getUserOrganizations(req: req)
+
         /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
@@ -256,7 +263,8 @@ struct UserManagementUserProfileController: RouteCollection {
                                             errorMessage: "Under Construction!",
                                             settings: mySettingsDTO, 
                                             tabIndicator: tabIndicator,
-                                            userPermissions: myUserPermissionsDTO))
+                                            userPermissions: myUserPermissionsDTO,
+                                            userOrganizations: myOrganizations))
             .encodeResponse(for: req)
        
     }

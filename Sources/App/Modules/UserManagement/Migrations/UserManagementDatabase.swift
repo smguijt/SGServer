@@ -58,6 +58,15 @@ extension DataMigration.v1 {
                 .field("value", .string, .required)
                 .field("userId", .uuid )
                 .create()
+
+            try await db.schema(UserManagementOrganizationModel.schema)
+                .id()
+                .field("code", .string, .required)
+                .field("description", .string, .required)
+                .field("createdAt", .datetime)
+                .field("updatedAt", .datetime)
+                .unique(on: "code")
+                .create()
         }
 
         func revert(on db: Database) async throws {
@@ -66,16 +75,24 @@ extension DataMigration.v1 {
             try await db.schema(UserManagementAddressModel.schema).delete()  
             try await db.schema(UserManagementRoleModel.schema).delete()
             try await db.schema(UserManagementUserSettingsModel.schema).delete()
+            try await db.schema(UserManagementOrganizationModel.schema).delete()
         }
     }
 
     struct SeedDataModelsForModuleUserManagement: AsyncMigration {
         func prepare(on db: Database) async throws {
+
+            /* create organizations */
+            let org: UserManagementOrganizationModel =
+                UserManagementOrganizationModel(code: "system",
+                                                description: "")
+            try await org.create(on: db)
             
+
             /* create user */
             let email = "root@localhost.com"
             let password = "ChangeMe!"
-            let orgId: String = "system"
+            let orgId: String = org.code!
             let user = 
              UserManagementAccountModel(email: email,
                                         password: try Bcrypt.hash(password), 
@@ -104,7 +121,7 @@ extension DataMigration.v1 {
             /* create user 2 */
             let email2 = "admin@bvv.sgsoftware.com"
             let password2 = "ChangeMe!"
-            let orgId2: String = "system"
+            let orgId2: String = org.code!
             let user2 = UserManagementAccountModel(email: email2,
                                                   password: try Bcrypt.hash(password2), 
                                                   orgId: orgId2)

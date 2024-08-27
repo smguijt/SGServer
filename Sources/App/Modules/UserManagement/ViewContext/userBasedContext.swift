@@ -7,4 +7,5 @@ struct UserBaseContext: Encodable {
     var settings: SGServerSettingsDTO
     var tabIndicator: String?
     var userPermissions: UserManagementRoleModelDTO?
+    var userOrganizations: [UserManagementOrganizationModelDTO]?
 }
