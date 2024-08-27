@@ -31,7 +31,6 @@ final class UserManagementOrganizationModel: Model, @unchecked Sendable {
 
     func toDTO() -> UserManagementOrganizationModelDTO {
         .init(
-            ID: self.id,
             code: self.code,
             description: self.description
         )

@@ -209,7 +209,8 @@ struct UserManagementUserProfileController: RouteCollection {
 
         /* retrieve organizations */
         let myOrganizations = try await getUserOrganizations(req: req)
-
+        req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
+        
         /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
@@ -250,6 +251,7 @@ struct UserManagementUserProfileController: RouteCollection {
 
         /* retrieve organizations */
         let myOrganizations = try await getUserOrganizations(req: req)
+        req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
 
         /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)

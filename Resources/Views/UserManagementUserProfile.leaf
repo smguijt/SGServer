@@ -194,16 +194,13 @@
                                     </div>
                                     -->
                                     <div class="col-lg-6 col-sm-6 col-12 p3- mt-4 mb-3">
-                                         <label class="form-label">Organizations</label>
-                                        <select id="multiple-checkboxes" 
-                                                name="multiple-checkboxes" 
+                                        <label class="form-label">Organizations</label>
+                                        <select id="organizations" 
+                                                name="organizations" 
                                                 multiple="multiple">
-                                            <option value="php" selected>PHP</option>
-                                            <option value="javascript">JavaScript</option>
-                                            <option value="java">Java</option>
-                                            <option value="sql">SQL</option>
-                                            <option value="jquery" selected>Jquery</option>
-                                            <option value=".net">.Net</option>
+                                            #for(userOrganization in userOrganizations):
+                                                <option value="#(userOrganization.code)">#(userOrganization.description)</option>
+                                            #endfor
                                         </select>
                                     </div>
                                 </div>
@@ -407,7 +404,7 @@
             });
     }
 
-    $( '#multiple-checkboxes' ).select2( {
+    $( '#organizations' ).select2( {
         theme: "bootstrap-5",
         width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
         placeholder: $( this ).data( 'placeholder' ),
