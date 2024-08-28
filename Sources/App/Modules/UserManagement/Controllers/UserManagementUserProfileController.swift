@@ -47,7 +47,7 @@ struct UserManagementUserProfileController: RouteCollection {
             try await getUserPermissionSettings(req: req, userId: userId!)
 
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
 
         /* return */
@@ -206,7 +206,7 @@ struct UserManagementUserProfileController: RouteCollection {
             try await getUserPermissionSettings(req: req, userId: userId!)
 
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         
         /* retrieve system / user settings */
@@ -247,7 +247,7 @@ struct UserManagementUserProfileController: RouteCollection {
             try await getUserPermissionSettings(req: req, userId: userId!)
 
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
 
         /* retrieve system / user settings */

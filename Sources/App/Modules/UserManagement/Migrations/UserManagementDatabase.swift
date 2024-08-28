@@ -2,6 +2,9 @@ import Fluent
 import Vapor
 import Foundation
 
+/*
+    https://theswiftdev.com/table-joins-in-fluent-4/#orderproductmodel
+*/
 
 extension DataMigration.v1 { 
         struct CreateDataModelsForModuleUserManagement: AsyncMigration {
@@ -70,10 +73,12 @@ extension DataMigration.v1 {
 
             try await db.schema(UserManagementUserOrganizationsModel.schema)
                 .id()
-                .field("orgId", .uuid)
+                .field("orgId", .uuid, .required)
+                //.foreignKey("org_id", references: UserManagementOrganizationModel.schema, .id, onDelete: .cascade)
                 .field("createdAt", .datetime)
                 .field("updatedAt", .datetime)
-                .field("userId", .uuid)
+                .field("userId", .uuid, .required)
+                //.foreignKey("user_id", references: UserManagementAccountModel.schema, .id, onDelete: .cascade)
                 .create()
         }
 

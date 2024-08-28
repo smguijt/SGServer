@@ -123,12 +123,41 @@ func getUserPermissionSettings(req: Request, userId: UUID) async throws -> UserM
     return myUserPermissionsDTO
 }
 
-func getUserOrganizations(req: Request) async throws -> [UserManagementOrganizationModelDTO] {
-    let record: [UserManagementOrganizationModelDTO] = try await UserManagementOrganizationModel
+func getUserOrganizations(req: Request, userId: UUID) async throws -> [UserManagementOrganizationModelDTO] {
+
+    let organizations = try await UserManagementOrganizationModel
         .query(on: req.db)
+        .join(UserManagementUserOrganizationsModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .left)
         .all()
-        .map { $0.toDTO() }
-    return record
+
+    var transformedOrganizations: [UserManagementOrganizationModelDTO] = []
+    for org: UserManagementOrganizationModel in organizations {
+        
+        let userOrganization: UserManagementUserOrganizationsModel = try org.joined(UserManagementUserOrganizationsModel.self)
+        
+        var isSelected: Bool = false
+        if (userOrganization.userId == userId) {
+            isSelected = true
+        }
+
+        let transformedOrganization:UserManagementOrganizationModelDTO = 
+            UserManagementOrganizationModelDTO(code: org.code, description: org.description, selected: isSelected)
+        
+        var hasValue: Bool = false
+        for (index, element) in transformedOrganizations.enumerated() {
+            if element.code == org.code {
+                transformedOrganizations[index].selected = isSelected
+                hasValue = true
+                break;
+            }
+        }
+
+        if !hasValue {
+            transformedOrganizations.append(transformedOrganization)
+        }
+    }
+
+    return transformedOrganizations
 }
         
 
