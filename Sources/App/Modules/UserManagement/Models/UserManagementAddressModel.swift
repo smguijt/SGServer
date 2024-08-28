@@ -8,7 +8,7 @@ final class UserManagementAddressModel: Model, @unchecked Sendable {
     @ID(key: .id)
     var id: UUID?
 
-     @OptionalField(key: "steet")
+    @OptionalField(key: "steet")
     var street : String?
     
     @OptionalField(key: "housno")

@@ -46,13 +46,17 @@ struct UserManagementUserProfileController: RouteCollection {
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
             try await getUserPermissionSettings(req: req, userId: userId!)
 
+        /* retrieve organizations */
+        let myOrganizations = try await getUserOrganizations(req: req)
+        req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
 
         /* return */
         return try await req.view.render("UserManagementUserProfile", 
                                     UserBaseContext(title: "SGServer", 
                                                    settings: mySettingsDTO, 
                                                    tabIndicator: tabIndicator,
-                                                   userPermissions: myUserPermissionsDTO))
+                                                   userPermissions: myUserPermissionsDTO,
+                                                   userOrganizations: myOrganizations))
     }
 
     @Sendable
@@ -186,12 +190,6 @@ struct UserManagementUserProfileController: RouteCollection {
         req.logger.info("calling UserManagementUserProfile.updateUserProfileAddressFields POST")
         req.logger.info("incomming request: \(req.body)")
 
-        //let ret: Response = Response()
-        //ret.status = HTTPResponseStatus.notImplemented
-        //return ret
-
-
-
         /* retrieve tabSettings */
         let tabIndicator: String? = "addressdetails"
 
@@ -226,7 +224,6 @@ struct UserManagementUserProfileController: RouteCollection {
                                             userPermissions: myUserPermissionsDTO,
                                             userOrganizations: myOrganizations))
             .encodeResponse(for: req)
-       
     }
 
     @Sendable
@@ -268,7 +265,6 @@ struct UserManagementUserProfileController: RouteCollection {
                                             userPermissions: myUserPermissionsDTO,
                                             userOrganizations: myOrganizations))
             .encodeResponse(for: req)
-       
     }
 
 }

@@ -15,7 +15,7 @@ extension DataMigration.v1 {
                 .field("updatedAt", .datetime)
                 .unique(on: "email")
                 .create()
-            
+
             try await db.schema(UserManagementDetailModel.schema)
                 .id()
                 .field("prefix", .string)
@@ -67,6 +67,14 @@ extension DataMigration.v1 {
                 .field("updatedAt", .datetime)
                 .unique(on: "code")
                 .create()
+
+            try await db.schema(UserManagementUserOrganizationsModel.schema)
+                .id()
+                .field("orgId", .uuid)
+                .field("createdAt", .datetime)
+                .field("updatedAt", .datetime)
+                .field("userId", .uuid)
+                .create()
         }
 
         func revert(on db: Database) async throws {
@@ -75,6 +83,7 @@ extension DataMigration.v1 {
             try await db.schema(UserManagementAddressModel.schema).delete()  
             try await db.schema(UserManagementRoleModel.schema).delete()
             try await db.schema(UserManagementUserSettingsModel.schema).delete()
+            try await db.schema(UserManagementUserOrganizationsModel.schema).delete()
             try await db.schema(UserManagementOrganizationModel.schema).delete()
         }
     }
@@ -85,7 +94,7 @@ extension DataMigration.v1 {
             /* create organizations */
             let org: UserManagementOrganizationModel =
                 UserManagementOrganizationModel(code: "system",
-                                                description: "")
+                                                description: "Core System")
             try await org.create(on: db)
             
 
@@ -99,6 +108,12 @@ extension DataMigration.v1 {
                                         orgId: orgId)
             try await user.create(on: db)
             print("DEBUG INFO: userId -> \(user.id!)")
+
+            /* add user to organization */
+            let userOrg1: UserManagementUserOrganizationsModel = 
+                UserManagementUserOrganizationsModel(orgId: org.id, userId: user.id)
+            try await userOrg1.create(on: db)
+            print("DEBUG INFO: org1Id -> \(userOrg1.orgId!), user1Id -> \(userOrg1.id!)")
             
             /* create user role / user permission */
             let userRole1a = UserManagementRoleModel(role:UserManagementRoleEnum.superuser.rawValue, createdAt: nil, updatedAt: nil, userId:user.id)
@@ -127,6 +142,12 @@ extension DataMigration.v1 {
                                                   orgId: orgId2)
             try await user2.create(on: db)
             print("DEBUG INFO: user2Id -> \(user2.id!)")
+
+            /* add user to organization */
+            let userOrg2: UserManagementUserOrganizationsModel = 
+                UserManagementUserOrganizationsModel(orgId: org.id, userId: user.id)
+            try await userOrg2.create(on: db)
+            print("DEBUG INFO: org2Id -> \(userOrg2.orgId!), user2Id -> \(userOrg2.id!)")
 
             /* create user role / user permission */
             let userRole2a = UserManagementRoleModel(role:UserManagementRoleEnum.admin.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)

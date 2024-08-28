@@ -6,7 +6,9 @@ struct UserManagementAccountModelDTO: Content {
     let email: String?
     let password: String?
     let updatedAt: Date?
-    let orgId: String?
+    let orgId: String? 
+    
+    /* TODO UserManagementUserOrganizations .... */
 
     init(ID: UUID?, email: String?, password: String?, orgId: String?, updatedAt: Date?) {
         self.ID = ID
