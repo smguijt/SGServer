@@ -118,7 +118,7 @@ extension DataMigration.v1 {
             let userOrg1: UserManagementUserOrganizationsModel = 
                 UserManagementUserOrganizationsModel(orgId: org.id, userId: user.id)
             try await userOrg1.create(on: db)
-            print("DEBUG INFO: org1Id -> \(userOrg1.orgId!), user1Id -> \(userOrg1.id!)")
+            print("DEBUG INFO: org1Id -> \(userOrg1.orgId!), user1Id -> \(userOrg1.userId!)")
             
             /* create user role / user permission */
             let userRole1a = UserManagementRoleModel(role:UserManagementRoleEnum.superuser.rawValue, createdAt: nil, updatedAt: nil, userId:user.id)
@@ -150,9 +150,9 @@ extension DataMigration.v1 {
 
             /* add user to organization */
             let userOrg2: UserManagementUserOrganizationsModel = 
-                UserManagementUserOrganizationsModel(orgId: org.id, userId: user.id)
+                UserManagementUserOrganizationsModel(orgId: org.id, userId: user2.id)
             try await userOrg2.create(on: db)
-            print("DEBUG INFO: org2Id -> \(userOrg2.orgId!), user2Id -> \(userOrg2.id!)")
+            print("DEBUG INFO: org2Id -> \(userOrg2.orgId!), user2Id -> \(user2.id!)")
 
             /* create user role / user permission */
             let userRole2a = UserManagementRoleModel(role:UserManagementRoleEnum.admin.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)

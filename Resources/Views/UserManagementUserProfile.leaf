@@ -200,8 +200,8 @@
                                                 multiple="multiple">
                                             #for(userOrganization in userOrganizations):
                                                 <option value="#(userOrganization.code)"  
-                                                         #if(userOrganization.selected):selected#endif">
-                                                    #(userOrganization.description)
+                                                         #if(userOrganization.selected):selected#endif>
+                                                    #(userOrganization.description)]
                                                 </option>
                                             #endfor
                                         </select>

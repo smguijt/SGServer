@@ -127,32 +127,41 @@ func getUserOrganizations(req: Request, userId: UUID) async throws -> [UserManag
 
     let organizations = try await UserManagementOrganizationModel
         .query(on: req.db)
-        .join(UserManagementUserOrganizationsModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .left)
+        //.join(UserManagementUserOrganizationsModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .left)
         .all()
 
     var transformedOrganizations: [UserManagementOrganizationModelDTO] = []
     for org: UserManagementOrganizationModel in organizations {
-        
-        let userOrganization: UserManagementUserOrganizationsModel = try org.joined(UserManagementUserOrganizationsModel.self)
-        
-        var isSelected: Bool = false
-        if (userOrganization.userId == userId) {
-            isSelected = true
-        }
 
+        req.logger.info("Organization Code: \(org.code!)")
+        req.logger.info("Organization Id: \(org.id!)")
+        req.logger.info("User Id: \(userId)")
+        
+        //let userOrganization: UserManagementUserOrganizationsModel = try org.joined(UserManagementUserOrganizationsModel.self)
+        let userOrganizations: [UserManagementUserOrganizationsModel] = 
+            try await UserManagementUserOrganizationsModel
+                .query(on: req.db)
+                .filter(\.$userId == userId)
+                .filter(\.$orgId == org.id)
+                .all()
+
+        var bHasValue: Bool = false
+        let isSelected: Bool = userOrganizations.count > 0
+       
         let transformedOrganization:UserManagementOrganizationModelDTO = 
             UserManagementOrganizationModelDTO(code: org.code, description: org.description, selected: isSelected)
+        req.logger.info("transformedOrganization: \(transformedOrganization)")
         
-        var hasValue: Bool = false
-        for (index, element) in transformedOrganizations.enumerated() {
+        for element in transformedOrganizations {
             if element.code == org.code {
-                transformedOrganizations[index].selected = isSelected
-                hasValue = true
+                req.logger.info("item to transformedOrganization already exists!")
+                bHasValue = true
                 break;
             }
         }
 
-        if !hasValue {
+        if !bHasValue {
+            req.logger.info("add item to transformedOrganization")
             transformedOrganizations.append(transformedOrganization)
         }
     }

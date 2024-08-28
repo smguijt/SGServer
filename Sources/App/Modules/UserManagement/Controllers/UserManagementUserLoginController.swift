@@ -69,9 +69,11 @@ struct UserManagementUserLoginController: RouteCollection {
         
         guard let existingUser: UserManagementAccountModel = try await UserManagementAccountModel
             .query(on: req.db)
+            .join(UserManagementUserOrganizationsModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .inner)
+            .join(UserManagementOrganizationModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .inner)
             .filter(\.$email == user.username!)
-            .filter(\.$orgId == orgId)
-            .first() 
+            .filter(UserManagementOrganizationModel.self, \.$code == orgId)
+            .first()
         else {
             /* user could not be found */
             req.logger.info("UserManagement.validateUserLogin -> invalid clientId!!")
