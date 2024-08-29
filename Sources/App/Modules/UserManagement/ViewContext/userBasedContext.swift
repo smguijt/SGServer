@@ -8,4 +8,6 @@ struct UserBaseContext: Encodable {
     var tabIndicator: String?
     var userPermissions: UserManagementRoleModelDTO?
     var userOrganizations: [UserManagementOrganizationModelDTO]?
+    var userAccountData: UserManagementAccountModelDTO?
+    var userDetail: UserManagementAddressModelDTO?
 }

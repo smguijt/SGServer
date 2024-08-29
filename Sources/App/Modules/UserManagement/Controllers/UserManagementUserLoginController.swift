@@ -96,12 +96,16 @@ struct UserManagementUserLoginController: RouteCollection {
                     .encodeResponse(for: req)
         }
 
+        /* retrieve joined table */
+        let userOrganization: UserManagementOrganizationModel = try existingUser.joined(UserManagementOrganizationModel.self)
+
+
         /* all is ok set session */
         req.logger.info("UserManagement.validateUserLogin -> user validated. SET session!!")
         req.session.data["sgsoftware_system_user"] = existingUser.id?.uuidString
-        req.session.data["sgsoftware_system_ops"] = existingUser.orgId
+        req.session.data["sgsoftware_system_ops"] = userOrganization.code
         req.logger.info("UserManagement.validateUserLogin -> user validated. redirect to main page!!")
-        return req.redirect(to: "/view/?id=\(existingUser.id?.uuidString ?? "")&ops=\(existingUser.orgId ?? "")")
+        return req.redirect(to: "/view/?id=\(existingUser.id?.uuidString ?? "")&ops=\(userOrganization.code ?? "")")
     }
 
 }

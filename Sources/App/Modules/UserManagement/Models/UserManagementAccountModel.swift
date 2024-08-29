@@ -9,6 +9,9 @@ final class UserManagementAccountModel: Model, @unchecked Sendable {
     @ID(key: .id)
     var id: UUID?
 
+    @Field(key: "caption")
+    var caption: String?
+
     @Field(key: "email")
     var email : String
     
@@ -21,18 +24,13 @@ final class UserManagementAccountModel: Model, @unchecked Sendable {
     @Timestamp(key: "updatedAt", on: .update)
     var updatedAt: Date?
 
-    @Field(key: "orgId")
-    var orgId: String?
-
     init() { }
 
-    init(id: UUID? = nil, email : String, password: String, orgId: String?, createdAt: Date? = nil, updatedAt: Date? = nil) {
+    init(id: UUID? = nil, caption: String?, email : String, password: String) {
         self.id = id
+        self.caption = caption
         self.email = email
         self.password = password
-        self.orgId = orgId
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
     }
     
     func toDTO() -> UserManagementAccountModelDTO {
@@ -40,8 +38,7 @@ final class UserManagementAccountModel: Model, @unchecked Sendable {
             ID: self.id,
             email: self.email,
             password: self.password,
-            orgId: self.orgId,
-            updatedAt: self.updatedAt
+            caption: self.caption
         )
     }
 

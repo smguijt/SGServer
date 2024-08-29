@@ -20,7 +20,22 @@ struct SGServerController: RouteCollection {
             mySettingsDTO = try await getUserSettings(req: req, userId: userId!)
             mySettingsDTO.ShowUserBox = true
         }
-        return try await req.view.render("Index", BaseContext(title: "SGServer", settings: mySettingsDTO))
+
+         /* retrieve user information */
+        var userIdString = try? req.query.get(String.self, at: "userid")
+        if (userIdString == nil) {
+            userIdString = req.session.data["sgsoftware_system_user"] ?? ""
+            req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
+        }
+        let userId = UUID(uuidString: userIdString ?? "") ?? nil
+
+        /* retrieve user permissions */
+        let myUserPermissionsDTO: UserManagementRoleModelDTO = 
+            try await getUserPermissionSettings(req: req, userId: userId!)
+
+
+        return try await req.view.render("Index", 
+            UserBaseContext(title: "SGServer", settings: mySettingsDTO, userPermissions: myUserPermissionsDTO))
     }
 
 }

@@ -168,7 +168,6 @@ func getUserOrganizations(req: Request, userId: UUID) async throws -> [UserManag
 
     return transformedOrganizations
 }
-        
 
 func setUserPermissionSetting(req: Request, form: UserManagementDictDTO, role: UserManagementRoleEnum) async throws -> Response {
     
@@ -186,6 +185,7 @@ func setUserPermissionSetting(req: Request, form: UserManagementDictDTO, role: U
         ret.status = HTTPResponseStatus.accepted
         ret.body = Response.Body(string: "\(form.key!) key removed")
         req.logger.info("\(form.key!) key removed!")
+
     } else {
         // record not found so it must be created
         let newRecord: UserManagementRoleModel = UserManagementRoleModel(
@@ -198,4 +198,77 @@ func setUserPermissionSetting(req: Request, form: UserManagementDictDTO, role: U
         req.logger.info("\(form.key!) key added!")
     }
     return ret
+}
+
+func getUserAddressData(req: Request, userId: UUID) async throws -> UserManagementAddressModelDTO {
+
+    guard let addressInfo = try await UserManagementAddressModel
+        .query(on: req.db)
+        .filter(\.$userId == userId)
+        .first()
+    else {
+        return UserManagementAddressModelDTO(
+            ID: nil,
+            street: "", 
+            housno: "", 
+            postalcode: "", 
+            city: "", 
+            country: "", 
+            telephone: "",
+            mobile: "")
+    }
+        
+    return addressInfo.toDTO()
+}
+
+func setUserAddressData(req: Request, form: UserManagementAddressModelDTO, userId: UUID) async throws -> UserManagementAddressModelDTO {
+
+    guard let addressInfo: UserManagementAddressModel = try await UserManagementAddressModel
+        .query(on: req.db)
+        .filter(\.$userId == userId)
+        .first()
+    else {
+        /* new record */
+        let newAddress: UserManagementAddressModel = 
+            UserManagementAddressModel(
+                street: form.street, 
+                housno: form.housno, 
+                postalcode: form.postalcode, 
+                city: form.city, 
+                country: form.country, 
+                telephone: form.telephone,
+                mobile: form.mobile,
+                userId: userId
+            )
+        _ = try await newAddress.create(on: req.db)    
+        return newAddress.toDTO()    
+    }
+
+    /* update record */
+    if (addressInfo.street != form.street) { addressInfo.street = form.street }
+    if (addressInfo.housno != form.housno) { addressInfo.housno = form.housno }
+    if (addressInfo.postalcode != form.postalcode) { addressInfo.postalcode = form.postalcode }
+    if (addressInfo.country != form.country) { addressInfo.country = form.country }
+    if (addressInfo.city != form.city) { addressInfo.city = form.city }
+    if (addressInfo.telephone != form.telephone) { addressInfo.telephone = form.telephone }
+    if (addressInfo.mobile != form.mobile) { addressInfo.mobile = form.mobile }
+    //addressInfo.userId = userId
+
+    /* save changes */
+    try await addressInfo.save(on: req.db)
+
+    /* return */
+    return addressInfo.toDTO()
+}
+
+func getUserAccountInfo(req: Request, userId: UUID) async throws -> UserManagementAccountModelDTO {
+
+    let accountInfo: UserManagementAccountModelDTO = try await UserManagementAccountModel
+        .query(on: req.db)
+        .filter(\.$id == userId)
+        .first()!
+        .toDTO()
+        
+    return accountInfo
+    
 }

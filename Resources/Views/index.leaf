@@ -134,6 +134,42 @@
                 <span class="menu-text">Settings</span>
             </a>
         </li>
+        
+        <li><hr/></li>
+
+        #if(userPermissions.isAllowedToUseUserManagementModule):
+        <li>
+            <a href="#">
+                <i class="bi bi-person-workspace"></i>
+                <span class="menu-text">User Management</span>
+            </a>
+        </li>
+        #endif
+        #if(userPermissions.isAllowedToUseTaskManagementModule):
+        <li>
+            <a href="#">
+                <i class="bi bi-list-task"></i>
+                <span class="menu-text">Task Management</span>
+            </a>
+        </li>
+        #endif
+        #if(userPermissions.isAllowedToUseEventManagementModule):
+        <li>
+            <a href="#">
+                <i class="bi bi-calendar4-event"></i>
+                <span class="menu-text">Event Management</span>
+            </a>
+        </li>
+        #endif
+        #if(userPermissions.isAllowedToUseTimeManagementModule):
+        <li>
+            <a href="#">
+                <i class="bi bi-stopwatch"></i>
+                <span class="menu-text">Time Management</span>
+            </a>
+        </li>
+        #endif
+
     #endexport
 
     #export("breadcrumbs"):

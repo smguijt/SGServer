@@ -13,9 +13,9 @@ extension DataMigration.v1 {
                 .id()
                 .field("email", .string, .required)
                 .field("password", .string, .required)
-                .field("orgId", .string)
                 .field("createdAt", .datetime)
                 .field("updatedAt", .datetime)
+                .field("caption", .string)
                 .unique(on: "email")
                 .create()
 
@@ -96,21 +96,33 @@ extension DataMigration.v1 {
     struct SeedDataModelsForModuleUserManagement: AsyncMigration {
         func prepare(on db: Database) async throws {
 
-            /* create organizations */
+            /* create organization1 */
             let org: UserManagementOrganizationModel =
                 UserManagementOrganizationModel(code: "system",
                                                 description: "Core System")
             try await org.create(on: db)
-            
+
+            /* create organization2 */
+            let org1: UserManagementOrganizationModel =
+                UserManagementOrganizationModel(code: "bvv",
+                                                description: "Bowling Vereniging Volendam")
+            try await org1.create(on: db)
+
+            /* create organization3 */
+            let org2: UserManagementOrganizationModel =
+                UserManagementOrganizationModel(code: "hrmv",
+                                                description: "Handbal Rommelmarkt Volendam")
+            try await org2.create(on: db)
+
 
             /* create user */
+            let caption: String = "Super User"
             let email = "root@localhost.com"
             let password = "ChangeMe!"
-            let orgId: String = org.code!
             let user = 
-             UserManagementAccountModel(email: email,
-                                        password: try Bcrypt.hash(password), 
-                                        orgId: orgId)
+             UserManagementAccountModel(caption: caption, 
+                                        email: email,
+                                        password: try Bcrypt.hash(password))
             try await user.create(on: db)
             print("DEBUG INFO: userId -> \(user.id!)")
 
@@ -137,14 +149,15 @@ extension DataMigration.v1 {
             let settingClientSecret = UserManagementUserSettingsModel(key: UserManagementEnumSettings.ClientSecret.rawValue, value: "XXXXXXXXXX", userId: user.id!)
             try await settingClientSecret.create(on: db)
 
-
             /* create user 2 */
+            let caption2: String = "System Administrator Bowlingvereniging Volendam"
             let email2 = "admin@bvv.sgsoftware.com"
             let password2 = "ChangeMe!"
-            let orgId2: String = org.code!
-            let user2 = UserManagementAccountModel(email: email2,
-                                                  password: try Bcrypt.hash(password2), 
-                                                  orgId: orgId2)
+            //let orgId2: String = org.code!
+            let user2 = UserManagementAccountModel(caption: caption2, 
+                                                   email: email2,
+                                                   password: try Bcrypt.hash(password2))
+                                                  
             try await user2.create(on: db)
             print("DEBUG INFO: user2Id -> \(user2.id!)")
 

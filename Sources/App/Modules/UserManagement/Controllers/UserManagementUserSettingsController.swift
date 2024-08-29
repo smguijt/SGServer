@@ -34,9 +34,15 @@ struct UserManagementUserSettingsController: RouteCollection {
         mySettingsDTO.ShowToolbar = true
         mySettingsDTO.ShowUserBox = true
         req.logger.info("userSettings retrieved: \(mySettingsDTO)")
-        return try await req.view.render("UserManagementUserSettings", TabBaseContext(title: "SGServer", 
+
+        /* retrieve user permissions */
+        let myUserPermissionsDTO: UserManagementRoleModelDTO = 
+            try await getUserPermissionSettings(req: req, userId: userId)
+
+        return try await req.view.render("UserManagementUserSettings", UserBaseContext(title: "SGServer", 
                                                    settings: mySettingsDTO, 
-                                                   tabIndicator: tabIndicator))
+                                                   tabIndicator: tabIndicator,
+                                                   userPermissions: myUserPermissionsDTO))
     }
     
     @Sendable

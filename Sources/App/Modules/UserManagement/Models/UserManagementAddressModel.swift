@@ -45,7 +45,9 @@ final class UserManagementAddressModel: Model, @unchecked Sendable {
         self.id = id
     }
 
-    init (id: UUID? = nil, street : String? = nil, housno: String? = nil, postalcode: String? = nil, city: String? = nil, country: String? = nil, telephone: String? = nil, mobile: String? = nil, createdAt: Date?, updatedAt: Date?, userId: UUID?) {
+    init (id: UUID? = nil, street : String? = nil, housno: String? = nil, postalcode: String? = nil, city: String? = nil, country: String? = nil, telephone: String? = nil, mobile: String? = nil, 
+          //createdAt: Date?, updatedAt: Date?, 
+          userId: UUID?) {
         self.id = id
         self.street = street
         self.housno = housno
@@ -54,14 +56,21 @@ final class UserManagementAddressModel: Model, @unchecked Sendable {
         self.country = country
         self.telephone = telephone
         self.mobile = mobile
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
+        //self.createdAt = createdAt
+        //self.updatedAt = updatedAt
         self.userId = userId
     }
     
     func toDTO() -> UserManagementAddressModelDTO {
         .init(
-            ID: self.id
+            ID: self.id,
+            street: self.street, 
+            housno: self.housno, 
+            postalcode: self.postalcode, 
+            city: self.city, 
+            country: self.country, 
+            telephone: self.telephone,
+            mobile: self.mobile
         )
     }
 

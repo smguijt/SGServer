@@ -12,8 +12,14 @@ struct UserManagementUserProfileController: RouteCollection {
         pg.get("profile", use: self.renderUserProfile)
         pg.post("profile", "general", use: self.updateUserProfileGeneral)
         //pg.post("profile", "customfields", use: self.updateUserProfileCustomFields)
+        
+        pg.get("profile", "address", use: self.renderUserProfile)
         pg.post("profile", "address", use: self.updateUserProfileAddressFields)
+        
+        pg.get("profile", "account", use: self.renderUserProfile)
         pg.post("profile", "account", use: self.updateUserProfileAccountFields)
+
+
         pg.post("profile", "permissions", use: self.updateUserProfilePermissions)
     }
 
@@ -50,13 +56,21 @@ struct UserManagementUserProfileController: RouteCollection {
         let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
 
+         /* retrieve account info */
+        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
+
+        /* retrieve address info */
+        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: userId!)
+
         /* return */
         return try await req.view.render("UserManagementUserProfile", 
                                     UserBaseContext(title: "SGServer", 
                                                    settings: mySettingsDTO, 
                                                    tabIndicator: tabIndicator,
                                                    userPermissions: myUserPermissionsDTO,
-                                                   userOrganizations: myOrganizations))
+                                                   userOrganizations: myOrganizations,
+                                                   userAccountData: myAccountInfo,
+                                                   userDetail: myAddressInfo))
     }
 
     @Sendable
@@ -215,14 +229,28 @@ struct UserManagementUserProfileController: RouteCollection {
         mySettingsDTO.ShowUserBox = true
         req.logger.info("userProfile retrieved: \(mySettingsDTO)")
 
+        /* decode body */
+        let body: UserManagementAddressModelDTO = try req.content.decode(UserManagementAddressModelDTO.self)
+
+        /* update address info */
+        let myAddressInfo: UserManagementAddressModelDTO = try await setUserAddressData(req: req, form: body, userId: userId!)
+        
+        /* retrieve account info */
+        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
+
+        /* retrieve address info */
+        //let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: userId!)
+
         /* create return message */        
         return try await req.view.render("UserManagementUserProfile", 
                             UserBaseContext(title: "SGServer", 
-                                            errorMessage: "Under Construction!",
+                                            //errorMessage: "Under Construction!",
                                             settings: mySettingsDTO, 
                                             tabIndicator: tabIndicator,
                                             userPermissions: myUserPermissionsDTO,
-                                            userOrganizations: myOrganizations))
+                                            userOrganizations: myOrganizations,
+                                            userAccountData: myAccountInfo,
+                                            userDetail: myAddressInfo))
             .encodeResponse(for: req)
     }
 
@@ -256,6 +284,12 @@ struct UserManagementUserProfileController: RouteCollection {
         mySettingsDTO.ShowUserBox = true
         req.logger.info("userProfile retrieved: \(mySettingsDTO)")
 
+        /* retrieve account info */
+        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
+
+        /* retrieve address info */
+        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: userId!)
+
         /* create return message */        
         return try await req.view.render("UserManagementUserProfile", 
                             UserBaseContext(title: "SGServer", 
@@ -263,7 +297,9 @@ struct UserManagementUserProfileController: RouteCollection {
                                             settings: mySettingsDTO, 
                                             tabIndicator: tabIndicator,
                                             userPermissions: myUserPermissionsDTO,
-                                            userOrganizations: myOrganizations))
+                                            userOrganizations: myOrganizations,
+                                            userAccountData: myAccountInfo,
+                                            userDetail: myAddressInfo))
             .encodeResponse(for: req)
     }
 
