@@ -85,21 +85,21 @@
                                 Show Toolbar
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchShowToolbar"
-                                        value="#(settings.ShowToolbar)" #if(settings.ShowToolbar):checked#endif />
+                                        value="#(settings.ShowToolbar)" #if(settings.ShowToolbar):checked#endif #if(!userPermissions.IsSuperUser):disabled#endif  />
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Show Applications
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchShowApps"
-                                        value="#(settings.ShowApps)" #if(settings.ShowApps):checked#endif />
+                                        value="#(settings.ShowApps)" #if(settings.ShowApps):checked#endif #if(!userPermissions.IsSuperUser):disabled#endif />
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Show Messages
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch"
-                                        id="switchShowMessages" value="#(settings.ShowMessages)" #if(settings.ShowMessages):checked#endif/>
+                                        id="switchShowMessages" value="#(settings.ShowMessages)" #if(settings.ShowMessages):checked#endif #if(!userPermissions.IsSuperUser):disabled#endif />
                                 </div>
                             </li>
                         </ul>
@@ -115,21 +115,21 @@
                                 Show Notifications
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchShowNotifications"
-                                        value="#(settings.ShowNotifications)" #if(settings.ShowNotifications):checked#endif />
+                                        value="#(settings.ShowNotifications)" #if(settings.ShowNotifications):checked#endif #if(!userPermissions.IsSuperUser):disabled#endif />
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Show Updates
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchShowUpdates"
-                                        value="#(settings.ShowUpdates)" #if(settings.ShowUpdates):checked#endif  />
+                                        value="#(settings.ShowUpdates)" #if(settings.ShowUpdates):checked#endif  #if(!userPermissions.IsSuperUser):disabled#endif />
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Show User Box
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchShowUserBox"
-                                        value="#(settings.ShowUserBox)" #if(settings.ShowUserBox):checked#endif  />
+                                        value="#(settings.ShowUserBox)" #if(settings.ShowUserBox):checked#endif  #if(!userPermissions.IsSuperUser):disabled#endif />
                                 </div>
                             </li>
                         </ul>

@@ -128,12 +128,15 @@
                 <span class="menu-text">Dashboard</span>
             </a>
         </li>
+
+        #if(userPermissions.isSuperUser):
         <li>
             <a href="/view/systemsettings">
                 <i class="bi bi-gear"></i>
                 <span class="menu-text">Settings</span>
             </a>
         </li>
+        #endif 
         
         <li><hr/></li>
 
@@ -184,10 +187,10 @@
     #endexport
 
     #export("main"):
-        <h4 style="background-color:white; text-align: center;">Dashboard</h4>
+        <h4 style="text-align: center;">Dashboard</h4>
         <!-- Row start -->
         <div class="row gx-3">
-            <h3>Content Here</h3>
+            <!--<h3>Content Here</h3>-->
         </div>
         <!-- Row start end -->
     #endexport

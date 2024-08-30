@@ -35,7 +35,10 @@ struct SGServerController: RouteCollection {
 
 
         return try await req.view.render("Index", 
-            UserBaseContext(title: "SGServer", settings: mySettingsDTO, userPermissions: myUserPermissionsDTO))
+            UserBaseContext(title: "SGServer", 
+                            successMessage: "Welcome to the BackOffice",
+                            settings: mySettingsDTO, 
+                            userPermissions: myUserPermissionsDTO))
     }
 
 }

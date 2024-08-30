@@ -11,12 +11,14 @@
             </a>
         </li>
 
+        #if(userPermissions.isSuperUser):
         <li>
             <a href="/view/systemsettings">
                 <i class="bi bi-gear"></i>
                 <span class="menu-text">Settings</span>
             </a>
         </li>
+        #endif
 
         <li class="active current-page">
             <a href="#">
@@ -157,11 +159,13 @@
                 <form method="POST" action="/view/user/profile/address" class="">
                     <div class="card">
                         
+                        <!--
                         #if(errorMessage): 
                         <div class="card-header">
                             <h5 class="mb-5 text-danger">#(errorMessage)</h5>
                         </div>
                         #endif
+                        -->
                         
 
                         <div class="card-body">
@@ -261,11 +265,13 @@
                 <form method="POST" action="/view/user/profile/account" class="">
                     <div class="card">
 
+                        <!--
                         #if(errorMessage): 
                         <div class="card-header">
                             <h5 class="mb-5 text-danger">#(errorMessage)</h5>
                         </div>
                         #endif
+                        -->
 
                         <div class="card-body">
                             <!-- Row start -->
@@ -314,7 +320,7 @@
                                     Administrator
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleAdministrator" 
-                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                #if(!userPermissions.isSuperUser):disabled#endif 
                                                 value="#(userPermissions.IsAdminUser)" 
                                                 #if(userPermissions.IsAdminUser):checked#endif 
                                                 onchange="handleChange('isAdminUser', event)"/> 
@@ -324,7 +330,7 @@
                                     User
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUser" 
-                                                #if(userPermissions.isSuperUser):disabled#endif  
+                                                #if(!userPermissions.IsAdminUser):disabled#endif  
                                                 value="#(userPermissions.isUser)" 
                                                 #if(userPermissions.isUser):checked#endif 
                                                 onchange="handleChange('isUser', event)" />
@@ -343,7 +349,7 @@
                                     System User
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSystemUser" 
-                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                #if(!userPermissions.IsAdminUser):disabled#endif 
                                                 value="#(userPermissions.isSystemUser)" 
                                                 #if(userPermissions.isSystemUser):checked#endif 
                                                 onchange="handleChange('isSystemUser', event)"/>
@@ -353,7 +359,7 @@
                                     API User
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleApiUser" 
-                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                #if(!userPermissions.IsAdminUser):disabled#endif 
                                                 value="#(userPermissions.isApiUser)" 
                                                 #if(userPermissions.isApiUser):checked#endif 
                                                 onchange="handleChange('isApiUser', event)"/>
@@ -374,7 +380,7 @@
                                     User Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUserManagement" 
-                                                #if(userPermissions.isSuperUser):disabled#endif 
+                                                #if(!userPermissions.IsAdminUser):disabled#endif 
                                                 value="#(userPermissions.isAllowedToUseUserManagementModule)" 
                                                 #if(userPermissions.isAllowedToUseUserManagementModule):checked#endif 
                                                 onchange="handleChange('isAllowedToUseUserManagementModule', event)"/>
@@ -384,7 +390,7 @@
                                     Time Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTimeManagement" 
-                                                #if(userPermissions.isSuperUser):disabled#endif
+                                                #if(!userPermissions.IsAdminUser):disabled#endif
                                                 value="#(userPermissions.isAllowedToUseTimeManagementModule)" 
                                                 #if(userPermissions.isAllowedToUseTimeManagementModule):checked#endif 
                                                 onchange="handleChange('isAllowedToUseTimeManagementModule', event)"/>
@@ -394,7 +400,7 @@
                                     Event Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleEventManagement" 
-                                                #if(userPermissions.isSuperUser):disabled#endif
+                                                #if(!userPermissions.IsAdminUser):disabled#endif
                                                 value="#(userPermissions.isAllowedToUseEventManagementModule)" 
                                                 #if(userPermissions.isAllowedToUseEventManagementModule):checked#endif 
                                                 onchange="handleChange('isAllowedToUseEventManagementModule', event)"/>
@@ -404,7 +410,7 @@
                                     Task Management
                                     <div class="form-check form-switch m-0">
                                         <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTaskManagement" 
-                                                #if(userPermissions.isSuperUser):disabled#endif
+                                                #if(!userPermissions.IsAdminUser):disabled#endif
                                                 value="#(userPermissions.isAllowedToUseTaskManagementModule)"
                                                 #if(userPermissions.isAllowedToUseTaskManagementModule):checked#endif 
                                                 onchange="handleChange('isAllowedToUseTaskManagementModule', event)"/>

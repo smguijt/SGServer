@@ -244,7 +244,7 @@ struct UserManagementUserProfileController: RouteCollection {
         /* create return message */        
         return try await req.view.render("UserManagementUserProfile", 
                             UserBaseContext(title: "SGServer", 
-                                            //errorMessage: "Under Construction!",
+                                            successMessage: "Record updated",
                                             settings: mySettingsDTO, 
                                             tabIndicator: tabIndicator,
                                             userPermissions: myUserPermissionsDTO,

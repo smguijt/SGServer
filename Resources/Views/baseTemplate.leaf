@@ -30,6 +30,9 @@
 
     <body>
 
+        #if(errorMessage):<div id="display-error-message" data-message="#(errorMessage)"></div>#endif
+        #if(successMessage):<div id="display-success-message" data-message="#(successMessage)"></div>#endif
+
         <div class="page-wrapper">
             #import("body")
         </div>
@@ -48,8 +51,13 @@
 
         <!-- Toastify JS -->
         <script src="/assets/vendor/toastify/toastify.js"></script>
-        <!--<script src="/assets/vendor/toastify/custom.js"></script>-->
-        
+        #if(errorMessage):
+            <script src="/assets/vendor/toastify/customError.js"></script>
+        #endif
+         #if(successMessage):
+            <script src="/assets/vendor/toastify/customSuccess.js"></script>
+        #endif
+
         <!-- Date Range JS -->
         <script src="/assets/vendor/daterange/daterange.js"></script>
         <script src="/assets/vendor/daterange/custom-daterange.js"></script>

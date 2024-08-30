@@ -18,12 +18,15 @@
             </a>
         </li>
         -->
+
+        #if(userPermissions.isSuperUser):
         <li>
             <a href="/view/systemsettings">
                 <i class="bi bi-gear"></i>
                 <span class="menu-text">Settings</span>
             </a>
         </li>
+        #endif
         
        <li class="active current-page">
             <a href="#">
@@ -105,21 +108,21 @@
                                 Show Messages
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch"
-                                        id="switchShowMessages" value="#(settings.ShowMessages)" #if(settings.ShowMessages):checked#endif/>
+                                        id="switchShowMessages" value="#(settings.ShowMessages)" #if(settings.ShowMessages):checked#endif #if(!userPermissions.IsAdminUser):disabled#endif  />
                                 </div>
                             </li>
                              <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Show Notifications
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchShowNotifications"
-                                        value="#(settings.ShowNotifications)" #if(settings.ShowNotifications):checked#endif />
+                                        value="#(settings.ShowNotifications)" #if(settings.ShowNotifications):checked#endif #if(!userPermissions.IsAdminUser):disabled#endif  />
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Show Updates
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchShowUpdates"
-                                        value="#(settings.ShowUpdates)" #if(settings.ShowUpdates):checked#endif  />
+                                        value="#(settings.ShowUpdates)" #if(settings.ShowUpdates):checked#endif  #if(!userPermissions.IsAdminUser):disabled#endif  />
                                 </div>
                             </li>
                         </ul>
@@ -134,20 +137,20 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <label class="form-label">Client Id</label>
                                 <div class="form-check m-0">
-                                    <input id="ClientId" type="text" class="form-control" placeholder="ClientId" value="#(settings.ClientId)" />
+                                    <input id="ClientId" type="text" class="form-control" placeholder="ClientId" value="#(settings.ClientId)" #if(!userPermissions.IsAdminUser):disabled#endif  />
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <label class="form-label">Client Secret</label>
                                 <div class="form-check m-0">
-                                    <input id="ClientSecret" type="text" class="form-control" placeholder="Client Secret" value="#(settings.ClientSecret)" />
+                                    <input id="ClientSecret" type="text" class="form-control" placeholder="Client Secret" value="#(settings.ClientSecret)" #if(!userPermissions.IsAdminUser):disabled#endif  />
                                 </div>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <label class="form-label">Use OAUTH02 Authentication</label>
                                 <div class="form-check form-switch m-0">
                                     <input class="form-check-input" type="checkbox" role="switch" id="switchUseOAUTH02"
-                                        value="#(settings.UseOAUTH02)" #if(settings.UseOAUTH02):checked#endif  />
+                                        value="#(settings.UseOAUTH02)" #if(settings.UseOAUTH02):checked#endif #if(!userPermissions.IsAdminUser):disabled#endif />
                                 </div>
                             </li>
                         </ul>
