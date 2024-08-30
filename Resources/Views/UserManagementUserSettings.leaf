@@ -170,7 +170,18 @@
               userId: "#(settings.userId)"
             },
             function(data, status){
-              alert("Data: " + data + "\nStatus: " + status);
+              //alert("Data: " + data + "\nStatus: " + status);
+              Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             });
         });
         $(document).on('change','#switchShowApps',function() {
@@ -181,7 +192,18 @@
               userId: "#(settings.userId)"
             },
             function(data, status){
-              alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
+                Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             });
         });
         $(document).on('change','#switchShowNotifications',function() {
@@ -192,7 +214,18 @@
               userId: "#(settings.userId)"
             },
             function(data, status){
-              alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
+                Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             });
         });
         $(document).on('change','#switchShowUpdates',function() {
@@ -203,7 +236,18 @@
               userId: "#(settings.userId)"
             },
             function(data, status){
-              alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
+                Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             });
         });
         $(document).on('change','#switchUseOAUTH02',function() {
@@ -214,7 +258,18 @@
               userId: "#(settings.userId)"
             },
             function(data, status){
-              alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
+                Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             });
         });
         $(document).on('change','#ClientId',function() {
@@ -225,7 +280,18 @@
               userId: "#(settings.userId)"
             },
             function(data, status){
-              alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
+                Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             });
         });
         $(document).on('change','#ClientSecret',function() {
@@ -236,7 +302,18 @@
               userId: "#(settings.userId)"
             },
             function(data, status){
-              alert("Data: " + data + "\nStatus: " + status);
+                //alert("Data: " + data + "\nStatus: " + status);
+                Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             });
         });
         

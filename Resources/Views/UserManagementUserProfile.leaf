@@ -437,10 +437,31 @@
                 userId: "#(settings.userId)" 
             })
             .done(function( data ) {
-                alert( "Data Loaded: " + data );
+                Toastify({
+                    text: data,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-success",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                    }).showToast();
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
-                alert( "Error -> status: " + jqXHR.status + " reason: " + textStatus + ". " + errorThrown);
+                //alert( "Error -> status: " + jqXHR.status + " reason: " + textStatus + ". " + errorThrown);
+                Toastify({
+                    text: textStatus,
+                    duration: 3000,
+                    close: true,
+                    avatar: '/assets/favicon_io/apple-touch-icon.png',
+                    className: "bg-danger",
+                    offset: {
+                        x: 9,
+                        y: 3,
+                    },
+                }).showToast();
             })
             .always(function() {
                 //alert( "finished" );

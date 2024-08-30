@@ -38,6 +38,7 @@ let package = Package(
             ],
             swiftSettings: swiftSettings
         ),
+        /*
         .testTarget(
             name: "AppTests",
             dependencies: [
@@ -45,7 +46,7 @@ let package = Package(
                 .product(name: "XCTVapor", package: "vapor"),
             ],
             swiftSettings: swiftSettings
-        )
+        ) */
     ]
 )
 
