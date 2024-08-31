@@ -26,7 +26,7 @@ struct UserManagementUserProfileController: RouteCollection {
     @Sendable
     func renderUserProfile(req: Request) async throws -> View {
 
-        req.logger.info("calling UserManagement.userProfile")
+        req.logger.notice("calling UserManagement.userProfile")
         
         /* retrieve tabSettings */
         var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
@@ -75,8 +75,8 @@ struct UserManagementUserProfileController: RouteCollection {
 
     @Sendable
     func updateUserProfileGeneral(_ req: Request) async throws -> Response {
-        req.logger.info("calling UserManagementUserProfile.updateUserProfileGeneral POST")
-        req.logger.info("incomming request: \(req.body)")
+        req.logger.notice("calling UserManagementUserProfile.updateUserProfileGeneral POST")
+        req.logger.debug("incomming request: \(req.body)")
 
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
@@ -102,8 +102,8 @@ struct UserManagementUserProfileController: RouteCollection {
 
     @Sendable
     func updateUserProfileCustomFields(_ req: Request) async throws -> Response {
-        req.logger.info("calling UserManagementUserProfile.updateUserProfileCustomFields POST")
-        req.logger.info("incomming request: \(req.body)")
+        req.logger.notice("calling UserManagementUserProfile.updateUserProfileCustomFields POST")
+        req.logger.debug("incomming request: \(req.body)")
 
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
@@ -130,8 +130,8 @@ struct UserManagementUserProfileController: RouteCollection {
     @Sendable
     func updateUserProfilePermissions(_ req: Request) async throws -> Response {
 
-        req.logger.info("calling UserManagementUserProfile.updateUserProfilePermissions POST")
-        req.logger.info("incomming request: \(req.body)")
+        req.logger.notice("calling UserManagementUserProfile.updateUserProfilePermissions POST")
+        req.logger.debug("incomming request: \(req.body)")
 
         /* determine user */
         var userIdString = try? req.query.get(String.self, at: "userid")
@@ -201,8 +201,8 @@ struct UserManagementUserProfileController: RouteCollection {
 
     @Sendable
     func updateUserProfileAddressFields(_ req: Request) async throws -> Response {
-        req.logger.info("calling UserManagementUserProfile.updateUserProfileAddressFields POST")
-        req.logger.info("incomming request: \(req.body)")
+        req.logger.notice("calling UserManagementUserProfile.updateUserProfileAddressFields POST")
+        req.logger.debug("incomming request: \(req.body)")
 
         /* retrieve tabSettings */
         let tabIndicator: String? = "addressdetails"
@@ -220,8 +220,8 @@ struct UserManagementUserProfileController: RouteCollection {
             try await getUserPermissionSettings(req: req, userId: userId!)
 
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
-        req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
+        //let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
+        //req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         
         /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
@@ -231,6 +231,10 @@ struct UserManagementUserProfileController: RouteCollection {
 
         /* decode body */
         let body: UserManagementAddressModelDTO = try req.content.decode(UserManagementAddressModelDTO.self)
+        
+        /* decode organizations */
+        let userOrganizationFormList: UserManagementUserOrganizationDTO = try req.content.decode(UserManagementUserOrganizationDTO.self)
+      _ = try await setUserOrganizationData(req: req, form: userOrganizationFormList, userId: userId!)
 
         /* update address info */
         let myAddressInfo: UserManagementAddressModelDTO = try await setUserAddressData(req: req, form: body, userId: userId!)
@@ -240,6 +244,10 @@ struct UserManagementUserProfileController: RouteCollection {
 
         /* retrieve address info */
         //let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: userId!)
+        
+        /* retrieve organizations */
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
+        req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
 
         /* create return message */        
         return try await req.view.render("UserManagementUserProfile", 
@@ -256,8 +264,8 @@ struct UserManagementUserProfileController: RouteCollection {
 
     @Sendable
     func updateUserProfileAccountFields(_ req: Request) async throws -> Response {
-        req.logger.info("calling UserManagementUserProfile.updateUserProfileAccountFields POST")
-        req.logger.info("incomming request: \(req.body)")
+        req.logger.notice("calling UserManagementUserProfile.updateUserProfileAccountFields POST")
+        req.logger.debug("incomming request: \(req.body)")
 
          /* retrieve tabSettings */
         let tabIndicator: String? = "accountdetails"

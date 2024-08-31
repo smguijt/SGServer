@@ -14,7 +14,6 @@ final class  UserManagementAddressModelDTO: Content {
     let country: String?
     let telephone: String?
     let mobile: String?
-
     
     init(
         ID: UUID?, 

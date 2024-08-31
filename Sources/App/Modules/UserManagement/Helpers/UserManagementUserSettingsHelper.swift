@@ -125,7 +125,7 @@ func getUserPermissionSettings(req: Request, userId: UUID) async throws -> UserM
 
 func getUserOrganizations(req: Request, userId: UUID) async throws -> [UserManagementOrganizationModelDTO] {
 
-    let organizations = try await UserManagementOrganizationModel
+    let organizations: [UserManagementOrganizationModel] = try await UserManagementOrganizationModel
         .query(on: req.db)
         //.join(UserManagementUserOrganizationsModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .left)
         .all()
@@ -270,5 +270,40 @@ func getUserAccountInfo(req: Request, userId: UUID) async throws -> UserManageme
         .toDTO()
         
     return accountInfo
-    
+}
+
+func setUserOrganizationData(req: Request, form: UserManagementUserOrganizationDTO, userId: UUID) async throws -> Bool {
+
+    //let ret: Response = Response()
+    guard let existingOrganizations: [UserManagementUserOrganizationsModel]? = try await UserManagementUserOrganizationsModel
+        .query(on: req.db)
+        .join(UserManagementOrganizationModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .inner)
+        .filter(\.$userId == userId)
+        .all()
+
+    else {
+        return false
+    }
+
+    /* process */
+    for existingOrg: UserManagementUserOrganizationsModel in existingOrganizations! {
+        //let userOrganization: UserManagementOrganizationModel = try existingOrg.joined(UserManagementOrganizationModel.self)
+        try await existingOrg.delete(on: req.db)
+    }
+
+    for formItem in form.organizations ?? [] {
+        guard let OrganizationsList: [UserManagementOrganizationModel]? = try await UserManagementOrganizationModel.query(on: req.db).all()
+        else {
+            /* could not retrieve any records to nothing to update */
+            return false
+        }
+        for orgItem in OrganizationsList ?? [] {
+            if orgItem.code == formItem {
+                /* item found so add */
+                let newRecord: UserManagementUserOrganizationsModel = UserManagementUserOrganizationsModel(orgId: orgItem.id, userId: userId)
+                try await newRecord.create(on: req.db)
+            } 
+        }
+    }
+    return true
 }
