@@ -22,13 +22,26 @@ struct UserManagementUserController: RouteCollection {
         /* get login user */
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
         let userId = UUID(uuidString: userIdString ?? "") ?? nil
+        
+        /* get selected user */
+        let selectedUserIdString = try? req.query.get(String.self, at: "tabid")
+        let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
+
+        /* retrieve tabSettings */
+        var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
+        if (tabIndicator == nil) { 
+            tabIndicator = "general"
+        } 
 
         /* retrieve settings */
         var mySettingsDTO = try await getSettings(req: req)
+
+        /* if logged in, retrieve user settings */        
         if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
             let userId = UUID(req.session.data["sgsoftware_system_user"] ?? "")
             mySettingsDTO = try await getUserSettings(req: req, userId: userId!)
             mySettingsDTO.ShowUserBox = true
+            mySettingsDTO.ShowToolbar = true
         }
 
         /* retrieve user permissions */
@@ -38,6 +51,8 @@ struct UserManagementUserController: RouteCollection {
          return try await req.view.render("UserManagement", 
             UserBaseContext(title: "SGServer", 
                             settings: mySettingsDTO, 
-                            userPermissions: myUserPermissionsDTO))
+                            tabIndicator: tabIndicator,
+                            userPermissions: myUserPermissionsDTO,
+                            selectedUserId: selectedUserIdString))
     }
 }

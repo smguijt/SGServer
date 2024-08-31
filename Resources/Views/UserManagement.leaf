@@ -72,9 +72,17 @@
     #endexport
 
     #export("toolbar"):
+        #if(tabIndicator == "general"):
+            <button class="btn btn-sm btn-primary" id="btnOverview">Overview</button>
+            <a href="#/view/module/usermanagement/?tabid=addressdetails&userid="><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
+            <a href="#/view/module/usermanagement/?tabid=accountdetails&userid="><button disabled class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
+            <a href="#/view/module/usermanagement/?tabid=permissions&userid="><button disabled class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+            <a href="#/view/module/usermanagement&userid="><button disabled class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
+        #endif
     #endexport
 
     #export("main"):
+        <h4 style="text-align: center;">User Management</h4>
     #endexport
 
     #export("script"):

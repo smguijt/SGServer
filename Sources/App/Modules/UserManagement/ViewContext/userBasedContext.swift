@@ -11,4 +11,5 @@ struct UserBaseContext: Encodable {
     var userOrganizations: [UserManagementOrganizationModelDTO]?
     var userAccountData: UserManagementAccountModelDTO?
     var userDetail: UserManagementAddressModelDTO?
+    var selectedUserId: String?
 }
