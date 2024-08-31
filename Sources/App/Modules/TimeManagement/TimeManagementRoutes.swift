@@ -7,4 +7,6 @@ func TimeManagementRoutes(_ app: Application) throws {
     pg.get { req async throws in
         try await req.view.render("landingpage")
     }
+
+    try app.register(collection: TimeManagementUserController())
 }

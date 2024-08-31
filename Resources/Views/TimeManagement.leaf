@@ -1,0 +1,83 @@
+#extend("unifyTemplate"):
+
+    #export("header"):
+    #endexport
+
+    #export("sidebar"):
+        <li>
+            <a href="/view/">
+                <i class="bi bi-pie-chart"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+        </li>
+        <!--
+        <li>
+            <a href="/playground/item1">
+                <i class="bi bi-stickies"></i>
+                <span class="menu-text">Item</span>
+            </a>
+        </li>
+        -->
+        #if(userPermissions.isSuperUser):
+        <li>
+            <a href="/view/systemsettings">
+                <i class="bi bi-gear"></i>
+                <span class="menu-text">Settings</span>
+            </a>
+        </li>
+        #endif
+        <li><hr/></li>
+         #if(userPermissions.isAllowedToUseUserManagementModule):
+        <li>
+            <a href="/view/module/usermanagement">
+                <i class="bi bi-person-workspace"></i>
+                <span class="menu-text">User Management</span>
+            </a>
+        </li>
+        #endif
+        #if(userPermissions.isAllowedToUseTaskManagementModule):
+        <li>
+            <a href="/view/module/taskmanagement">
+                <i class="bi bi-list-task"></i>
+                <span class="menu-text">Task Management</span>
+            </a>
+        </li>
+        #endif
+        #if(userPermissions.isAllowedToUseEventManagementModule):
+        <li>
+            <a href="/view/module/eventmanagement">
+                <i class="bi bi-calendar4-event"></i>
+                <span class="menu-text">Event Management</span>
+            </a>
+        </li>
+        #endif
+        #if(userPermissions.isAllowedToUseTimeManagementModule):
+        <li class="active current-page">
+            <a href="/view/module/timemanagement">
+                <i class="bi bi-stopwatch"></i>
+                <span class="menu-text">Time Management</span>
+            </a>
+        </li>
+        #endif
+    #endexport
+
+    #export("breadcrumbs"):
+        <li class="breadcrumb-item text-secondary" aria-current="page">
+            Time Management
+        </li>
+        
+        <li class="breadcrumb-item text-secondary" aria-current="page">
+            Overview
+        </li>
+    #endexport
+
+    #export("toolbar"):
+    #endexport
+
+    #export("main"):
+    #endexport
+
+    #export("script"):
+    #endexport
+
+#endextend

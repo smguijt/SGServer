@@ -1,0 +1,28 @@
+#extend("unifyTemplate"):
+
+    #export("header"):
+    #endexport
+
+    #export("sidebar"):
+    #endexport
+
+    #export("breadcrumbs"):
+        <li class="breadcrumb-item text-secondary" aria-current="page">
+            User Management
+        </li>
+        
+        <li class="breadcrumb-item text-secondary" aria-current="page">
+            Overview
+        </li>
+    #endexport
+
+    #export("toolbar"):
+    #endexport
+
+    #export("main"):
+    #endexport
+
+    #export("script"):
+    #endexport
+
+#endextend
