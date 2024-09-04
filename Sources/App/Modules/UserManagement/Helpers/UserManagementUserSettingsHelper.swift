@@ -307,3 +307,17 @@ func setUserOrganizationData(req: Request, form: UserManagementUserOrganizationD
     }
     return true
 }
+
+func getUserList(req: Request, userId: UUID) async throws -> [UserManagementUserDTO] {
+    
+
+    let list = try await UserManagementAccountModel
+        .query(on: req.db)
+        .all()
+        .map { item in 
+           return UserManagementUserDTO(ID: item.id, 
+                                        caption: item.caption)
+
+        }
+    return list
+}

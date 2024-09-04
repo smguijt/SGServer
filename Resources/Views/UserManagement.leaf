@@ -72,6 +72,7 @@
     #endexport
 
     #export("toolbar"):
+        <!--
         #if(tabIndicator == "general"):
             <button class="btn btn-sm btn-primary" id="btnOverview">Overview</button>
             <a href="#/view/module/usermanagement/?tabid=addressdetails&userid="><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
@@ -79,10 +80,54 @@
             <a href="#/view/module/usermanagement/?tabid=permissions&userid="><button disabled class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
             <a href="#/view/module/usermanagement&userid="><button disabled class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
         #endif
+        -->
     #endexport
 
     #export("main"):
         <h4 style="text-align: center;">User Management</h4>
+        <div class="col-sm-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="clearfix">
+                        <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    #for(item in userList):
+                         <div class="card mb-1 box-shadow">
+                            #if(settings.userId == item.Id):
+                                <div class="card-header" style="background-color: #00AA9E;height:2px;"></div>
+                            #endif
+                            <div class="card-body">
+                                <a href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general" style="text-decoration: none;">
+                                    <div class="d-flex align-items-center">
+                                        #if(selectedUserId == item.Id):
+                                            <img src="/assets/images/pattern3.jpg" alt="" class="img-5x rounded-2" />
+                                        #endif
+                                        #if(selectedUserId != item.Id):
+                                            <img src="/assets/images/pattern.jpg" alt="" class="img-5x rounded-2" />
+                                        #endif
+                                        
+                                        <div class="ms-3">
+                                            <h5>#(item.caption)</h5>
+                                            <p class="m-0 fw-normal">++++++++++++</p>
+                                            <p class="m-0 fw-normal">Id: #(item.Id)</p>
+                                            <p class="m-0 fw-normal">SID: #(selectedUserId)</p>
+                                            <p class="m-0 fw-normal">UID: #(settings.userId)</p>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    #endfor
+                </div>
+            </div>
+        </div>
     #endexport
 
     #export("script"):

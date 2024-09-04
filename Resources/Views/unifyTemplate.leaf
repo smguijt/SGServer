@@ -97,7 +97,6 @@
                             #import("breadcrumbs")
                         </ol>
                         <!-- Breadcrumb end -->
-                        <!-- Sales stats start -->
                         <div class="ms-auto d-lg-flex d-none flex-row">
                             <div class="d-flex flex-row gap-2">
                                 #if(settings.ShowToolbar):
@@ -105,7 +104,6 @@
                                 #endif
                             </div>
                         </div>
-                        <!-- Sales stats end -->
                     </div>
                     <!-- hero header end -->
                     

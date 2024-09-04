@@ -21,11 +21,13 @@ struct UserManagementUserController: RouteCollection {
 
         /* get login user */
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
-        let userId = UUID(uuidString: userIdString ?? "") ?? nil
+        let userId: UUID? = UUID(uuidString: userIdString ?? "") ?? nil
+        req.logger.info("UserManagement.userList userId: \(userIdString)")
         
         /* get selected user */
-        let selectedUserIdString = try? req.query.get(String.self, at: "tabid")
-        let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
+        let selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
+        //let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
+        req.logger.info("UserManagement.userList selectedUserIdString: \(String(describing:selectedUserIdString))")
 
         /* retrieve tabSettings */
         var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
@@ -48,11 +50,15 @@ struct UserManagementUserController: RouteCollection {
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
             try await getUserPermissionSettings(req: req, userId: userId!)
 
+        /* get userlist */
+        let userList = try await getUserList(req: req, userId: userId!)
+
          return try await req.view.render("UserManagement", 
-            UserBaseContext(title: "SGServer", 
+            UserListContext(title: "SGServer", 
                             settings: mySettingsDTO, 
                             tabIndicator: tabIndicator,
                             userPermissions: myUserPermissionsDTO,
+                            userList: userList,
                             selectedUserId: selectedUserIdString))
     }
 }
