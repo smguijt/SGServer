@@ -42,7 +42,7 @@
                         <!--<img src="/assets/images/user.png" class="rounded-2 img-3x" alt="SG Software" />-->
                         <div class="fs-2 mb-1"><i class="bi bi-person-bounding-box"></i></div>
                         <span class="ms-2 text-truncate d-lg-block d-none">
-                            Some User
+                            #(userPermissions.caption)
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end shadow-lg">

@@ -56,7 +56,8 @@ final class UserManagementRoleModel: Model, @unchecked Sendable {
             isAllowedToUseUserManagementModule: validateRole(role: "UserManagement"),
             isAllowedToUseTimeManagementModule: validateRole(role: "TimeManagement"),
             isAllowedToUseEventManagementModule: validateRole(role: "EventManagement"),
-            isAllowedToUseTaskManagementModule: validateRole(role: "TaskManagement")
+            isAllowedToUseTaskManagementModule: validateRole(role: "TaskManagement"),
+            caption: nil
         )
     }
 

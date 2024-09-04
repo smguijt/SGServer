@@ -112,55 +112,53 @@
     #endexport
 
     #export("main"):
-        #if(tabIndicator == "general"):
-            <div class="col-sm-12">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <div class="clearfix">
-                            <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew">
-                                <i class="bi bi-plus"></i>
-                            </button>
+        <div class="col-sm-6 col-12">
+            #if(tabIndicator == "general"):
+                <div class="col-sm-12">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <div class="clearfix">
+                                <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew">
+                                    <i class="bi bi-bag-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            
+                            #for(item in userList):
+                                <div class="card mb-1 box-shadow">
+                                    
+                                    <div class="card-body">
+                                        <table style="margin-top:-5px;margin-left:-5px;">
+                                            <tr style="width:100%">
+                                                <td style="width:10px;#if(selectedUserId == item.Id):background-color: #00AA9E#endif">&nbsp;</td>
+                                                <td style="width:100%">
+                                                    <a class="ml-2" href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general" style="text-decoration: none;">
+                                                        <div class="d-flex align-items-center">
+                                                            #if(settings.userId == item.Id):
+                                                                <img src="/assets/images/pattern3.jpg" alt="" class="img-5x rounded-2" />
+                                                            #endif
+                                                            #if(settings.userId != item.Id):
+                                                                <img src="/assets/images/pattern.jpg" alt="" class="img-5x rounded-2" />
+                                                            #endif
+                                                            <div class="ms-3">
+                                                                <h5>#(item.caption)</h5>
+                                                                <p class="m-0 fw-normal">++++++++++++</p>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            #endfor
                         </div>
                     </div>
-                    <div class="card-body">
-                        
-                        #for(item in userList):
-                            <div class="card mb-1 box-shadow">
-                                
-                                <div class="card-body">
-                                    <table style="margin-top:-5px;margin-left:-5px;">
-                                        <tr style="width:100%">
-                                            <td style="width:10px;#if(selectedUserId == item.Id):background-color: #00AA9E#endif">&nbsp;</td>
-                                            <td style="width:100%">
-                                                <a class="ml-2" href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general" style="text-decoration: none;">
-                                                    <div class="d-flex align-items-center">
-                                                        #if(settings.userId == item.Id):
-                                                            <img src="/assets/images/pattern3.jpg" alt="" class="img-5x rounded-2" />
-                                                        #endif
-                                                        #if(settings.userId != item.Id):
-                                                            <img src="/assets/images/pattern.jpg" alt="" class="img-5x rounded-2" />
-                                                        #endif
-                                                        
-                                                        <div class="ms-3">
-                                                            <h5>#(item.caption)</h5>
-                                                            <p class="m-0 fw-normal">++++++++++++</p>
-                                                            <p class="m-0 fw-normal">Id: #(item.Id)</p>
-                                                            <p class="m-0 fw-normal">SID: #(selectedUserId)</p>
-                                                            <p class="m-0 fw-normal">UID: #(settings.userId)</p>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        #endfor
-                    </div>
                 </div>
-            </div>
-        #endif
+            #endif
+        </div>
+        <div class="col-sm-6 col-12"></div>
     #endexport
 
     #export("script"):

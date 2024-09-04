@@ -3,6 +3,7 @@ import Vapor
 
 struct UserManagementRoleModelDTO: Content {
     var userId: UUID
+    var caption: String?
     var IsAdminUser: Bool
     var isUser: Bool = true
     var isSuperUser: Bool
@@ -22,7 +23,8 @@ struct UserManagementRoleModelDTO: Content {
          isAllowedToUseUserManagementModule: Bool = false,
          isAllowedToUseTimeManagementModule: Bool = false,
          isAllowedToUseEventManagementModule: Bool = false,
-         isAllowedToUseTaskManagementModule: Bool = false)
+         isAllowedToUseTaskManagementModule: Bool = false,
+         caption: String? = nil)
     {
         self.userId = userId
         self.IsAdminUser = isAdminUser
@@ -34,6 +36,7 @@ struct UserManagementRoleModelDTO: Content {
         self.isAllowedToUseTimeManagementModule = isAllowedToUseTimeManagementModule
         self.isAllowedToUseEventManagementModule = isAllowedToUseEventManagementModule
         self.isAllowedToUseTaskManagementModule = isAllowedToUseTaskManagementModule
+        self.caption = caption
 
     } 
 

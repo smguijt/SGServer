@@ -72,54 +72,64 @@ func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSetting
 
 func getUserPermissionSettings(req: Request, userId: UUID) async throws -> UserManagementRoleModelDTO { 
 
-       var myUserPermissionsDTO: UserManagementRoleModelDTO = UserManagementRoleModelDTO(userId: userId)
-       _ = try await UserManagementRoleModel
-                .query(on: req.db)
-                .filter(\.$userId == userId)
-                .all()
-                .map { setting in
-                    myUserPermissionsDTO.userId = userId
-                    
-                    if setting.role == UserManagementRoleEnum.admin.rawValue {
-                        myUserPermissionsDTO.IsAdminUser = true
-                    }
-                    if setting.role == UserManagementRoleEnum.user.rawValue {
-                        myUserPermissionsDTO.isUser = true
-                    }
-                    if setting.role == UserManagementRoleEnum.system.rawValue {
-                        myUserPermissionsDTO.isSystemUser = true
-                    }
-                    if setting.role == UserManagementRoleEnum.api.rawValue {
-                        myUserPermissionsDTO.isApiUser = true
-                    }
-                    if setting.role == UserManagementRoleEnum.superuser.rawValue {
-                        myUserPermissionsDTO.isSuperUser = true
-                        /* switch all values to active */
-                        myUserPermissionsDTO.IsAdminUser = true
-                        myUserPermissionsDTO.isUser = true
-                        myUserPermissionsDTO.isSystemUser = true
-                        myUserPermissionsDTO.isApiUser = true
-                        myUserPermissionsDTO.isAllowedToUseEventManagementModule = true
-                        myUserPermissionsDTO.isAllowedToUseTimeManagementModule = true
-                        myUserPermissionsDTO.isAllowedToUseUserManagementModule = true
-                        myUserPermissionsDTO.isAllowedToUseTaskManagementModule = true
-                        return myUserPermissionsDTO
-                    }
-                    if setting.role == UserManagementRoleEnum.EventManagement.rawValue {
-                        myUserPermissionsDTO.isAllowedToUseEventManagementModule = true
-                    }
-                    if setting.role == UserManagementRoleEnum.TimeManagement.rawValue {
-                        myUserPermissionsDTO.isAllowedToUseTimeManagementModule = true
-                    }
-                    if setting.role == UserManagementRoleEnum.UserManagement.rawValue {
-                        myUserPermissionsDTO.isAllowedToUseUserManagementModule = true
-                    }
-                    if setting.role == UserManagementRoleEnum.TaskManagement.rawValue {
-                        myUserPermissionsDTO.isAllowedToUseTaskManagementModule = true
-                    }
-                    
+    var myUserPermissionsDTO: UserManagementRoleModelDTO = UserManagementRoleModelDTO(userId: userId)
+    _ = try await UserManagementRoleModel
+            .query(on: req.db)
+            .filter(\.$userId == userId)
+            .all()
+            .map { setting in
+                myUserPermissionsDTO.userId = userId
+                
+                if setting.role == UserManagementRoleEnum.admin.rawValue {
+                    myUserPermissionsDTO.IsAdminUser = true
+                }
+                if setting.role == UserManagementRoleEnum.user.rawValue {
+                    myUserPermissionsDTO.isUser = true
+                }
+                if setting.role == UserManagementRoleEnum.system.rawValue {
+                    myUserPermissionsDTO.isSystemUser = true
+                }
+                if setting.role == UserManagementRoleEnum.api.rawValue {
+                    myUserPermissionsDTO.isApiUser = true
+                }
+                if setting.role == UserManagementRoleEnum.superuser.rawValue {
+                    myUserPermissionsDTO.isSuperUser = true
+                    /* switch all values to active */
+                    myUserPermissionsDTO.IsAdminUser = true
+                    myUserPermissionsDTO.isUser = true
+                    myUserPermissionsDTO.isSystemUser = true
+                    myUserPermissionsDTO.isApiUser = true
+                    myUserPermissionsDTO.isAllowedToUseEventManagementModule = true
+                    myUserPermissionsDTO.isAllowedToUseTimeManagementModule = true
+                    myUserPermissionsDTO.isAllowedToUseUserManagementModule = true
+                    myUserPermissionsDTO.isAllowedToUseTaskManagementModule = true
                     return myUserPermissionsDTO
                 }
+                if setting.role == UserManagementRoleEnum.EventManagement.rawValue {
+                    myUserPermissionsDTO.isAllowedToUseEventManagementModule = true
+                }
+                if setting.role == UserManagementRoleEnum.TimeManagement.rawValue {
+                    myUserPermissionsDTO.isAllowedToUseTimeManagementModule = true
+                }
+                if setting.role == UserManagementRoleEnum.UserManagement.rawValue {
+                    myUserPermissionsDTO.isAllowedToUseUserManagementModule = true
+                }
+                if setting.role == UserManagementRoleEnum.TaskManagement.rawValue {
+                    myUserPermissionsDTO.isAllowedToUseTaskManagementModule = true
+                }
+                
+                return myUserPermissionsDTO
+            }
+
+    let myUserAccount = try await UserManagementAccountModel
+            .query(on: req.db)
+            .filter(\.$id == userId)
+            .first()
+    
+    if myUserAccount != nil {
+        myUserPermissionsDTO.caption = myUserAccount?.caption
+    }
+    
     return myUserPermissionsDTO
 }
 
