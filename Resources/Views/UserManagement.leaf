@@ -77,7 +77,7 @@
             <button class="btn btn-sm btn-primary" id="btnOverview">Overview</button>
             <a href="/view/module/usermanagement/?tabid=addressdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
             <a href="/view/module/usermanagement/?tabid=accountdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=permissions&userid=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
+            <a href="/view/module/usermanagement/?tabid=permissions&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
             <a href="/view/module/usermanagement/?tabid=settings&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
         #endif
         #if(tabIndicator == "addressdetails"):
@@ -124,41 +124,57 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            
+                            <div class="scroll370">
+                             
                             #for(item in userList):
-                                <div class="card mb-1 box-shadow">
-                                    
-                                    <div class="card-body">
-                                        <table style="margin-top:-5px;margin-left:-5px;">
-                                            <tr style="width:100%">
-                                                <td style="width:10px;#if(selectedUserId == item.Id):background-color: #00AA9E#endif">&nbsp;</td>
-                                                <td style="width:100%">
-                                                    <a class="ml-2" href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general" style="text-decoration: none;">
-                                                        <div class="d-flex align-items-center">
-                                                            #if(settings.userId == item.Id):
-                                                                <img src="/assets/images/pattern3.jpg" alt="" class="img-5x rounded-2" />
-                                                            #endif
-                                                            #if(settings.userId != item.Id):
-                                                                <img src="/assets/images/pattern.jpg" alt="" class="img-5x rounded-2" />
-                                                            #endif
-                                                            <div class="ms-3">
-                                                                <h5>#(item.caption)</h5>
-                                                                <p class="m-0 fw-normal">++++++++++++</p>
+                            <div class="list-group">
+                                <div class="list-group-item list-group-item-action">
+                                    <div class="card mb-1 box-shadow">
+                                        <div class="card-body">
+                                            <table style="margin-top:-5px;margin-left:-5px;">
+                                                <tr style="width:100%">
+                                                    <td style="width:10px;">
+                                                        <div style="height: 50px;#if(selectedUserId == item.Id):background-color: #00AA9E#endif">&nbsp;</div>
+                                                    </td>
+                                                    <td style="width:100%">
+                                                        <a class="ml-2" href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general" style="text-decoration: none;">
+                                                            <div class="d-flex align-items-center">
+                                                                <div style="position: relative;text-align: center;color: white;">
+                                                                    #if(settings.userId == item.Id):
+                                                                        <img src="/assets/images/pattern3.jpg" alt="" class="img-3x rounded-2" />
+                                                                    #endif
+                                                                    #if(settings.userId != item.Id):
+                                                                        <img src="/assets/images/pattern.jpg" alt="" class="img-3x rounded-2" />
+                                                                    #endif
+                                                                    <div style="position: absolute;top: 3.5px;left: 16px; font-size: 2em;">
+                                                                        #(item.firstCharacter)
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ms-3">
+                                                                    <h5>#(item.caption)</h5>
+                                                                    <p class="m-0 fw-normal">++++++++++++</p>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
                             #endfor
+                            </div>
                         </div>
                     </div>
                 </div>
             #endif
         </div>
-        <div class="col-sm-6 col-12"></div>
+        
+        <div class="col-sm-6 col-12">
+            XXX
+        </div>
+        
     #endexport
 
     #export("script"):
