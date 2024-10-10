@@ -73,6 +73,7 @@
 
     #export("toolbar"):
     #if(selectedUserId != nil):
+        <!--
         #if(tabIndicator == "general"):
             <button class="btn btn-sm btn-primary" id="btnOverview">Overview</button>
             <a href="/view/module/usermanagement/?tabid=addressdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
@@ -108,76 +109,86 @@
             <a href="/view/module/usermanagement/?tabid=permissions&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Permissions</button></a>
             <a href="#"><button class="btn btn-sm btn-primary" id="btnOther">Settings</button></a>
         #endif
+        -->
     #endif
     #endexport
 
     #export("main"):
-        <div class="col-sm-6 col-12">
+        <div class="col-12">
             #if(tabIndicator == "general"):
-                <div class="col-sm-12">
-                    <div class="card mb-3">
+            <div class="col-sm-12">
+                <div class="card mb-3">
                         <div class="card-header">
                             <div class="clearfix">
-                                <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew">
+                                <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew" onclick="addNew()">
                                     <i class="bi bi-bag-plus"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="scroll370">
-                             
                             #for(item in userList):
-                            <div class="list-group">
-                                <div class="list-group-item list-group-item-action">
-                                    <div class="card mb-1 box-shadow">
-                                        <div class="card-body">
-                                            <table style="margin-top:-5px;margin-left:-5px;">
-                                                <tr style="width:100%">
-                                                    <td style="width:10px;">
-                                                        <div style="height: 50px;#if(selectedUserId == item.Id):background-color: #00AA9E#endif">&nbsp;</div>
-                                                    </td>
-                                                    <td style="width:100%">
-                                                        <a class="ml-2" href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general" style="text-decoration: none;">
-                                                            <div class="d-flex align-items-center">
-                                                                <div style="position: relative;text-align: center;color: white;">
-                                                                    #if(settings.userId == item.Id):
-                                                                        <img src="/assets/images/pattern3.jpg" alt="" class="img-3x rounded-2" />
-                                                                    #endif
-                                                                    #if(settings.userId != item.Id):
-                                                                        <img src="/assets/images/pattern.jpg" alt="" class="img-3x rounded-2" />
-                                                                    #endif
-                                                                    <div style="position: absolute;top: 3.5px;left: 16px; font-size: 2em;">
-                                                                        #(item.firstCharacter)
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ms-3">
-                                                                    <h5>#(item.caption)</h5>
-                                                                    <p class="m-0 fw-normal">++++++++++++</p>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                            <a class="ml-2" href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general"
+                                style="text-decoration: none;">
+                                
+                                <div class="row mb-1 #if(selectedUserId == item.Id):background-color: bg-warning-subtle#endif d-flex bd-highlight">
+                                    
+                                    <div class="d-flex bd-highlight">
+                                      <div class="p-2 flex-shrink-1 bd-highlight">
+                                        <div class="d-flex align-items-center">
+                                            <div style="position: relative;text-align: center;color: white;">
+                                                #if(settings.userId == item.Id):
+                                                    <img src="/assets/images/pattern3.jpg" alt="" class="img-3x rounded-2" />
+                                                #endif
+                                                #if(settings.userId != item.Id):
+                                                    <img src="/assets/images/pattern.jpg" alt="" class="img-3x rounded-2" />
+                                                #endif
+                                                <div style="position: absolute;top: 3.5px;left: 16px; font-size: 2em;">
+                                                    #(item.firstCharacter)
+                                                </div>
+                                            </div>
                                         </div>
+                                      </div>
+                                      <div class="p-2 w-100 bd-highlight">
+                                        <div class="col p-2 flex-grow-1 bd-highlight">
+                                            <h5>#(item.caption)</h5>
+                                        </div>
+                                      </div>
+                                      <div class="p-2 ml-4 flex-shrink-1 bd-highlight">
+                                        #if(selectedUserId == item.Id):
+                                        <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew" onclick="showDetails('#(item.Id)')">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                        #endif
+                                      </div>
                                     </div>
+                                    
+                                    <!--
+                                    <div class="col d-lg-flex d-none">4</div>
+                                    <div class="col d-lg-flex d-none">5</div>
+                                    <div class="col-auto d-lg-flex d-none">6</div>
+                                    -->
                                 </div>
-                            </div>
+                            </a>
                             #endfor
-                            </div>
+                        </div>
+                        <div class="card-footer">
+                        
                         </div>
                     </div>
                 </div>
+            </div>
             #endif
-        </div>
-        
-        <div class="col-sm-6 col-12">
-            XXX
         </div>
         
     #endexport
 
     #export("script"):
+        function addNew() {
+            alert('addnew clicked')
+        }
+        function showDetails(id, e) {
+            alert('details clicked. ' + id)
+        }
     #endexport
 
 #endextend
