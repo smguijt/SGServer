@@ -63,54 +63,26 @@
 
     #export("breadcrumbs"):
         <li class="breadcrumb-item text-secondary" aria-current="page">
-            User Management
+            #if(tabIndicator == "general"):
+                User Management
+            #endif
+            #if(tabIndicator == "details"):
+                <a href="/view/module/usermanagement">User Management</a>
+            #endif
         </li>
         
         <li class="breadcrumb-item text-secondary" aria-current="page">
-            Overview
+            #if(tabIndicator == "general"):
+                Overview
+            #endif
+            #if(tabIndicator == "details"):
+                Details
+            #endif
         </li>
+        
     #endexport
 
     #export("toolbar"):
-    #if(selectedUserId != nil):
-        <!--
-        #if(tabIndicator == "general"):
-            <button class="btn btn-sm btn-primary" id="btnOverview">Overview</button>
-            <a href="/view/module/usermanagement/?tabid=addressdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=accountdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=permissions&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
-            <a href="/view/module/usermanagement/?tabid=settings&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
-        #endif
-        #if(tabIndicator == "addressdetails"):
-            <a href="/view/module/usermanagement/?tabid=general&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
-            <a href="#"><button class="btn btn-sm btn-primary" id="btnAddressDetails">Address Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=accountdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=permissions&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
-            <a href="/view/module/usermanagement/?tabid=settings&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnSettings">Settings</button></a>
-        #endif
-        #if(tabIndicator == "accountdetails"):
-            <a href="/view/module/usermanagement/?tabid=general&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
-            <a href="/view/module/usermanagement/?tabid=addressdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
-            <a href="#"><button class="btn btn-sm btn-primary" id="btnAccountDetails">Account Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=permissions&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnPermissions">Permissions</button></a>
-            <a href="/view/module/usermanagement?tabid=settings&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnOther">Settings</button></a>
-        #endif
-        #if(tabIndicator == "permissions"):
-            <a href="/view/module/usermanagement/?tabid=general&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
-            <a href="/view/module/usermanagement/?tabid=addressdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=accountdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAccountDetails">Account Details</button></a>
-            <a href="#"><button class="btn btn-sm btn-primary" id="btnPermissions">Permissions</button></a>
-            <a href="/view/module/usermanagement/?tabid=settings&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnOther">Settings</button></a>
-        #endif
-        #if(tabIndicator == "settings"):
-            <a href="/view/module/usermanagement/?tabid=general&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnOverview">Overview</button></a>
-            <a href="/view/module/usermanagement/?tabid=addressdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Address Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=accountdetails&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Account Details</button></a>
-            <a href="/view/module/usermanagement/?tabid=permissions&selectedUserId=#(selectedUserId)"><button disabled class="btn btn-sm btn-white" id="btnAddressDetails">Permissions</button></a>
-            <a href="#"><button class="btn btn-sm btn-primary" id="btnOther">Settings</button></a>
-        #endif
-        -->
-    #endif
     #endexport
 
     #export("main"):
@@ -155,9 +127,11 @@
                                       </div>
                                       <div class="p-2 ml-4 flex-shrink-1 bd-highlight">
                                         #if(selectedUserId == item.Id):
-                                        <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew" onclick="showDetails('#(item.Id)')">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </button>
+                                        <form method="POST" action="/view/module/usermanagement/details?selectedUserId=#(selectedUserId)&tabid=details" class="">
+                                            <button type="submit" class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddNew">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                        </form>
                                         #endif
                                       </div>
                                     </div>
@@ -178,17 +152,70 @@
                 </div>
             </div>
             #endif
+            
+            
+            
+            #if(tabIndicator == "details"):
+            <div class="col-sm-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="clearfix">
+                            <button class="btn btn-sm btn-primary rounded-circle float-start" id="btnGoBack" onclick="goBack()">
+                                <i class="bi bi-backspace"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger rounded-circle float-end" id="btnAddNew" onclick="detailsDelete()">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        ...
+                    </div>
+                    <div class="card-footer">
+                        
+                    </div>
+                </div>
+            </div>
+            #endif
         </div>
         
     #endexport
 
     #export("script"):
         function addNew() {
-            alert('addnew clicked')
+            //alert('addnew clicked')
+            Toastify({
+                text: "Add new user clicked",
+                duration: 3000,
+                close: true,
+                avatar: '/assets/favicon_io/apple-touch-icon.png',
+                className: "bg-info",
+                offset: {
+                    x: 9,
+                    y: 3,
+                },
+                }).showToast();
         }
-        function showDetails(id, e) {
-            alert('details clicked. ' + id)
+        
+        function detailsDelete() {
+            //alert('detailsDelete clicked')
+            Toastify({
+                text: "detailsDelete clicked",
+                duration: 3000,
+                close: true,
+                avatar: '/assets/favicon_io/apple-touch-icon.png',
+                className: "bg-danger",
+                offset: {
+                    x: 9,
+                    y: 3,
+                },
+                }).showToast();
         }
+        
+        function goBack() {
+            window.location.replace("/view/module/usermanagement");
+        }
+
     #endexport
 
 #endextend

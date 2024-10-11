@@ -21,7 +21,7 @@ struct TimeManagementUserController: RouteCollection {
 
         /* get login user */
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
-        let userId = UUID(uuidString: userIdString ?? "") ?? nil
+        let userId = UUID(uuidString: userIdString) ?? nil
 
         /* retrieve settings */
         var mySettingsDTO = try await getSettings(req: req)
@@ -33,7 +33,7 @@ struct TimeManagementUserController: RouteCollection {
 
         /* retrieve user permissions */
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
-            try await getUserPermissionSettings(req: req, userId: userId!)
+            try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
 
          return try await req.view.render("TimeManagement", 
             TimeBaseContext(title: "SGServer", 

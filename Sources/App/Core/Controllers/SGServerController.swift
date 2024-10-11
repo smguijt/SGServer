@@ -31,7 +31,7 @@ struct SGServerController: RouteCollection {
 
         /* retrieve user permissions */
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
-            try await getUserPermissionSettings(req: req, userId: userId!)
+            try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
 
 
         return try await req.view.render("index", 

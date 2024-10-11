@@ -17,6 +17,8 @@ struct UserManagementUserController: RouteCollection {
         pg.get("account", use: self.renderUserManagementScreens)
         pg.get("permissions", use: self.renderUserManagementScreens)
         pg.get("settings", use: self.renderUserManagementScreens)
+        
+        pg.post("details", use: self.renderUserManagementScreens)
     }
 
      @Sendable
@@ -26,13 +28,16 @@ struct UserManagementUserController: RouteCollection {
 
         /* get login user */
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
-        let userId: UUID? = UUID(uuidString: userIdString ?? "") ?? nil
+        let userId: UUID? = UUID(uuidString: userIdString) ?? nil
         req.logger.info("UserManagement.userList userId: \(userIdString)")
         
         /* get selected user */
-        let selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
-        //let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
+        var selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
+        if (selectedUserIdString == nil) { selectedUserIdString = userIdString }
+        let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
         req.logger.info("UserManagement.userList selectedUserIdString: \(String(describing:selectedUserIdString))")
+        
+        
 
         /* retrieve tabSettings */
         var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
@@ -43,7 +48,7 @@ struct UserManagementUserController: RouteCollection {
         /* retrieve settings */
         var mySettingsDTO = try await getSettings(req: req)
 
-        /* if logged in, retrieve user settings */        
+        /* if logged in, retrieve user settings */
         if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
             let userId = UUID(req.session.data["sgsoftware_system_user"] ?? "")
             mySettingsDTO = try await getUserSettings(req: req, userId: userId!)
@@ -53,7 +58,7 @@ struct UserManagementUserController: RouteCollection {
 
         /* retrieve user permissions */
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
-            try await getUserPermissionSettings(req: req, userId: userId!)
+        try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: selectedUserId)
 
         /* get userlist */
         let userList = try await getUserList(req: req, userId: userId!)
@@ -72,7 +77,7 @@ struct UserManagementUserController: RouteCollection {
         
         /* get login user */
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
-        let userId: UUID? = UUID(uuidString: userIdString ?? "") ?? nil
+        let userId : UUID? = UUID(uuidString: userIdString) ?? nil
         req.logger.info("UserManagement.userList userId: \(userIdString)")
         
         /* get selected user */
@@ -91,7 +96,8 @@ struct UserManagementUserController: RouteCollection {
 
         /* if logged in, retrieve user settings */        
         if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
-            let userId = UUID(req.session.data["sgsoftware_system_user"] ?? "")
+            _ = UUID(req.session.data["sgsoftware_system_user"] ?? "")
+            //if (selectedUserId == nil) { selectedUserId = UUID.generateRandom() }
             mySettingsDTO = try await getUserSettings(req: req, userId: selectedUserId!)
             mySettingsDTO.ShowUserBox = true
             mySettingsDTO.ShowToolbar = true
@@ -99,7 +105,7 @@ struct UserManagementUserController: RouteCollection {
 
         /* retrieve user permissions */
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
-            try await getUserPermissionSettings(req: req, userId: selectedUserId!)
+        try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId)
 
         /* +++++++ */
 
@@ -113,6 +119,10 @@ struct UserManagementUserController: RouteCollection {
          /* retrieve account info */
         let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: selectedUserId!)
         
+        /* retrieve user permissions for selected user */
+        let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
+        try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: selectedUserId)
+        
 
         return try await req.view.render("UserManagement", 
             UserBaseContext(title: "SGServer", 
@@ -122,7 +132,8 @@ struct UserManagementUserController: RouteCollection {
                             userOrganizations: myOrganizations,
                             userAccountData: myAccountInfo,
                             userDetail: myAddressInfo,
-                            selectedUserId: selectedUserIdString))
+                            selectedUserId: selectedUserIdString,
+                            selectedUserPermissions: mySelectedUserPermissionsDTO))
 
     }
 

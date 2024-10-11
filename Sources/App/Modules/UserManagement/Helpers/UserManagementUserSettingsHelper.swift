@@ -70,7 +70,7 @@ func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSetting
     return mySettingDTO
  }
 
-func getUserPermissionSettings(req: Request, userId: UUID) async throws -> UserManagementRoleModelDTO { 
+func getUserPermissionSettings(req: Request, userId: UUID, selectedUserId: UUID?) async throws -> UserManagementRoleModelDTO {
 
     var myUserPermissionsDTO: UserManagementRoleModelDTO = UserManagementRoleModelDTO(userId: userId)
     _ = try await UserManagementRoleModel
