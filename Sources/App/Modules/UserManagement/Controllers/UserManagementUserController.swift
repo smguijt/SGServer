@@ -19,6 +19,16 @@ struct UserManagementUserController: RouteCollection {
         pg.get("settings", use: self.renderUserManagementScreens)
         
         pg.post("details", use: self.renderUserManagementScreens)
+        pg.post("permissions", use: self.updateUserManagementPermissions)
+        pg.post("settings", use: self.updateUserManagementSetting)
+        
+        
+        /*
+        pg.post("address", use: self.renderUserManagementScreens)
+        pg.post("organizations", use: self.renderUserManagementScreens)
+        pg.post("account", use: self.renderUserManagementScreens)
+        */
+
     }
 
      @Sendable
@@ -121,7 +131,7 @@ struct UserManagementUserController: RouteCollection {
         
         /* retrieve user permissions for selected user */
         let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
-        try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: selectedUserId)
+        try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
         
 
         return try await req.view.render("UserManagement", 
@@ -137,4 +147,110 @@ struct UserManagementUserController: RouteCollection {
 
     }
 
+    
+    @Sendable
+    func updateUserManagementPermissions(_ req: Request) async throws -> Response {
+
+        req.logger.notice("calling UserManagementUserPermissions.updateUserProfilePermissions POST")
+        req.logger.debug("incomming request: \(req.body)")
+
+        /* determine user */
+        var userIdString = try? req.query.get(String.self, at: "userid")
+        if (userIdString == nil) {
+            userIdString = req.session.data["sgsoftware_system_user"] ?? ""
+            req.logger.info("session sgsoftware_systemuser found: \(userIdString ?? "")")
+        }
+        let userId = UUID(uuidString: userIdString ?? "") ?? UUID()
+        req.logger.info("calling UserManagementUserPermissions.updateUserProfilePermissions.id POST: \(userId)")
+
+        /* decode body */
+        let body: UserManagementDictDTO = try req.content.decode(UserManagementDictDTO.self)
+
+        /* capture key */
+        var ret: Response = Response()
+        var bFound: Bool = false
+        switch body.key {
+            case "isAdminUser":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.admin)
+                bFound = true
+                break;
+            case "isUser":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.user)
+                bFound = true
+                break;
+            case "isApiUser":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.api)
+                bFound = true
+                break;
+            case "isSuperUser":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.superuser)
+                bFound = true
+                break;
+            case "isSystemUser":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.system)
+                bFound = true
+                break;
+            case "isAllowedToUseUserManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.UserManagement)
+                bFound = true
+                break;
+            case "isAllowedToUseTimeManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.TimeManagement)
+                bFound = true
+                break;
+            case "isAllowedToUseEventManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.EventManagement)
+                bFound = true
+                break;
+            case "isAllowedToUseTaskManagementModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.TaskManagement)
+                bFound = true
+                break;
+            default:
+                bFound = false;
+                break;
+        }
+
+        if !bFound {
+            ret.status = HTTPResponseStatus.badRequest
+            ret.body = Response.Body(string: "\(body.key!) is not a valid key!")
+            req.logger.info("\(body.key!) is not a valid key!")
+        }
+
+        return ret
+    }
+
+    @Sendable
+    func updateUserManagementSetting(_ req: Request) async throws -> Response {
+
+        req.logger.info("calling UserManagement.usersettings POST")
+        req.logger.info("incomming request: \(req.body)")
+
+        let body: UserManagementDictDTO = try req.content.decode(UserManagementDictDTO.self)
+        guard let record: UserManagementUserSettingsModel = try await UserManagementUserSettingsModel
+            .query(on: req.db)
+            .filter(\.$key == body.key!)
+            .filter(\.$userId == body.userId!)
+            .first()
+        else {
+            /* no value found for given record so create */
+            let newRecord: UserManagementUserSettingsModel =
+                UserManagementUserSettingsModel(key: body.key!, value: body.value!, userId: body.userId!)
+            _ = try await newRecord.save(on: req.db)
+
+
+            let ret: Response = Response()
+            ret.status = HTTPResponseStatus.created
+            ret.body = Response.Body(string: "\(body.key!) has been created with value: \(body.value!)")
+            return ret
+        }
+        record.value = body.value ?? ""
+        _ = try await record.save(on: req.db)
+        
+        let ret: Response = Response()
+        ret.status = HTTPResponseStatus.accepted
+        ret.body = Response.Body(string: "\(body.key!) has been updated with value: \(body.value!)")
+        req.logger.info("\(body.key!) has been updated with value: \(body.value!)")
+        return ret
+    }
 }

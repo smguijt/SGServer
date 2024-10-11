@@ -169,7 +169,423 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        ...
+                    
+                        <div class="accordion" id="accordionExample">
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Address Details
+                              </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                <form method="POST" action="/view/module/usermanagement/address" class="">
+                                    <div class="card border-0">
+                                        <!--
+                                        <div class="card-header">
+                                            <div class="clearfix">
+                                                <button class="btn btn-sm btn-primary rounded-circle float-end" id="btnAddressDetailsSubmit">
+                                                    <i class="bi bi-save"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        -->
+                                        <div class="card-body">
+                                            <!--  -->
+                                            <div class="row gx-3">
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Street Address</label>
+                                                        <input id="street" name="street" type="text" class="form-control" placeholder="Street Address" value="#(userDetail.street)"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">House No.</label>
+                                                        <input id="housno" name="housno" type="text" class="form-control" placeholder="House No" value="#(userDetail.housno)"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row gx-3">
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Postal Code</label>
+                                                        <input id="postalcode" name="postalcode" type="text" class="form-control" placeholder="Postal code" value="#(userDetail.postalcode)"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">City</label>
+                                                        <input id="city" name="city" type="text" class="form-control" placeholder="City" value="#(userDetail.city)"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Country</label>
+                                                        <input id="country" name="country" type="text" class="form-control" placeholder="Country" value="#(userDetail.country)"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row gx-3">
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Telephone</label>
+                                                        <input id="telephone" name="telephone" type="number" class="form-control" placeholder="Telephone" value="#(userDetail.telephone)"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Mobile</label>
+                                                        <input id="mobile" name="mobile" type="number" class="form-control" placeholder="Mobile Phone" value="#(userDetail.mobile)"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- -->
+                                        </div> <!-- card-body -->
+                                        <div class="card-footer">
+                                            <div class="col-lg-12 col-sm-12 col-12">
+                                                <div class="d-flex gap-2 justify-content-end">
+                                                    <button class="btn btn-sm btn-primary float-end" id="btnAddressDetailsSubmit">
+                                                        <i class="bi bi-save p-2"></i>SAVE
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- card-footer -->
+                                    </div> <!-- card -->
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwoB">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwoB" aria-expanded="false" aria-controls="collapseTwoB">
+                                Organization Details
+                              </button>
+                            </h2>
+                            <div id="collapseTwoB" class="accordion-collapse collapse" aria-labelledby="headingTwoB" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                <form method="POST" action="/view/module/usermanagement/organizations" class="">
+                                    <div class="card border-0">
+                                        <!--
+                                        <div class="card-header">
+                                            <div class="clearfix">
+                                                <label class="form-label">User Organizations</label>
+                                                <button class="btn btn-sm btn-primary float-end" id="btnOrganizationsSubmit">
+                                                    <i class="bi bi-save p-2"></i>SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+                                        -->
+                                        <div class="card-body">
+                                            <div class="row gx-3">
+                                                <label class="form-label">User Organizations</label>
+                                                <div class="col-lg-6 col-sm-6 col-12 p3- mt-2 mb-3">
+                                                    <select id="organizations"
+                                                            name="organizations"
+                                                            multiple="multiple">
+                                                        #for(userOrganization in userOrganizations):
+                                                            <option value="#(userOrganization.code)"
+                                                                     #if(userOrganization.selected):selected#endif>
+                                                                #(userOrganization.description)
+                                                            </option>
+                                                        #endfor
+                                                    </select>
+                                                </div>
+                                            </div> <!-- row -->
+                                        </div> <!-- card-body -->
+                                        <div class="card-footer">
+                                            <div class="col-lg-12 col-sm-12 col-12">
+                                                <div class="d-flex gap-2 justify-content-end">
+                                                    <button class="btn btn-sm btn-primary float-end" id="btnOrganizationsSubmit">
+                                                        <i class="bi bi-save p-2"></i>SAVE
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- card-footer -->
+                                    </div> <!-- card -->
+                                </form>
+                              </div>
+                            </div>
+                        </div>
+                            
+                          
+                          
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Account Details
+                              </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                <form method="POST" action="/view/module/usermanagement/account" class="">
+                                    <div class="card border-0">
+                                        <!--
+                                        <div class="card-header">
+                                            <div class="clearfix">
+                                                <label class="form-label">User Organizations</label>
+                                                <button class="btn btn-sm btn-primary float-end" id="btnOrganizationsSubmit">
+                                                    <i class="bi bi-save p-2"></i>SAVE
+                                                </button>
+                                            </div>
+                                        </div>
+                                        -->
+                                        <div class="card-body">
+                                             <!--  -->
+                                            <div class="row gx-3">
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Name</label>
+                                                        <input id="caption" name="caption" type="text" class="form-control" placeholder="Enter fullname" value="#(userAccountData.caption)" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Email</label>
+                                                        <input id="email" name="email" type="email" class="form-control" placeholder="Enter email address" value="#(userAccountData.email)"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-sm-4 col-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Password</label>
+                                                        <input id="password_hash" name="password_hash" type="password" class="form-control" placeholder="Password" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             <!--  -->
+                                        </div> <!-- card-body -->
+                                        <div class="card-footer">
+                                            <div class="col-lg-12 col-sm-12 col-12">
+                                                <div class="d-flex gap-2 justify-content-end">
+                                                    <button class="btn btn-sm btn-primary float-end" id="btnOrganizationsSubmit">
+                                                        <i class="bi bi-save p-2"></i>SAVE
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- card-footer -->
+                                    </div> <!-- card -->
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
+                          <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Permissions
+                              </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                
+                                <!-- -->
+                                <div class="row gx-3">
+                                    <!-- Col 1 -->
+                                    <div class="col-sm-6 col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Administrator
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleAdministrator"
+                                                                    #if(!selectedUserPermissions.isSuperUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.IsAdminUser)"
+                                                                    #if(selectedUserPermissions.IsAdminUser):checked#endif
+                                                                    onchange="handlePermissionsChange('isAdminUser', event)"/>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        User
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUser"
+                                                                    #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.isUser)"
+                                                                    #if(selectedUserPermissions.isUser):checked#endif
+                                                                    onchange="handlePermissionsChange('isUser', event)" />
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <i>Super User</i>
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSuperUser"
+                                                                    disabled
+                                                                    #if(selectedUserPermissions.isSuperUser):checked#endif
+                                                                    onchange="handlePermissionsChange('isSuperUser', event)"/>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        System User
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleSystemUser"
+                                                                    #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.isSystemUser)"
+                                                                    #if(selectedUserPermissions.isSystemUser):checked#endif
+                                                                    onchange="handlePermissionsChange('isSystemUser', event)"/>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        API User
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleApiUser"
+                                                                    #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.isApiUser)"
+                                                                    #if(selectedUserPermissions.isApiUser):checked#endif
+                                                                    onchange="handlePermissionsChange('isApiUser', event)"/>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <!-- Col 2 -->
+                                    <div class="col-sm-6 col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        User Management
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleUserManagement"
+                                                                    #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.isAllowedToUseUserManagementModule)"
+                                                                    #if(selectedUserPermissions.isAllowedToUseUserManagementModule):checked#endif
+                                                                    onchange="handlePermissionsChange('isAllowedToUseUserManagementModule', event)"/>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Time Management
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTimeManagement"
+                                                                    #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.isAllowedToUseTimeManagementModule)"
+                                                                    #if(selectedUserPermissions.isAllowedToUseTimeManagementModule):checked#endif
+                                                                    onchange="handlePermissionsChange('isAllowedToUseTimeManagementModule', event)"/>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Event Management
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleEventManagement"
+                                                                    #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.isAllowedToUseEventManagementModule)"
+                                                                    #if(selectedUserPermissions.isAllowedToUseEventManagementModule):checked#endif
+                                                                    onchange="handlePermissionsChange('isAllowedToUseEventManagementModule', event)"/>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Task Management
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchRoleTaskManagement"
+                                                                    #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                    value="#(selectedUserPermissions.isAllowedToUseTaskManagementModule)"
+                                                                    #if(selectedUserPermissions.isAllowedToUseTaskManagementModule):checked#endif
+                                                                    onchange="handlePermissionsChange('isAllowedToUseTaskManagementModule', event)"/>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- -->
+                                
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Settings
+                              </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                              <div class="accordion-body">
+                                 <!-- -->
+                                 <div class="row gx-3">
+                                    <!-- Col 1 -->
+                                    <div class="col-sm-6 col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Show Messages
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                                id="switchShowMessages" value="#(settings.ShowMessages)" #if(settings.ShowMessages):checked#endif #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                onchange="handleSettingsChange('ShowMessages', event)" />
+                                                        </div>
+                                                    </li>
+                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Show Notifications
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchShowNotifications"
+                                                                value="#(settings.ShowNotifications)" #if(settings.ShowNotifications):checked#endif #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                onchange="handleSettingsChange('ShowNotifications', event)" />
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Show Updates
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchShowUpdates"
+                                                                value="#(settings.ShowUpdates)" #if(settings.ShowUpdates):checked#endif  #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                onchange="handleSettingsChange('ShowUpdates', event)" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div> <!-- card body -->
+                                        </div> <!-- card -->
+                                    </div> <!-- col 1 -->
+                                    <!-- Col 2 -->
+                                    <div class="col-sm-6 col-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <label class="form-label">Client Id</label>
+                                                        <div class="form-check m-0">
+                                                            <input id="ClientId" type="text" class="form-control" placeholder="ClientId" value="#(settings.ClientId)" #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                onchange="handleSettingsChange('ClientId', event)" />
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <label class="form-label">Client Secret</label>
+                                                        <div class="form-check m-0">
+                                                            <input id="ClientSecret" type="text" class="form-control" placeholder="Client Secret" value="#(settings.ClientSecret)" #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                onchange="handleSettingsChange('ClientSecret', event)" />
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <label class="form-label">Use OAUTH02 Authentication</label>
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchUseOAUTH02"
+                                                                value="#(settings.UseOAUTH02)" #if(settings.UseOAUTH02):checked#endif #if(!selectedUserPermissions.IsAdminUser):disabled#endif
+                                                                onchange="handleSettingsChange('UseOAUTH02', event)" />
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div> <!-- card body -->
+                                        </div> <!-- card -->
+                                    </div> <!-- Col 2 -->
+                                </div>
+                                 <!-- -->
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </div>
                     </div>
                     <div class="card-footer">
                         
@@ -215,6 +631,63 @@
         function goBack() {
             window.location.replace("/view/module/usermanagement");
         }
+        
+        function handlePermissionsChange(name, e) {
+            handleChange(name, "/view/module/usermanagement/permissions", e)
+        }
+        
+        function handleSettingsChange(name, e) {
+            handleChange(name, "/view/module/usermanagement/settings", e)
+        }
+        
+        function handleChange(name, uri, e) {
+            const {checked} = e.target;
+
+            $.post( uri,
+                {
+                    key: name,
+                    value: checked,
+                    userId: "#(settings.userId)",
+                    selectedUserId: "#(selectedUserId)"
+                })
+                .done(function( data ) {
+                    Toastify({
+                        text: data,
+                        duration: 3000,
+                        close: true,
+                        avatar: '/assets/favicon_io/apple-touch-icon.png',
+                        className: "bg-success",
+                        offset: {
+                            x: 9,
+                            y: 3,
+                        },
+                        }).showToast();
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    Toastify({
+                        text: textStatus,
+                        duration: 3000,
+                        close: true,
+                        avatar: '/assets/favicon_io/apple-touch-icon.png',
+                        className: "bg-danger",
+                        offset: {
+                            x: 9,
+                            y: 3,
+                        },
+                    }).showToast();
+                })
+                .always(function() {
+                    //alert( "finished" );
+                });
+        }
+        
+        
+        $( '#organizations' ).select2( {
+            theme: "bootstrap-5",
+            width: $( this ).data( 'width' ) ? $( this ).data( 'width' ) : $( this ).hasClass( 'w-100' ) ? '100%' : 'style',
+            placeholder: $( this ).data( 'placeholder' ),
+            closeOnSelect: false,
+        } );
 
     #endexport
 
