@@ -13,4 +13,5 @@ struct UserBaseContext: Encodable {
     var userDetail: UserManagementAddressModelDTO?
     var selectedUserId: String?
     var selectedUserPermissions: UserManagementRoleModelDTO?
+    var selectedAccordionPanel: String?
 }

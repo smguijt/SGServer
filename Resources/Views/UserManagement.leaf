@@ -173,13 +173,18 @@
                         <div class="accordion" id="accordionExample">
                           <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
-                              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              <button class="accordion-button"
+                                      type="button"
+                                      data-bs-toggle="collapse"
+                                      data-bs-target="#collapseOne"
+                                      #if(selectedAccordionPanel=="Address Details"):aria-expanded="true"#endif
+                                      aria-controls="collapseOne">
                                 Address Details
                               </button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div id="collapseOne" class="accordion-collapse collapse show aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                               <div class="accordion-body">
-                                <form method="POST" action="/view/module/usermanagement/address" class="">
+                                <form method="POST" action="/view/module/usermanagement/address?selectedUserId=#(selectedUserId)&tabid=details" class="">
                                     <div class="card border-0">
                                         <!--
                                         <div class="card-header">
@@ -269,7 +274,7 @@
                             </h2>
                             <div id="collapseTwoB" class="accordion-collapse collapse" aria-labelledby="headingTwoB" data-bs-parent="#accordionExample">
                               <div class="accordion-body">
-                                <form method="POST" action="/view/module/usermanagement/organizations" class="">
+                                <form method="POST" action="/view/module/usermanagement/organizations?selectedUserId=#(selectedUserId)&tabid=details" class="">
                                     <div class="card border-0">
                                         <!--
                                         <div class="card-header">
@@ -324,7 +329,7 @@
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                               <div class="accordion-body">
-                                <form method="POST" action="/view/module/usermanagement/account" class="">
+                                <form method="POST" action="/view/module/usermanagement/account?selectedUserId=#(selectedUserId)&tabid=details" class="">
                                     <div class="card border-0">
                                         <!--
                                         <div class="card-header">
@@ -688,6 +693,28 @@
             placeholder: $( this ).data( 'placeholder' ),
             closeOnSelect: false,
         } );
+        
+        
+        #if(selectedAccordionPanel=="Address Details"):
+            var collapseOne = new bootstrap.Collapse(document.getElementById('collapseOne'), {
+                toggle: false  // Prevent immediate toggling
+            });
+            collapseOne.show();
+        #endif
+        
+        #if(selectedAccordionPanel=="Account Details"):
+            var collapseTwo = new bootstrap.Collapse(document.getElementById('collapseTwo'), {
+                toggle: false  // Prevent immediate toggling
+            });
+            collapseTwo.show();
+        #endif
+        
+        #if(selectedAccordionPanel=="Organization Details"):
+            var collapseTwoB = new bootstrap.Collapse(document.getElementById('collapseTwoB'), {
+                toggle: false  // Prevent immediate toggling
+            });
+            collapseTwoB.show();
+        #endif
 
     #endexport
 
