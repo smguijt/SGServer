@@ -301,16 +301,16 @@ struct UserManagementUserController: RouteCollection {
         // _ = try await setUserOrganizationData(req: req, form: userOrganizationFormList, userId: userId!)
         
         /* update address info */
-        let myAddressInfo: UserManagementAddressModelDTO = try await setUserAddressData(req: req, form: body, userId: userId!)
+        let myAddressInfo: UserManagementAddressModelDTO = try await setUserAddressData(req: req, form: body, userId: selectedUserId!)
         
         /* retrieve account info */
-        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
+        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: selectedUserId!)
         
         /* retrieve address info */
-        //let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: userId!)
+        //let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
         
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         
         /* create return message */
@@ -374,19 +374,19 @@ struct UserManagementUserController: RouteCollection {
         
         /* decode organizations */
         let userOrganizationFormList: UserManagementUserOrganizationDTO = try req.content.decode(UserManagementUserOrganizationDTO.self)
-        _ = try await setUserOrganizationData(req: req, form: userOrganizationFormList, userId: userId!)
+        _ = try await setUserOrganizationData(req: req, form: userOrganizationFormList, userId: selectedUserId!)
         
         /* update address info */
         // let myAddressInfo: UserManagementAddressModelDTO = try await setUserAddressData(req: req, form: body, userId: userId!)
         
         /* retrieve account info */
-        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
+        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: selectedUserId!)
         
         /* retrieve address info */
-        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: userId!)
+        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
         
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         
         /* create return message */
