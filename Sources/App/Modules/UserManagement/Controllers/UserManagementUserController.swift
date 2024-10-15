@@ -19,6 +19,7 @@ struct UserManagementUserController: RouteCollection {
         pg.get("settings", use: self.renderUserManagementScreens)
         
         pg.post("details", use: self.renderUserManagementScreens)
+        //pg.delete("details", use: self.renderUserManagementScreens)
         
         pg.post("address", use: self.updateUserManagementAddressFields)
         pg.post("organizations", use: self.updateUserManagementOrganizations)
@@ -36,10 +37,19 @@ struct UserManagementUserController: RouteCollection {
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
         let userId: UUID? = UUID(uuidString: userIdString) ?? nil
         req.logger.info("UserManagement.userList userId: \(userIdString)")
-        
+
+        /* get selected action */
+        var selectedAction = try? req.query.get(String.self, at: "action")
+        if (selectedAction == nil) { selectedAction = "edit" }
+        req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
+
         /* get selected user */
         var selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
-        if (selectedUserIdString == nil) { selectedUserIdString = userIdString }
+        req.logger.info("UserManagement.userList selectedUserIdString parsed value : \(String(describing:selectedUserIdString))")
+
+        if (selectedUserIdString == nil && selectedAction == "edit") { selectedUserIdString = userIdString }
+        if (selectedUserIdString == nil && selectedAction == "add") { selectedUserIdString = UUID.generateRandom().uuidString }
+        req.logger.info("UserManagement.userList selectedUserIdString updated value : \(String(describing:selectedUserIdString))")
         let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
         req.logger.info("UserManagement.userList selectedUserIdString: \(String(describing:selectedUserIdString))")
         
@@ -85,9 +95,25 @@ struct UserManagementUserController: RouteCollection {
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
         let userId : UUID? = UUID(uuidString: userIdString) ?? nil
         req.logger.info("UserManagement.userList userId: \(userIdString)")
+
+        /* get selected action */
+        var selectedAction = try? req.query.get(String.self, at: "action")
+        if (selectedAction == nil) { selectedAction = "edit" }
+        req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
         
         /* get selected user */
-        let selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
+        var selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
+        req.logger.info("UserManagement.userList selectedUserIdString parsed value : \(String(describing:selectedUserIdString))")
+
+        if (selectedUserIdString == nil && selectedAction == "edit") { 
+            selectedUserIdString = userIdString 
+            req.logger.info("UserManagement.userList selectedUserIdString updated (edit) value : \(String(describing:selectedUserIdString))")
+        }
+        if (selectedUserIdString == nil && selectedAction == "add") { 
+            selectedUserIdString = UUID.generateRandom().uuidString 
+            req.logger.info("UserManagement.userList selectedUserIdString updated (add) value : \(String(describing:selectedUserIdString))")
+        }
+        //req.logger.info("UserManagement.userList selectedUserIdString updated value : \(String(describing:selectedUserIdString))")
         let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
         req.logger.info("UserManagement.userList selectedUserIdString: \(String(describing:selectedUserIdString))")
         
