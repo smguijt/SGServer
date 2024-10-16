@@ -38,7 +38,8 @@ final class UserManagementAccountModel: Model, @unchecked Sendable {
             ID: self.id,
             email: self.email,
             password: self.password,
-            caption: self.caption
+            caption: self.caption,
+            password_hash: self.password
         )
     }
 

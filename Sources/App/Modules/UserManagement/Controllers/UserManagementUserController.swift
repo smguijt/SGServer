@@ -83,6 +83,7 @@ struct UserManagementUserController: RouteCollection {
                                          UserListContext(title: "SGServer",
                                                          settings: mySettingsDTO,
                                                          tabIndicator: tabIndicator,
+                                                         actionIndicator: selectedAction,
                                                          userPermissions: myUserPermissionsDTO,
                                                          userList: userList,
                                                          selectedUserId: selectedUserIdString))
@@ -105,12 +106,12 @@ struct UserManagementUserController: RouteCollection {
         var selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
         req.logger.info("UserManagement.userList selectedUserIdString parsed value : \(String(describing:selectedUserIdString))")
 
-        if (selectedUserIdString == nil && selectedAction == "edit") { 
-            selectedUserIdString = userIdString 
+        if ((selectedUserIdString == nil || selectedUserIdString == "NONE") && selectedAction == "edit") {
+            selectedUserIdString = userIdString
             req.logger.info("UserManagement.userList selectedUserIdString updated (edit) value : \(String(describing:selectedUserIdString))")
         }
-        if (selectedUserIdString == nil && selectedAction == "add") { 
-            selectedUserIdString = UUID.generateRandom().uuidString 
+        if ((selectedUserIdString == nil || selectedUserIdString == "NONE") && selectedAction == "add") {
+            selectedUserIdString = UUID.generateRandom().uuidString
             req.logger.info("UserManagement.userList selectedUserIdString updated (add) value : \(String(describing:selectedUserIdString))")
         }
         //req.logger.info("UserManagement.userList selectedUserIdString updated value : \(String(describing:selectedUserIdString))")
@@ -123,45 +124,62 @@ struct UserManagementUserController: RouteCollection {
             tabIndicator = "general"
         }
         
-        let selectedAccordionPanel: String? = "Address Details"
+        /* set selectedAccordionPanel */
+        var selectedAccordionPanel: String? = "Address Details"
+        if selectedAction == "add" {
+            selectedAccordionPanel = "Account Details";
+        }
         
         /* retrieve settings */
         var mySettingsDTO = try await getSettings(req: req)
         
         /* if logged in, retrieve user settings */
-        if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
-            _ = UUID(req.session.data["sgsoftware_system_user"] ?? "")
-            //if (selectedUserId == nil) { selectedUserId = UUID.generateRandom() }
-            mySettingsDTO = try await getUserSettings(req: req, userId: selectedUserId!)
-            mySettingsDTO.ShowUserBox = true
-            mySettingsDTO.ShowToolbar = true
+        if selectedAction != "add" {
+            if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
+                _ = UUID(req.session.data["sgsoftware_system_user"] ?? "")
+                //if (selectedUserId == nil) { selectedUserId = UUID.generateRandom() }
+                mySettingsDTO = try await getUserSettings(req: req, userId: selectedUserId!)
+                mySettingsDTO.ShowUserBox = true
+                mySettingsDTO.ShowToolbar = true
+            }
         }
         
         /* retrieve user permissions */
         let myUserPermissionsDTO: UserManagementRoleModelDTO =
         try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId)
-        
         /* +++++++ */
         
         /* retrieve user organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
-        req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
+        var myOrganizations: [UserManagementOrganizationModelDTO] = []
+        if selectedAction != "add" {
+            myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
+            req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
+        }
         
         /* retrieve user address info */
-        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
+        var myAddressInfo: UserManagementAddressModelDTO = UserManagementAddressModelDTO()
+        if selectedAction != "add" {
+            myAddressInfo = try await getUserAddressData(req: req, userId: selectedUserId!)
+        }
         
         /* retrieve account info */
-        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: selectedUserId!)
+        var myAccountInfo: UserManagementAccountModelDTO = UserManagementAccountModelDTO()
+        if selectedAction != "add" {
+            myAccountInfo = try await getUserAccountInfo(req: req, userId: selectedUserId!)
+        }
         
         /* retrieve user permissions for selected user */
-        let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
-        try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
-        
+        var mySelectedUserPermissionsDTO: UserManagementRoleModelDTO = UserManagementRoleModelDTO()
+        if selectedAction != "add" {
+            mySelectedUserPermissionsDTO =
+            try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
+        }
         
         return try await req.view.render("UserManagement",
                                          UserBaseContext(title: "SGServer",
                                                          settings: mySettingsDTO,
                                                          tabIndicator: tabIndicator,
+                                                         actionIndicator: selectedAction,
                                                          userPermissions: myUserPermissionsDTO,
                                                          userOrganizations: myOrganizations,
                                                          userAccountData: myAccountInfo,
@@ -288,6 +306,11 @@ struct UserManagementUserController: RouteCollection {
         let tabIndicator: String? = "details"
         let selectedAccordionPanel: String? = "Address Details"
         
+        /* retrieve actionIndicator */
+        var selectedAction = try? req.query.get(String.self, at: "action")
+        if (selectedAction == nil) { selectedAction = "edit" }
+        req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
+        
         /* retrieve user information */
         var userIdString = try? req.query.get(String.self, at: "userid")
         if (userIdString == nil) {
@@ -345,6 +368,7 @@ struct UserManagementUserController: RouteCollection {
                                                          successMessage: "Record updated",
                                                          settings: mySettingsDTO,
                                                          tabIndicator: tabIndicator,
+                                                         actionIndicator: selectedAction,
                                                          userPermissions: myUserPermissionsDTO,
                                                          userOrganizations: myOrganizations,
                                                          userAccountData: myAccountInfo,
@@ -363,6 +387,11 @@ struct UserManagementUserController: RouteCollection {
         /* retrieve tabSettings */
         let tabIndicator: String? = "details"
         let selectedAccordionPanel: String? = "Organization Details"
+        
+        /* retrieve actionIndicator */
+        var selectedAction = try? req.query.get(String.self, at: "action")
+        if (selectedAction == nil) { selectedAction = "edit" }
+        req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
         
         /* retrieve user information */
         var userIdString = try? req.query.get(String.self, at: "userid")
@@ -396,7 +425,7 @@ struct UserManagementUserController: RouteCollection {
         req.logger.info("userProfile retrieved: \(mySettingsDTO)")
         
         /* decode body */
-        let body: UserManagementAddressModelDTO = try req.content.decode(UserManagementAddressModelDTO.self)
+        //let body: UserManagementAddressModelDTO = try req.content.decode(UserManagementAddressModelDTO.self)
         
         /* decode organizations */
         let userOrganizationFormList: UserManagementUserOrganizationDTO = try req.content.decode(UserManagementUserOrganizationDTO.self)
@@ -421,6 +450,7 @@ struct UserManagementUserController: RouteCollection {
                                                          successMessage: "Record updated",
                                                          settings: mySettingsDTO,
                                                          tabIndicator: tabIndicator,
+                                                         actionIndicator: selectedAction,
                                                          userPermissions: myUserPermissionsDTO,
                                                          userOrganizations: myOrganizations,
                                                          userAccountData: myAccountInfo,
@@ -437,8 +467,15 @@ struct UserManagementUserController: RouteCollection {
         req.logger.debug("incomming request: \(req.body)")
 
          /* retrieve tabSettings */
+        var errorMessage: String?
+        var successMessage: String?
         let tabIndicator: String? = "details"
         let selectedAccordionPanel: String? = "Account Details";
+        
+        /* retrieve actionIndicator */
+        var selectedAction = try? req.query.get(String.self, at: "action")
+        if (selectedAction == nil) { selectedAction = "edit" }
+        req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
 
         /* retrieve user information */
         var userIdString = try? req.query.get(String.self, at: "userid")
@@ -449,8 +486,8 @@ struct UserManagementUserController: RouteCollection {
         let userId = UUID(uuidString: userIdString ?? "") ?? nil
         
         /* get selected user */
-        let selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
-        let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
+        var selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
+        var selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
         req.logger.info("UserManagement.userList selectedUserIdString: \(String(describing:selectedUserIdString))")
 
         /* retrieve user permissions */
@@ -458,35 +495,66 @@ struct UserManagementUserController: RouteCollection {
             try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
 
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
-        req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
+        req.logger.info("UserManagement.Organizations retrieved: \(myOrganizations)")
 
         /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
         mySettingsDTO.ShowUserBox = true
-        req.logger.info("userProfile retrieved: \(mySettingsDTO)")
+        req.logger.info("UserManagement retrieved: \(mySettingsDTO)")
         
         /* retrieve user permissions for selected user */
         let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
         try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
         
-        /*
-          TO DO: STORE ACCOUNT FIELDS
-         */
+
+        /* decode body */
+        let body: UserManagementAccountModelDTO = try req.content.decode(UserManagementAccountModelDTO.self)
+        if selectedAction == "add" {
+            /* create new userId */
+            selectedUserIdString = UUID().uuidString
+            selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
+        }
+        /* update address info */
+        let myAccountInfoStatus: Bool = try await setUserAccountInfo(req: req, form: body, userId: selectedUserId!, actionIndicator: selectedAction)
+        if myAccountInfoStatus {
+            if selectedAction == "add" {
+                successMessage = "Account Details created"
+                req.logger.info("\(successMessage ?? "")")
+            } else {
+                successMessage = "Account Details updated"
+                req.logger.info("\(successMessage ?? "")")
+            }
+            /* change action from add to edit mode */
+            selectedAction = "edit"
+        } else {
+            if selectedAction == "add" {
+                errorMessage = "Account Details could not be created!"
+                req.logger.info("\(errorMessage ?? "")")
+            }
+            else {
+                errorMessage = "Account Details could not be updated!"
+                req.logger.error("\(errorMessage ?? "")")
+            }
+            
+        }
+        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: selectedUserId!)
 
         /* retrieve account info */
-        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
+        //let myAccountInfo2: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
 
         /* retrieve address info */
-        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: userId!)
+        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
 
         /* create return message */
         return try await req.view.render("UserManagement",
                             UserBaseContext(title: "SGServer",
-                                            errorMessage: "Under Construction!",
+                                            errorMessage: errorMessage,
+                                            successMessage: successMessage,
                                             settings: mySettingsDTO,
                                             tabIndicator: tabIndicator,
+                                            actionIndicator: selectedAction,
                                             userPermissions: myUserPermissionsDTO,
                                             userOrganizations: myOrganizations,
                                             userAccountData: myAccountInfo,

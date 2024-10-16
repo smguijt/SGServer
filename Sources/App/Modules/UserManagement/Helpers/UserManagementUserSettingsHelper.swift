@@ -273,25 +273,54 @@ func setUserAddressData(req: Request, form: UserManagementAddressModelDTO, userI
 
 func getUserAccountInfo(req: Request, userId: UUID) async throws -> UserManagementAccountModelDTO {
 
-    let accountInfo: UserManagementAccountModelDTO = try await UserManagementAccountModel
-        .query(on: req.db)
-        .filter(\.$id == userId)
-        .first()!
-        .toDTO()
-        
-    return accountInfo
+    do {
+        let accountInfo: UserManagementAccountModel = try await UserManagementAccountModel
+            .query(on: req.db)
+            .filter(\.$id == userId)
+            .first() ?? UserManagementAccountModel()
+
+        return accountInfo.toDTO()
+    } catch {
+        return UserManagementAccountModelDTO()
+    }
 }
+
+func setUserAccountInfo(req: Request, form: UserManagementAccountModelDTO, userId: UUID, actionIndicator: String?) async throws -> Bool {
+    
+    do {
+        if actionIndicator != "add" {
+            let accountInfo: UserManagementAccountModel = try await UserManagementAccountModel
+                .query(on: req.db)
+                .filter(\.$id == userId)
+                .first()!
+                
+            if (accountInfo.caption != form.caption) { accountInfo.caption = form.caption }
+            if (accountInfo.email != form.email) { accountInfo.email = form.email! }
+            
+            try await accountInfo.save(on: req.db)
+        } else {
+            let newRecord: UserManagementAccountModel = UserManagementAccountModel(id: userId, caption: form.caption, email: form.email!, password: try Bcrypt.hash(form.password_hash!))
+            try await newRecord.create(on: req.db)
+        }
+    } catch {
+        return false
+    }
+    return true
+}
+
+
 
 func setUserOrganizationData(req: Request, form: UserManagementUserOrganizationDTO, userId: UUID) async throws -> Bool {
 
-    //let ret: Response = Response()
-    guard let existingOrganizations: [UserManagementUserOrganizationsModel]? = try await UserManagementUserOrganizationsModel
-        .query(on: req.db)
-        .join(UserManagementOrganizationModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .inner)
-        .filter(\.$userId == userId)
-        .all()
-
-    else {
+    var existingOrganizations: [UserManagementUserOrganizationsModel]?
+    do {
+        existingOrganizations = try await UserManagementUserOrganizationsModel
+            .query(on: req.db)
+            .join(UserManagementOrganizationModel.self, on: \UserManagementOrganizationModel.$id == \UserManagementUserOrganizationsModel.$orgId, method: .inner)
+            .filter(\.$userId == userId)
+            .all()
+    }
+    catch {
         return false
     }
 
@@ -300,13 +329,16 @@ func setUserOrganizationData(req: Request, form: UserManagementUserOrganizationD
         //let userOrganization: UserManagementOrganizationModel = try existingOrg.joined(UserManagementOrganizationModel.self)
         try await existingOrg.delete(on: req.db)
     }
-
+    
+    var OrganizationsList: [UserManagementOrganizationModel]?
     for formItem in form.organizations ?? [] {
-        guard let OrganizationsList: [UserManagementOrganizationModel]? = try await UserManagementOrganizationModel.query(on: req.db).all()
-        else {
+        do {
+            OrganizationsList = try await UserManagementOrganizationModel.query(on: req.db).all()
+        } catch {
             /* could not retrieve any records to nothing to update */
             return false
         }
+            
         for orgItem in OrganizationsList ?? [] {
             if orgItem.code == formItem {
                 /* item found so add */
