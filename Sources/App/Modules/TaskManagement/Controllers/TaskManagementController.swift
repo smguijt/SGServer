@@ -22,6 +22,11 @@ struct TaskManagementUserController: RouteCollection {
         /* get login user */
         let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
         let userId = UUID(uuidString: userIdString) ?? nil
+        
+        /* get selected action */
+        var selectedAction = try? req.query.get(String.self, at: "action")
+        if (selectedAction == nil) { selectedAction = "edit" }
+        req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
 
         /* retrieve settings */
         var mySettingsDTO = try await getSettings(req: req)
@@ -36,8 +41,9 @@ struct TaskManagementUserController: RouteCollection {
         try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
 
          return try await req.view.render("TaskManagement", 
-            TaskBaseContext(title: "SGServer", 
-                            settings: mySettingsDTO, 
+            TaskBaseContext(title: "SGServer",
+                            settings: mySettingsDTO,
+                            actionIndicator: selectedAction,
                             userPermissions: myUserPermissionsDTO))
     }
 }

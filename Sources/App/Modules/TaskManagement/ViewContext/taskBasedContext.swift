@@ -7,6 +7,7 @@ struct TaskBaseContext: Encodable {
     var successMessage: String?
     var settings: SGServerSettingsDTO
     var tabIndicator: String?
+    var actionIndicator: String?
     var userPermissions: UserManagementRoleModelDTO?
     var userOrganizations: [UserManagementOrganizationModelDTO]?
 }
