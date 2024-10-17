@@ -133,7 +133,7 @@ func getUserPermissionSettings(req: Request, userId: UUID, selectedUserId: UUID?
     return myUserPermissionsDTO
 }
 
-func getUserOrganizations(req: Request, userId: UUID) async throws -> [UserManagementOrganizationModelDTO] {
+func getUserOrganizations(req: Request, userId: UUID, filterByUser: Bool = false) async throws -> [UserManagementOrganizationModelDTO] {
 
     let organizations: [UserManagementOrganizationModel] = try await UserManagementOrganizationModel
         .query(on: req.db)
@@ -172,7 +172,13 @@ func getUserOrganizations(req: Request, userId: UUID) async throws -> [UserManag
 
         if !bHasValue {
             req.logger.info("add item to transformedOrganization")
-            transformedOrganizations.append(transformedOrganization)
+            if !filterByUser {
+                transformedOrganizations.append(transformedOrganization)
+            } else {
+                if transformedOrganization.selected {
+                    transformedOrganizations.append(transformedOrganization)
+                }
+            }
         }
     }
 
