@@ -527,10 +527,15 @@ struct UserManagementUserController: RouteCollection {
         mySettingsDTO.ShowToolbar = true
         mySettingsDTO.ShowUserBox = true
         req.logger.info("UserManagement retrieved: \(mySettingsDTO)")
+
+        /* get selected organization */
+        var selectedOrg = try? req.query.get(String.self, at: "org")
+        if (selectedOrg == nil) { selectedOrg = "" }
+        req.logger.info("UserManagement.updateUserManagementAccountFields selectedOrg: \(String(describing:selectedOrg))")
         
         /* retrieve user permissions for selected user */
-        let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
-        try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
+        //let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
+        //try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
         
         /* set filterByUser option for organization filter */
         var filterByUser: Bool = true
@@ -550,7 +555,7 @@ struct UserManagementUserController: RouteCollection {
             selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
         }
         /* update address info */
-        let myAccountInfoStatus: Bool = try await setUserAccountInfo(req: req, form: body, userId: selectedUserId!, actionIndicator: selectedAction)
+        let myAccountInfoStatus: Bool = try await setUserAccountInfo(req: req, form: body, userId: selectedUserId!, actionIndicator: selectedAction, org: selectedOrg)
         if myAccountInfoStatus {
             if selectedAction == "add" {
                 successMessage = "Account Details created"
@@ -570,23 +575,24 @@ struct UserManagementUserController: RouteCollection {
                 errorMessage = "Account Details could not be updated!"
                 req.logger.error("\(errorMessage ?? "")")
             }
-            
         }
-        let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: selectedUserId!)
+        
+        //let myAccountInfo: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: selectedUserId!)
 
         /* retrieve account info */
         //let myAccountInfo2: UserManagementAccountModelDTO = try await getUserAccountInfo(req: req, userId: userId!)
 
         /* retrieve address info */
-        let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
+        // let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
 
-        /* create return message */
+        /* create return message 
         return try await req.view.render("UserManagement",
                             UserBaseContext(title: "SGServer",
                                             errorMessage: errorMessage,
                                             successMessage: successMessage,
                                             settings: mySettingsDTO,
                                             tabIndicator: tabIndicator,
+                                            orgIndicator: selectedOrg,
                                             actionIndicator: selectedAction,
                                             userPermissions: myUserPermissionsDTO,
                                             userOrganizations: myOrganizations,
@@ -596,6 +602,9 @@ struct UserManagementUserController: RouteCollection {
                                             selectedUserPermissions: mySelectedUserPermissionsDTO,
                                             selectedAccordionPanel: selectedAccordionPanel))
             .encodeResponse(for: req)
+            */
+
+            return req.redirect(to: "/view/module/usermanagement/account?selectedUserId=\(selectedUserIdString!)&tabid=details&action=edit&org=\(selectedOrg!)") 
     }
     
     @Sendable
