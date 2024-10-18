@@ -52,8 +52,14 @@ struct UserManagementUserProfileController: RouteCollection {
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
             try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
 
+        /* set filterByUser option for organization filter */
+        var filterByUser: Bool = true
+        if myUserPermissionsDTO.isSuperUser {
+            filterByUser = false
+        }
+
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!, filterByUser: filterByUser)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
 
          /* retrieve account info */

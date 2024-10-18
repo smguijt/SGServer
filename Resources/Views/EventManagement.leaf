@@ -72,6 +72,22 @@
     #endexport
 
     #export("toolbar"):
+        <span>
+            <form method="POST" action="/view/module/eventmanagement/selectedorganization">
+                <label class="form-label bold mt-1">Organization:</label>
+                <select id="organization"
+                        name="organization">
+                    
+                    #for(userOrganization in userOrganizations):
+                        <option value="#(userOrganization.code)" #if(userOrganization.code == orgIndicator):selected#endif>
+                            #(userOrganization.description)
+                        </option>
+                    #endfor
+                    <option value="" #if(orgIndicator==""):selected#endif> </option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-search"></i></button>
+            </form>
+        </span>
     #endexport
 
     #export("main"):

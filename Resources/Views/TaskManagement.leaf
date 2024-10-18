@@ -1,7 +1,6 @@
 #extend("unifyTemplate"):
 
     #export("header"):
-        [#(orgIndicator)]
     #endexport
 
     #export("sidebar"):

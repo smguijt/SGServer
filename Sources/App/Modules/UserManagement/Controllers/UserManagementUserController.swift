@@ -148,11 +148,17 @@ struct UserManagementUserController: RouteCollection {
         let myUserPermissionsDTO: UserManagementRoleModelDTO =
         try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId)
         /* +++++++ */
+
+        /* set filterByUser option for organization filter */
+        var filterByUser: Bool = true
+        if myUserPermissionsDTO.isSuperUser {
+            filterByUser = false
+        }
         
         /* retrieve user organizations */
         var myOrganizations: [UserManagementOrganizationModelDTO] = []
         if selectedAction != "add" {
-            myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
+            myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!, filterByUser: filterByUser)
             req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         }
         
@@ -331,6 +337,12 @@ struct UserManagementUserController: RouteCollection {
         /* retrieve user permissions for selected user */
         let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
         try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
+
+        /* set filterByUser option for organization filter */
+        var filterByUser: Bool = true
+        if myUserPermissionsDTO.isSuperUser {
+            filterByUser = false
+        }
         
         /* retrieve organizations */
         //let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
@@ -359,7 +371,7 @@ struct UserManagementUserController: RouteCollection {
         //let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
         
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!, filterByUser: filterByUser)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         
         /* create return message */
@@ -413,6 +425,12 @@ struct UserManagementUserController: RouteCollection {
         /* retrieve user permissions for selected user */
         let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
         try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
+
+        /* set filterByUser option for organization filter */
+        var filterByUser: Bool = true
+        if myUserPermissionsDTO.isSuperUser {
+            filterByUser = false
+        }
         
         /* retrieve organizations */
         //let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!)
@@ -441,7 +459,7 @@ struct UserManagementUserController: RouteCollection {
         let myAddressInfo: UserManagementAddressModelDTO = try await getUserAddressData(req: req, userId: selectedUserId!)
         
         /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!, filterByUser: filterByUser)
         req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         
         /* create return message */
@@ -494,10 +512,6 @@ struct UserManagementUserController: RouteCollection {
         let myUserPermissionsDTO: UserManagementRoleModelDTO =
             try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
 
-        /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!)
-        req.logger.info("UserManagement.Organizations retrieved: \(myOrganizations)")
-
         /* retrieve system / user settings */
         var mySettingsDTO: SGServerSettingsDTO = try await getUserSettings(req: req, userId: userId!)
         mySettingsDTO.ShowToolbar = true
@@ -508,6 +522,15 @@ struct UserManagementUserController: RouteCollection {
         let mySelectedUserPermissionsDTO: UserManagementRoleModelDTO =
         try await getUserPermissionSettings(req: req, userId: selectedUserId!, selectedUserId: selectedUserId)
         
+        /* set filterByUser option for organization filter */
+        var filterByUser: Bool = true
+        if myUserPermissionsDTO.isSuperUser {
+            filterByUser = false
+        }
+        
+        /* retrieve organizations */
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!, filterByUser: filterByUser)
+        req.logger.info("UserManagement.Organizations retrieved: \(myOrganizations)")
 
         /* decode body */
         let body: UserManagementAccountModelDTO = try req.content.decode(UserManagementAccountModelDTO.self)
