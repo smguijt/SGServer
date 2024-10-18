@@ -113,6 +113,11 @@ struct UserManagementUserController: RouteCollection {
         var selectedAction = try? req.query.get(String.self, at: "action")
         if (selectedAction == nil) { selectedAction = "edit" }
         req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
+
+        /* get selected organization */
+        var selectedOrg = try? req.query.get(String.self, at: "org")
+        if (selectedOrg == nil) { selectedOrg = "" }
+        req.logger.info("UserManagement.renderList selectedOrg: \(String(describing:selectedOrg))")
         
         /* get selected user */
         var selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
@@ -170,7 +175,8 @@ struct UserManagementUserController: RouteCollection {
         /* retrieve user organizations */
         var myOrganizations: [UserManagementOrganizationModelDTO] = []
         if selectedAction != "add" {
-            myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!, filterByUser: filterByUser)
+            //myOrganizations = try await getUserOrganizations(req: req,  userId: selectedUserId!, filterByUser: filterByUser)
+            myOrganizations = try await getUserOrganizations(req: req,  userId: userId!, filterByUser: filterByUser)
             req.logger.info("userProfile.Organizations retrieved: \(myOrganizations)")
         }
         
@@ -197,6 +203,7 @@ struct UserManagementUserController: RouteCollection {
                                          UserBaseContext(title: "SGServer",
                                                          settings: mySettingsDTO,
                                                          tabIndicator: tabIndicator,
+                                                         orgIndicator: selectedOrg,
                                                          actionIndicator: selectedAction,
                                                          userPermissions: myUserPermissionsDTO,
                                                          userOrganizations: myOrganizations,
@@ -494,6 +501,9 @@ struct UserManagementUserController: RouteCollection {
         req.logger.notice("calling UserManagementUserManagement.updateUserManagementAccountFields POST")
         req.logger.debug("incomming request: \(req.body)")
 
+        let queryParams = req.url.query ?? ""
+        req.logger.info("queryParams: \(queryParams)")
+
          /* retrieve tabSettings */
         var errorMessage: String?
         var successMessage: String?
@@ -604,7 +614,7 @@ struct UserManagementUserController: RouteCollection {
             .encodeResponse(for: req)
             */
 
-            return req.redirect(to: "/view/module/usermanagement/account?selectedUserId=\(selectedUserIdString!)&tabid=details&action=edit&org=\(selectedOrg!)") 
+            return req.redirect(to: "/view/module/usermanagement/account?selectedUserId=\(selectedUserIdString!)&tabid=details&action=edit&org=\(selectedOrg!)&x=") 
     }
     
     @Sendable

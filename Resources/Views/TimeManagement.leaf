@@ -72,22 +72,24 @@
     #endexport
 
     #export("toolbar"):
-        <span>
-            <form method="POST" action="/view/module/timemanagement/selectedorganization">
-                <label class="form-label bold mt-1">Organization:</label>
-                <select id="organization"
-                        name="organization">
-                    
-                    #for(userOrganization in userOrganizations):
-                        <option value="#(userOrganization.code)" #if(userOrganization.code == orgIndicator):selected#endif>
-                            #(userOrganization.description)
-                        </option>
-                    #endfor
-                    <option value="" #if(orgIndicator==""):selected#endif> </option>
-                </select>
-                <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-search"></i></button>
+       <div class="m-0">
+            <form method="POST" action="/view/module/usermanagement/selectedorganization">
+                <div class="input-group">
+                    <select id="organization"
+                            name="organization"
+                            class="form-select">
+                        
+                        #for(userOrganization in userOrganizations):
+                            <option value="#(userOrganization.code)" #if(userOrganization.code == orgIndicator):selected#endif>
+                                #(userOrganization.description)
+                            </option>
+                        #endfor
+                        <option value="" #if(orgIndicator==""):selected#endif> </option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-search"></i></button>
+                </div>
             </form>
-        </span>    
+        </div> 
     #endexport
 
     #export("main"):
