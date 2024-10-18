@@ -83,6 +83,22 @@
     #endexport
 
     #export("toolbar"):
+        <span>
+            <form method="POST" action="/view/module/usermanagement/selectedorganization">
+                <label class="form-label bold mt-1">Organization:</label>
+                <select id="organization"
+                        name="organization">
+                    
+                    #for(userOrganization in userOrganizations):
+                        <option value="#(userOrganization.code)" #if(userOrganization.code == orgIndicator):selected#endif>
+                            #(userOrganization.description)
+                        </option>
+                    #endfor
+                    <option value="" #if(orgIndicator==""):selected#endif> </option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-search"></i></button>
+            </form>
+        </span>
     #endexport
 
     #export("main"):
@@ -97,7 +113,7 @@
                                     <i class="bi bi-bag-plus"></i>
                                 </button>
                                 -->
-                                <form method="POST" action="/view/module/usermanagement/details?selectedUserId=NONE&tabid=details&action=add" class="">
+                                <form method="POST" action="/view/module/usermanagement/details?selectedUserId=NONE&tabid=details&action=add&org=#(orgIndicator)" class="">
                                     <button type="submit" class="btn btn-sm btn-primary rounded-circle float-end" id="btnShowDetails">
                                        <i class="bi bi-bag-plus"></i>
                                     </button>
@@ -106,7 +122,7 @@
                         </div>
                         <div class="card-body">
                             #for(item in userList):
-                            <a class="ml-2" href="/view/module/usermanagement/?selectedUserId=#(item.Id)&tabid=general"
+                            <a class="ml-2" href="/view/module/usermanagement/index?selectedUserId=#(item.Id)&tabid=general&org=#(orgIndicator)"
                                 style="text-decoration: none;">
                                 
                                 <div class="row mb-1 #if(selectedUserId == item.Id):background-color: bg-warning-subtle#endif d-flex bd-highlight">
@@ -134,7 +150,7 @@
                                       </div>
                                       <div class="p-2 ml-4 flex-shrink-1 bd-highlight">
                                         #if(selectedUserId == item.Id):
-                                        <form method="POST" action="/view/module/usermanagement/details?selectedUserId=#(selectedUserId)&tabid=details&action=edit" class="">
+                                        <form method="POST" action="/view/module/usermanagement/details?selectedUserId=#(selectedUserId)&tabid=details&action=edit&org=#(orgIndicator)" class="">
                                             <button type="submit" class="btn btn-sm btn-primary rounded-circle float-end" id="btnShowDetails">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
@@ -178,7 +194,7 @@
                             </button>
                             
                             <!--
-                            <form method="DELETE" action="/view/module/usermanagement/details?selectedUserId=#(selectedUserId)&tabid=details&action=delete" class="">
+                            <form method="DELETE" action="/view/module/usermanagement/details?selectedUserId=#(selectedUserId)&tabid=details&action=delete&org=#(orgIndicator)" class="">
                                 <button type="submit" class="btn btn-sm btn-danger rounded-circle float-end" id="btnDelete">
                                     <i class="bi bi-trash3"></i>
                                 </button>
@@ -212,7 +228,7 @@
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                               <div class="accordion-body">
-                                <form method="POST" action="/view/module/usermanagement/address?selectedUserId=#(selectedUserId)&tabid=details&action=#(actionIndicator)" class="">
+                                <form method="POST" action="/view/module/usermanagement/address?selectedUserId=#(selectedUserId)&tabid=details&action=#(actionIndicator)&org=#(orgIndicator)" class="">
                                     <div class="card border-0">
                                         <!--
                                         <div class="card-header">
@@ -312,7 +328,7 @@
                             </h2>
                             <div id="collapseTwoB" class="accordion-collapse collapse" aria-labelledby="headingTwoB" data-bs-parent="#accordionExample">
                               <div class="accordion-body">
-                                <form method="POST" action="/view/module/usermanagement/organizations?selectedUserId=#(selectedUserId)&tabid=details&action=#(actionIndicator)" class="">
+                                <form method="POST" action="/view/module/usermanagement/organizations?selectedUserId=#(selectedUserId)&tabid=details&action=#(actionIndicator)&org=#(orgIndicator)" class="">
                                     <div class="card border-0">
                                         <!--
                                         <div class="card-header">
@@ -376,7 +392,7 @@
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                               <div class="accordion-body">
-                                <form method="POST" action="/view/module/usermanagement/account?selectedUserId=#(selectedUserId)&tabid=details&action=#(actionIndicator)" class="">
+                                <form method="POST" action="/view/module/usermanagement/account?selectedUserId=#(selectedUserId)&tabid=details&action=#(actionIndicator)&org=#(orgIndicator)" class="">
                                     <div class="card border-0">
                                         <!--
                                         <div class="card-header">

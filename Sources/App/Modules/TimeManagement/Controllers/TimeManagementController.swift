@@ -34,6 +34,11 @@ struct TimeManagementUserController: RouteCollection {
             mySettingsDTO.ShowToolbar = true
         }
 
+        /* get selected organization */
+        var selectedOrg = try? req.query.get(String.self, at: "org")
+        if (selectedOrg == nil) { selectedOrg = "" }
+        req.logger.info("TimeManagement.renderList selectedOrg: \(String(describing:selectedOrg))")
+
         /* retrieve user permissions */
         let myUserPermissionsDTO: UserManagementRoleModelDTO = 
             try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
@@ -44,6 +49,7 @@ struct TimeManagementUserController: RouteCollection {
          return try await req.view.render("TimeManagement", 
             TimeBaseContext(title: "SGServer", 
                             settings: mySettingsDTO, 
+                            orgIndicator: selectedOrg,
                             userPermissions: myUserPermissionsDTO,
                             userOrganizations: myOrganizations))
     }

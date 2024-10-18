@@ -7,6 +7,7 @@ struct EventBaseContext: Encodable {
     var successMessage: String?
     var settings: SGServerSettingsDTO
     var tabIndicator: String?
+    var orgIndicator: String?
     var userPermissions: UserManagementRoleModelDTO?
     var userOrganizations: [UserManagementOrganizationModelDTO]?
 }

@@ -7,8 +7,10 @@ struct UserListContext: Encodable {
     var successMessage: String?
     var settings: SGServerSettingsDTO
     var tabIndicator: String?
+    var orgIndicator: String?
     var actionIndicator: String?
     var userPermissions: UserManagementRoleModelDTO?
     var userList: [UserManagementUserDTO]?
     var selectedUserId: String?
+    var userOrganizations: [UserManagementOrganizationModelDTO]?
 }

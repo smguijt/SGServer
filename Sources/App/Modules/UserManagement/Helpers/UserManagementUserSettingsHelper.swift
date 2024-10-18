@@ -291,8 +291,10 @@ func getUserAccountInfo(req: Request, userId: UUID) async throws -> UserManageme
     }
 }
 
-func setUserAccountInfo(req: Request, form: UserManagementAccountModelDTO, userId: UUID, actionIndicator: String?) async throws -> Bool {
+func setUserAccountInfo(req: Request, form: UserManagementAccountModelDTO, userId: UUID, actionIndicator: String?, org: String?) async throws -> Bool {
     
+    /* TO DO: On Create add userOrganization from ORG parameter */
+
     do {
         if actionIndicator != "add" {
             let accountInfo: UserManagementAccountModel = try await UserManagementAccountModel
@@ -356,8 +358,9 @@ func setUserOrganizationData(req: Request, form: UserManagementUserOrganizationD
     return true
 }
 
-func getUserList(req: Request, userId: UUID) async throws -> [UserManagementUserDTO] {
+func getUserList(req: Request, userId: UUID, org: String?) async throws -> [UserManagementUserDTO] {
     
+    /* TO DO: FILTER BY ORGANIZATION */
 
     let list = try await UserManagementAccountModel
         .query(on: req.db)

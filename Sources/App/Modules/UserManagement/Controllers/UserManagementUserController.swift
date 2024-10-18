@@ -10,8 +10,11 @@ struct UserManagementUserController: RouteCollection {
             .grouped("module")
             .grouped("usermanagement")
             .grouped(AuthenticationSessionMiddleware())
+
+        pg.get("", use: self.checkOrganization)
+        pg.get("index", use: self.renderUserList)
+        pg.post("selectedorganization", use: self.selectedorganization)            
         
-        pg.get("", use: self.renderUserList)
         pg.get("general", use: self.renderUserList)
         pg.get("address", use: self.renderUserManagementScreens)
         pg.get("account", use: self.renderUserManagementScreens)
@@ -43,6 +46,11 @@ struct UserManagementUserController: RouteCollection {
         if (selectedAction == nil) { selectedAction = "edit" }
         req.logger.info("UserManagement.userList selectedAction: \(String(describing:selectedAction))")
 
+        /* get selected organization */
+        var selectedOrg = try? req.query.get(String.self, at: "org")
+        if (selectedOrg == nil) { selectedOrg = "" }
+        req.logger.info("UserManagement.renderList selectedOrg: \(String(describing:selectedOrg))")
+
         /* get selected user */
         var selectedUserIdString = try? req.query.get(String.self, at: "selectedUserId")
         req.logger.info("UserManagement.userList selectedUserIdString parsed value : \(String(describing:selectedUserIdString))")
@@ -52,8 +60,6 @@ struct UserManagementUserController: RouteCollection {
         req.logger.info("UserManagement.userList selectedUserIdString updated value : \(String(describing:selectedUserIdString))")
         let selectedUserId = UUID(uuidString: selectedUserIdString ?? "") ?? nil
         req.logger.info("UserManagement.userList selectedUserIdString: \(String(describing:selectedUserIdString))")
-        
-        
         
         /* retrieve tabSettings */
         var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
@@ -77,16 +83,22 @@ struct UserManagementUserController: RouteCollection {
         try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: selectedUserId)
         
         /* get userlist */
-        let userList = try await getUserList(req: req, userId: userId!)
+        let userList = try await getUserList(req: req, userId: userId!, org: selectedOrg)
+
+        /* retrieve organizations */
+        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!, filterByUser: true)
+
         
         return try await req.view.render("UserManagement",
                                          UserListContext(title: "SGServer",
                                                          settings: mySettingsDTO,
                                                          tabIndicator: tabIndicator,
+                                                         orgIndicator: selectedOrg,
                                                          actionIndicator: selectedAction,
                                                          userPermissions: myUserPermissionsDTO,
                                                          userList: userList,
-                                                         selectedUserId: selectedUserIdString))
+                                                         selectedUserId: selectedUserIdString,
+                                                         userOrganizations: myOrganizations))
     }
     
     @Sendable
@@ -194,9 +206,7 @@ struct UserManagementUserController: RouteCollection {
                                                          selectedUserPermissions: mySelectedUserPermissionsDTO,
                                                          selectedAccordionPanel: selectedAccordionPanel))
     }
-    
-    
-    
+
     @Sendable
     func updateUserManagementPermissions(_ req: Request) async throws -> Response {
         
@@ -588,4 +598,59 @@ struct UserManagementUserController: RouteCollection {
             .encodeResponse(for: req)
     }
     
+    @Sendable
+    func selectedorganization(_ req: Request) async throws -> Response {
+        req.logger.notice("calling UserManagement.selectedorganization POST")
+        req.logger.debug("incomming request: \(req.body)")
+
+        /* decode body */
+        let body: UserManagementOrganizationDTO = try req.content.decode(UserManagementOrganizationDTO.self)
+        let _selectedorganization: String = body.organization ?? ""
+        req.logger.info("UserManagement.selectedorganization POST: \(String(describing:selectedorganization))")
+
+        return req.redirect(to: "/view/module/usermanagement/?org=\(_selectedorganization)")
+    }
+
+    @Sendable
+    func checkOrganization(_ req: Request) async throws -> Response {
+        req.logger.notice("calling UserManagement.checkOrganization POST")
+
+        /* get login user */
+        let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
+        let userId = UUID(uuidString: userIdString) ?? nil
+
+        var _selectedorganization: String = ""
+        if _selectedorganization == "" {
+            /* get selected organization */
+            var selectedOrg = try? req.query.get(String.self, at: "org")
+            if (selectedOrg == nil) { selectedOrg = "" }
+            req.logger.info("UserManagement.renderList selectedOrg: \(String(describing:selectedOrg))")
+            if (selectedOrg != "") {
+                _selectedorganization = selectedOrg ?? ""
+            } else {
+                /* retrieve organizations */
+                req.logger.info("UserManagement.renderList retrieve organization linked to user")
+                let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!, filterByUser: true)
+                req.logger.info("UserManagement.renderList myOrganizations: \(String(describing:myOrganizations))")
+                if (myOrganizations.count > 0) {
+                    if (myOrganizations.count > 1) {
+                        _selectedorganization = ""
+                        req.logger.info("UserManagement.renderList _selectedorganization (linked to user): More than one organization found..")
+                    } else {
+                        _selectedorganization = myOrganizations[0].code ?? ""
+                        req.logger.info("UserManagement.renderList _selectedorganization (linked to user): \(String(describing:selectedOrg))")
+                    }
+                } else {
+                    req.logger.info("UserManagement.renderList _selectedorganization (linked to user): No organization found..")
+                }
+            }
+        }
+        
+        if _selectedorganization == "" {
+            return req.redirect(to: "/view/module/usermanagement/index") 
+        } else {
+            return req.redirect(to: "/view/module/usermanagement/index?org=\(_selectedorganization)")
+        }
+    }
+
 }
