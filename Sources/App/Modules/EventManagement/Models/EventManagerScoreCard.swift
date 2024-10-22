@@ -24,8 +24,23 @@ final class EventManagementScoreCard: Model, @unchecked Sendable {
     @Field(key: "playerId")
     var playerId: UUID?
 
+    @Field(key: "scoreCardId")
+    var scoreCardId: UUID?
+
      @Field(key: "teamId")
     var teamId: UUID?
+
+    @Field(key: "userId")
+    var userId: UUID?
+
+    @Field(key: "orgId")
+    var orgId: UUID?
+    
+    @Timestamp(key: "createdAt", on: .create)
+    var createdAt: Date?
+    
+    @Timestamp(key: "updatedAt", on: .update)
+    var updatedAt: Date?
 
 
     init() {

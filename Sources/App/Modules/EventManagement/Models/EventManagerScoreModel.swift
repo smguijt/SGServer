@@ -27,6 +27,17 @@ final class EventManagementScore: Model, @unchecked Sendable {
      @Field(key: "teamId")
     var teamId: UUID?
 
+    @Field(key: "userId")
+    var userId: UUID?
+
+    @Field(key: "orgId")
+    var orgId: UUID?
+    
+    @Timestamp(key: "createdAt", on: .create)
+    var createdAt: Date?
+    
+    @Timestamp(key: "updatedAt", on: .update)
+    var updatedAt: Date?
 
   
     init() {
