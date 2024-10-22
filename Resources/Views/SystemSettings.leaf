@@ -132,6 +132,13 @@
                                         value="#(settings.ShowUserBox)" #if(settings.ShowUserBox):checked#endif  #if(!userPermissions.IsSuperUser):disabled#endif />
                                 </div>
                             </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Toggle Sidebar State
+                                <div class="form-check form-switch m-0">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="switchSidebarToggleState"
+                                        value="#(settings.SidebarToggleState)" #if(settings.SidebarToggleState):checked#endif  />
+                                </div>
+                            </li>
                         </ul>
                     </div> <!-- card body -->
                 </div> <!-- card -->
@@ -201,6 +208,17 @@
               alert("Data: " + data + "\nStatus: " + status);
             });
         });
+        $(document).on('change','#switchSidebarToggleState',function() {
+            $.post("systemsettings",
+            {
+              key: "SidebarToggleState",
+              value: this.checked
+            },
+            function(data, status){
+              alert("Data: " + data + "\nStatus: " + status);
+            });
+        });
+       
         
         $(document).on('click','#button1',function(){
             alert('Button1 pressed!')
@@ -208,6 +226,10 @@
         $(document).on('click','#button2',function(){
             alert('Button2 pressed!')
         });
+
+        #if(settings.SidebarToggleState == true):
+            $(".page-wrapper").addClass("pinned");
+        #endif
        
     #endexport
 

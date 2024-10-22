@@ -10,6 +10,7 @@ public enum UserManagementEnumSettings: String, Codable {
     case UseOAUTH02 = "UseOAUTH02"
     case ClientId = "ClientId"
     case ClientSecret = "ClientSecret"
+    case SidebarToggleState = "SidebarToggleState"
 }
 
 

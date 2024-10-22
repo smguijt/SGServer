@@ -96,6 +96,9 @@
     #endexport
 
     #export("script"):
+        #if(settings.SidebarToggleState == true):
+            $(".page-wrapper").addClass("pinned");
+        #endif
     #endexport
 
 #endextend

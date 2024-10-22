@@ -51,6 +51,11 @@ func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSetting
                     myUserSettingDTO.ClientSecret = String(setting.value)
                 }
 
+                 /* SidebarToggleState */
+                if setting.key == UserManagementEnumSettings.SidebarToggleState.rawValue {
+                    myUserSettingDTO.SidebarToggleState = Bool(setting.value.lowercased()) ?? false
+                }
+
                 return myUserSettingDTO
             }
 
@@ -65,7 +70,8 @@ func getUserSettings(req: Request, userId: UUID) async throws -> SGServerSetting
                                                 userId: myUserSettingDTO.userId,
                                                 UseOAUTH02: myUserSettingDTO.UseOAUTH02,
                                                 ClientId: myUserSettingDTO.ClientId,
-                                                ClientSecret: myUserSettingDTO.ClientSecret)
+                                                ClientSecret: myUserSettingDTO.ClientSecret,
+                                                SidebarToggleState: myUserSettingDTO.SidebarToggleState)
 
     return mySettingDTO
  }

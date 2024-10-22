@@ -124,10 +124,10 @@
                         </div>
                         <div class="card-body">
                             #for(item in userList):
-                            <a class="ml-2" href="/view/module/usermanagement/index?selectedUserId=#(item.Id)&tabid=general&org=#(orgIndicator)&x="
-                                style="text-decoration: none;">
-                                
-                                <div class="row mb-1 #if(selectedUserId == item.Id):background-color: bg-warning-subtle#endif d-flex bd-highlight">
+                            <div class="list-group">
+                                <a href="/view/module/usermanagement/index?selectedUserId=#(item.Id)&tabid=general&org=#(orgIndicator)&x=" class="list-group-item list-group-item-action #if(selectedUserId == item.Id):background-color: bg-warning-subtle#endif" aria-current="true">
+                                    
+                                                                    <div class="row mb-1 #if(selectedUserId == item.Id):background-color: bg-warning-subtle#endif d-flex bd-highlight">
                                     
                                     <div class="d-flex bd-highlight">
                                       <div class="p-2 flex-shrink-1 bd-highlight">
@@ -167,7 +167,10 @@
                                     <div class="col-auto d-lg-flex d-none">6</div>
                                     -->
                                 </div>
-                            </a>
+                                    
+
+                                </a>
+                            </div>
                             #endfor
                         </div>
                         <div class="card-footer">
@@ -648,6 +651,14 @@
                                                                 onchange="handleSettingsChange('ShowUpdates', event)" />
                                                         </div>
                                                     </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        Sidebar Toggle State
+                                                        <div class="form-check form-switch m-0">
+                                                            <input class="form-check-input" type="checkbox" role="switch" id="switchSidebarToggleState"
+                                                                value="#(settings.SidebarToggleState)" #if(settings.SidebarToggleState):checked#endif  #if(!userPermissions.IsAdminUser):disabled#endif
+                                                                onchange="handleSettingsChange('SidebarToggleState', event)" />
+                                                        </div>
+                                                    </li>
                                                 </ul>
                                             </div> <!-- card body -->
                                         </div> <!-- card -->
@@ -813,6 +824,10 @@
                 toggle: false  // Prevent immediate toggling
             });
             collapseTwoB.show();
+        #endif
+
+        #if(settings.SidebarToggleState == true):
+            $(".page-wrapper").addClass("pinned");
         #endif
 
     #endexport

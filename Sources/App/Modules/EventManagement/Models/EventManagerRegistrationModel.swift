@@ -51,6 +51,9 @@ final class EventManagementRegistration: Model, @unchecked Sendable {
     @Field(key: "confirmationDate")
     var confirmationDate: Date?
 
+    @Field(key: "confirmationToken")
+    var confirmationToken: String?
+
     @Field(key: "assignedLane")
     var assignedLane: Int?
 
@@ -58,4 +61,6 @@ final class EventManagementRegistration: Model, @unchecked Sendable {
     init() {
         
     }
+
+    
 }

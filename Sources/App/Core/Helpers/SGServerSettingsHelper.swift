@@ -47,6 +47,11 @@ func getSettings(req: Request) async throws -> SGServerSettingsDTO {
             if setting.key == SGServerEnumSettings.UseOAUTH02.rawValue {
                 mySettingDTO.UseOAUTH02 = Bool(setting.value.lowercased()) ?? false
             }
+
+            /* SidebarToggleState */
+            if setting.key == SGServerEnumSettings.SidebarToggleState.rawValue {
+                mySettingDTO.SidebarToggleState = Bool(setting.value.lowercased()) ?? false
+            }
         }
     
     return mySettingDTO

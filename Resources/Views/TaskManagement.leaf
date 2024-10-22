@@ -109,6 +109,11 @@
                 },
             }).showToast();
         #endif
+
+        #if(settings.SidebarToggleState == true):
+            $(".page-wrapper").addClass("pinned");
+        #endif
+
     #endexport
 
 #endextend

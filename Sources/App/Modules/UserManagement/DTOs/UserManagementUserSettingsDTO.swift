@@ -12,6 +12,7 @@ struct UserManagementUserSettingsDTO: Content {
     var UseOAUTH02: Bool
     var ClientId: String
     var ClientSecret: String
+    var SidebarToggleState: Bool
 
     init(//ID: UUID?,
          userId: UUID,
@@ -21,7 +22,8 @@ struct UserManagementUserSettingsDTO: Content {
          ShowUpdates: Bool = false,
          UseOAUTH02: Bool = false,
          ClientId: String = "",
-         ClientSecret: String = "") {
+         ClientSecret: String = "",
+         SidebarToggleState: Bool = false) {
         
         //self.ID = ID
         self.ShowMessages = ShowMessages
@@ -32,6 +34,7 @@ struct UserManagementUserSettingsDTO: Content {
         self.UseOAUTH02 = UseOAUTH02
         self.ClientId = ClientId
         self.ClientSecret = ClientSecret
+        self.SidebarToggleState = SidebarToggleState
     }
   
 }

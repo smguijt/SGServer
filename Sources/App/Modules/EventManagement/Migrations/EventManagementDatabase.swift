@@ -110,6 +110,7 @@ extension DataMigration.v1 {
                  .field("userId", .uuid, .required)
                  .field("isConfirmed", .bool)
                  .field("confirmationDate", .datetime)
+                 .field("confirmationToken", .string)
                  .field("assignedLane", .int16)
                  .create()                                       
         }

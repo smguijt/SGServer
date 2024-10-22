@@ -475,6 +475,10 @@
         closeOnSelect: false,
     } );
 
+    #if(settings.SidebarToggleState == true):
+        $(".page-wrapper").addClass("pinned");
+    #endif
+
     #endexport
 
 

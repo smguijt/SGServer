@@ -4,6 +4,14 @@
     #endexport
 
     #export("sidebar"):
+
+        <li class="active current-page">
+            <a href="http://127.0.0.1:8080/view/module/eventmanagement/eventregistration">
+                <i class="bi bi-calendar4-event"></i>
+                <span class="menu-text">Event Registration</span>
+            </a>
+        </li>
+
     #endexport
 
     #export("breadcrumbs"):
@@ -19,9 +27,13 @@
     #endexport
 
     #export("main"):
+
     #endexport
 
     #export("script"):
+        #if(settings.SidebarToggleState == true):
+            $(".page-wrapper").addClass("pinned");
+        #endif
     #endexport
 
 #endextend

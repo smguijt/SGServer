@@ -10,8 +10,11 @@ struct EventManagementUserController: RouteCollection {
             .grouped("module")
             .grouped("eventmanagement")
 
+        /* event registration routes */
         pg.get("eventregistration", use: self.renderRegistration)
+        pg.get("eventregistration", "confirmation", use: self.renderRegistrationConfirmation)
 
+        /* authenticated routes */
         let auth = pg.grouped(AuthenticationSessionMiddleware())
         auth.get("", use: self.checkOrganization)
         auth.get("index", use: self.renderList)
@@ -21,8 +24,68 @@ struct EventManagementUserController: RouteCollection {
     @Sendable
     func renderRegistration(req: Request) async throws -> View {
 
-         return try await req.view.render("EventManagementRegistration", 
-            EventRegistrationContext(title: "SGServer")) 
+        /* get selected organization */
+        var selectedOrg = try? req.query.get(String.self, at: "org")
+        if (selectedOrg == nil) { selectedOrg = "" }
+        req.logger.info("EventManagement.renderRegistration selectedOrg: \(String(describing:selectedOrg))")
+
+        /* get selected eventId */
+        var selectedEventId = try? req.query.get(String.self, at: "eventId")
+        if (selectedEventId == nil) { selectedEventId = "" }
+        req.logger.info("EventManagement.renderRegistration selectedEventId: \(String(describing:selectedEventId))")
+
+        /* get selected serieId */
+        var selectedEventSerieId = try? req.query.get(String.self, at: "serieId")
+        if (selectedEventSerieId == nil) { selectedEventSerieId = "" }
+        req.logger.info("EventManagement.renderRegistration selectedEventSerieId: \(String(describing:selectedEventSerieId))")
+
+        /* retrieve application settings */
+        var mySettingsDTO = try await getSettings(req: req)
+        mySettingsDTO.SidebarToggleState = true
+
+        /* return view */
+        return try await req.view.render("EventManagementRegistration", 
+            EventRegistrationContext(title: "SGServer", 
+                        selectedOrgId: selectedOrg, 
+                        selectedEventId: selectedEventId, 
+                        selectedSerieId: selectedEventSerieId,
+                        settings: mySettingsDTO)) 
+    }
+
+    @Sendable
+    func renderRegistrationConfirmation(req: Request) async throws -> View {
+        
+        /* set vars */
+        var isValidated: Bool
+        var errorMessage: String?
+        var successMessage: String?
+
+        /* get selected organization */
+        var confirmationToken = try? req.query.get(String.self, at: "token")
+        if (confirmationToken == nil) { confirmationToken = "" }
+        req.logger.info("EventManagement.renderRegistrationConfirmation confirmationToken: \(String(describing:confirmationToken))")
+
+        /* retrieve settings */
+        var mySettingsDTO = try await getSettings(req: req)
+         mySettingsDTO.SidebarToggleState = true
+
+        /* validate token */
+        /* .. */
+
+        /* retrieve registration information linked to token */
+        /* .. */
+
+        /* generate response */
+        isValidated = false
+        successMessage = "Validated!"
+        if !isValidated {
+            successMessage = nil
+            errorMessage = "Invalid Token"
+        }
+
+        /* generate view */
+        return try await req.view.render("EventManagementRegistration", 
+            EventRegistrationContext(title: "SGServer", errorMessage: errorMessage, successMessage: successMessage, settings: mySettingsDTO)) 
     }
 
     @Sendable

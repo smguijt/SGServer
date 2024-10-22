@@ -5,4 +5,8 @@ struct EventRegistrationContext: Encodable {
     var paramId: String?
     var errorMessage: String?
     var successMessage: String?
+    var selectedOrgId: String?
+    var selectedEventId: String?
+    var selectedSerieId: String?
+    var settings: SGServerSettingsDTO
 }

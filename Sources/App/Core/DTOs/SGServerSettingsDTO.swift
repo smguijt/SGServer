@@ -14,6 +14,7 @@ struct SGServerSettingsDTO: Content {
     var UseOAUTH02: Bool
     var ClientId: String?
     var ClientSecret: String?
+    var SidebarToggleState: Bool?
     
     init(//ID: UUID? = nil,
          ShowToolbar: Bool = false,
@@ -25,7 +26,8 @@ struct SGServerSettingsDTO: Content {
          userId: UUID? = nil,
          UseOAUTH02: Bool = false,
          ClientId: String? = nil,
-         ClientSecret: String? = nil) {
+         ClientSecret: String? = nil,
+         SidebarToggleState: Bool? = false) {
         
         //self.ID = ID
         self.ShowToolbar = ShowToolbar
@@ -38,6 +40,7 @@ struct SGServerSettingsDTO: Content {
         self.UseOAUTH02 = UseOAUTH02
         self.ClientId = ClientId
         self.ClientSecret = ClientSecret
+        self.SidebarToggleState = SidebarToggleState
     }
 }
 
