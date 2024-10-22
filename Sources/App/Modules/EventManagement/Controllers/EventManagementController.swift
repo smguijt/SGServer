@@ -9,14 +9,23 @@ struct EventManagementUserController: RouteCollection {
         let pg = routes.grouped("view")
             .grouped("module")
             .grouped("eventmanagement")
-            .grouped(AuthenticationSessionMiddleware())
 
-        pg.get("", use: self.checkOrganization)
-        pg.get("index", use: self.renderList)
-        pg.post("selectedorganization", use: self.selectedorganization)
+        pg.get("eventregistration", use: self.renderRegistration)
+
+        let auth = pg.grouped(AuthenticationSessionMiddleware())
+        auth.get("", use: self.checkOrganization)
+        auth.get("index", use: self.renderList)
+        auth.post("selectedorganization", use: self.selectedorganization)
     }
 
-     @Sendable
+    @Sendable
+    func renderRegistration(req: Request) async throws -> View {
+
+         return try await req.view.render("EventManagementRegistration", 
+            EventRegistrationContext(title: "SGServer")) 
+    }
+
+    @Sendable
     func renderList(req: Request) async throws -> View {
 
         req.logger.info("calling EventManagement.List")
