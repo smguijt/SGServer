@@ -213,6 +213,8 @@
                 document.getElementById(name + "responsibleuser").style.textDecoration  = "none";
                 document.getElementById(name + "date").style.textDecoration  = "none";
             }
+
+            //location.reload(true);
         }
 
         function handleDoubleClickChange(name, e) {
