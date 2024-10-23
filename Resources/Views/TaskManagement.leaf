@@ -96,6 +96,30 @@
         <div class="col-12">
             #if(tabIndicator == "general"):
             
+             <div class="col-sm-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form method="POST" action="/view/module/taskmanagement/add">
+                            <div class="row gx-3">
+                                <div class="col-10">
+                                    <div class="mb-3">
+                                        <input id="task" name="task" type="text" class="form-control" placeholder="Task"/>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-sm btn-primary float-end" id="btnAddTask">
+                                            <i class="bi bi-bag-plus"></i> Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="col-sm-12">
                 <div class="card mb-3">
                     <div class="card-header">
@@ -111,6 +135,7 @@
                                         </div>
                                     </form>
                                 </div>
+                                <!--
                                 <div class="col-md-4 offset-md-4">
                                     #if(userPermissions.IsAdminUser):
                                     <form method="POST" action="/view/module/taskmanagement/details?selectedTaskId=NONE&tabid=details&action=add&org=#(orgIndicator)&x=" class="">
@@ -120,10 +145,33 @@
                                     </form>
                                     #endif
                                 </div>
+                                -->
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
+
+
+<ul class="list-group">
+  <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" ondblclick="handleDoubleClickChange('xx1', event)">
+    <div class="form-check form-switch m-0">
+        <input id="xx1" name="xx1" class="form-check-input me-1"  type="checkbox" role="switch" value="true" checked aria-label="..." onchange="handleChange('xx1', event)">
+    </div>
+    <div id="xx1description" class="col-6" style="text-decoration:line-through">A list item</div>
+    <div id="xx1responsibleuser" class="col-4" style="text-decoration:line-through">Super User</div>
+    <span id="xx1date" class="badge bg-primary rounded-pill" style="text-decoration:line-through">23-10-2024</span>
+  </li>
+  <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" ondblclick="handleDoubleClickChange('xx2', event)">
+    <div class="form-check form-switch m-0">
+        <input id="xx2" name="xx2" class="form-check-input me-1" type="checkbox" role="switch" value="false" aria-label="..." onchange="handleChange('xx2', event)">
+    </div>
+    <div id="xx2description" class="col-6">Another list item</div>
+    <div id="xx2responsibleuser" class="col-4">Super User</div>
+    <span id="xx2date" class="badge bg-primary rounded-pill">23-10-2024</span>
+  </li>
+</ul>
+
+
                     </div>
                 </div>
             </div>
@@ -152,6 +200,37 @@
         #if(settings.SidebarToggleState == true):
             $(".page-wrapper").addClass("pinned");
         #endif
+
+        function handleChange(name, e) {
+            const {checked} = e.target;
+            switchbot = document.getElementById(name);
+            if (switchbot.checked) {
+                document.getElementById(name + "description").style.textDecoration  = "line-through";
+                document.getElementById(name + "responsibleuser").style.textDecoration  = "line-through";
+                document.getElementById(name + "date").style.textDecoration  = "line-through";
+            } else {
+                document.getElementById(name + "description").style.textDecoration  = "none";
+                document.getElementById(name + "responsibleuser").style.textDecoration  = "none";
+                document.getElementById(name + "date").style.textDecoration  = "none";
+            }
+        }
+
+        function handleDoubleClickChange(name, e) {
+            const {checked} = e.target;
+            switchbot = document.getElementById(name);
+
+            Toastify({
+                text: "Edit Mode for " + switchbot.id,
+                duration: 3000,
+                close: true,
+                avatar: '/assets/favicon_io/apple-touch-icon.png',
+                className: "bg-warning",
+                offset: {
+                    x: 9,
+                    y: 3,
+                },
+            }).showToast();
+        }
 
     #endexport
 
