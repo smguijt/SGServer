@@ -73,7 +73,7 @@
 
     #export("toolbar"):
         <div class="m-0">
-            <form method="POST" action="/view/module/usermanagement/selectedorganization">
+            <form method="POST" action="/view/module/taskmanagement/selectedorganization">
                 <div class="input-group">
                     <select id="organization"
                             name="organization"
@@ -93,6 +93,45 @@
     #endexport
 
     #export("main"):
+        <div class="col-12">
+            #if(tabIndicator == "general"):
+            
+            <div class="col-sm-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="clearfix">
+                            <div class="row">
+                                <div class="col-md-4 d-none d-lg-block"> <!-- show on large screen only -->
+                                    <form method="POST" action="/view/module/taskmanagement/selectedfilter">
+                                        <div class="input-group w-50">
+                                            <select id="filter" name="filter" class="form-select">
+                                                <option value="All">All</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-sm btn-primary"><i class="bi bi-search"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-4 offset-md-4">
+                                    #if(userPermissions.IsAdminUser):
+                                    <form method="POST" action="/view/module/taskmanagement/details?selectedTaskId=NONE&tabid=details&action=add&org=#(orgIndicator)&x=" class="">
+                                        <button type="submit" class="btn btn-sm btn-primary rounded-circle float-end" id="btnShowDetails">
+                                            <i class="bi bi-bag-plus"></i>
+                                        </button>
+                                    </form>
+                                    #endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+            #endif
+
+            #if(tabIndicator == "details"):
+            #endif
+        </div>
     #endexport
 
     #export("script"):

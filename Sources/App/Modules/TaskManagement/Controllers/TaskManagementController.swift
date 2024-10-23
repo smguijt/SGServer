@@ -14,50 +14,24 @@ struct TaskManagementUserController: RouteCollection {
         pg.get("", use: self.checkOrganization)
         pg.get("index", use: self.renderList)
         pg.post("selectedorganization", use: self.selectedorganization)
+        pg.post("selectedfilter", use: self.selectedfilter)
     }
 
      @Sendable
     func renderList(req: Request) async throws -> View {
 
         req.logger.info("calling TaskManagement.List")
-
-        /* get login user */
-        let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
-        let userId = UUID(uuidString: userIdString) ?? nil
-
-        /* get selected organization */
-        var selectedOrg = try? req.query.get(String.self, at: "org")
-        if (selectedOrg == nil) { selectedOrg = "" }
-        req.logger.info("TaskManagement.renderList selectedOrg: \(String(describing:selectedOrg))")
-                
-        /* get selected action */
-        var selectedAction = try? req.query.get(String.self, at: "action")
-        if (selectedAction == nil) { selectedAction = "list" }
-        req.logger.info("TaskManagement.renderList selectedAction: \(String(describing:selectedAction))")
-
-        /* retrieve settings */
-        var mySettingsDTO = try await getSettings(req: req)
-        if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
-            let userId = UUID(req.session.data["sgsoftware_system_user"] ?? "")
-            mySettingsDTO = try await getUserSettings(req: req, userId: userId!)
-            mySettingsDTO.ShowUserBox = true
-            mySettingsDTO.ShowToolbar = true
-        }
-
-        /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!, filterByUser: true)
-
-        /* retrieve user permissions */
-        let myUserPermissionsDTO: UserManagementRoleModelDTO =
-        try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
-
-         return try await req.view.render("TaskManagement", 
+        let params: queryParamsDTO = try await getQueryParams(req: req)
+        
+        return try await req.view.render("TaskManagement", 
             TaskBaseContext(title: "SGServer",
-                            settings: mySettingsDTO,
-                            orgIndicator: selectedOrg,
-                            actionIndicator: selectedAction,
-                            userPermissions: myUserPermissionsDTO,
-                            userOrganizations: myOrganizations))
+                            settings: params.settings,
+                            orgIndicator: params.orgId?.uuidString,
+                            tabIndicator: params.tabIndicator,
+                            actionIndicator: params.actionIndicator,
+                            userPermissions: params.permissions,
+                            userOrganizations: params.organizations,
+                            filter: params.filter))
     }
 
     @Sendable
@@ -108,10 +82,31 @@ struct TaskManagementUserController: RouteCollection {
             }
         }
         
+        var selectedFilter = try? req.query.get(String.self, at: "filter")
+            if (selectedFilter == nil) { selectedFilter = "" }
+        
         if _selectedorganization == "" {
             return req.redirect(to: "/view/module/taskmanagement/index") 
         } else {
-            return req.redirect(to: "/view/module/taskmanagement/index?org=\(_selectedorganization)")
+            if selectedFilter != "" {
+                return req.redirect(to: "/view/module/taskmanagement/index?org=\(_selectedorganization)&filter=\(selectedFilter!)&x=")
+            } else {
+              return req.redirect(to: "/view/module/taskmanagement/index?org=\(_selectedorganization)")
+            }
         }
+    }
+
+    @Sendable 
+    func selectedfilter(req: Request) async throws -> Response {
+        req.logger.notice("calling TaskManagement.selectedfilter POST")
+        req.logger.debug("incomming request: \(req.body)")
+
+        /* decode body */
+        let body: TaskManagementFilterDTO = try req.content.decode(TaskManagementFilterDTO.self)
+        let _selectedFilter: String = body.filter ?? ""
+        req.logger.info("TaskManagement.selectedfilter: \(String(describing:_selectedFilter))")
+
+        let params: queryParamsDTO = try await getQueryParams(req: req)
+        return req.redirect(to: "/view/module/taskmanagement/?org=\(params.orgId?.uuidString ?? "")&filter=\(_selectedFilter)&x=")
     }
 }

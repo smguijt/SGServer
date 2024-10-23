@@ -92,38 +92,18 @@ struct EventManagementUserController: RouteCollection {
     func renderList(req: Request) async throws -> View {
 
         req.logger.info("calling EventManagement.List")
-
-        /* get login user */
-        let userIdString = req.session.data["sgsoftware_system_user"] ?? ""
-        let userId = UUID(uuidString: userIdString) ?? nil
-
-        /* retrieve settings */
-        var mySettingsDTO = try await getSettings(req: req)
-        if req.session.data["sgsoftware_system_user"] ?? "n/a" != "n/a" {
-            let userId = UUID(req.session.data["sgsoftware_system_user"] ?? "")
-            mySettingsDTO = try await getUserSettings(req: req, userId: userId!)
-            mySettingsDTO.ShowUserBox = true
-            mySettingsDTO.ShowToolbar = true
-        }
-
-        /* get selected organization */
-        var selectedOrg = try? req.query.get(String.self, at: "org")
-        if (selectedOrg == nil) { selectedOrg = "" }
-        req.logger.info("EventManagement.renderList selectedOrg: \(String(describing:selectedOrg))")
-
-        /* retrieve user permissions */
-        let myUserPermissionsDTO: UserManagementRoleModelDTO = 
-            try await getUserPermissionSettings(req: req, userId: userId!, selectedUserId: userId!)
-
-        /* retrieve organizations */
-        let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!, filterByUser: true)
-
-         return try await req.view.render("EventManagement", 
-            EventBaseContext(title: "SGServer", 
-                            settings: mySettingsDTO, 
-                            orgIndicator: selectedOrg,
-                            userPermissions: myUserPermissionsDTO,
-                            userOrganizations: myOrganizations))
+        let params: queryParamsDTO = try await getQueryParams(req: req)
+        
+        return try await req.view.render("EventManagement", 
+            EventBaseContext(title: "SGServer",
+                            settings: params.settings,
+                            orgIndicator: params.orgId?.uuidString,
+                            tabIndicator: params.tabIndicator,
+                            actionIndicator: params.actionIndicator,
+                            userPermissions: params.permissions,
+                            userOrganizations: params.organizations,
+                            filter: params.filter
+                            ))
     }
 
     @Sendable
@@ -173,11 +153,19 @@ struct EventManagementUserController: RouteCollection {
                 }
             }
         }
+
+        var selectedFilter = try? req.query.get(String.self, at: "filter")
+            if (selectedFilter == nil) { selectedFilter = "" }
         
         if _selectedorganization == "" {
             return req.redirect(to: "/view/module/eventmanagement/index") 
         } else {
-            return req.redirect(to: "/view/module/eventmanagement/index?org=\(_selectedorganization)")
+            if selectedFilter != "" {
+                return req.redirect(to: "/view/module/eventmanagement/index?org=\(_selectedorganization)&filter=\(selectedFilter!)&x=")
+            } else {
+                return req.redirect(to: "/view/module/eventmanagement/index?org=\(_selectedorganization)")
+            }
+            
         }
     }
 

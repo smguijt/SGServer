@@ -73,7 +73,7 @@
 
     #export("toolbar"):
         <div class="m-0">
-            <form method="POST" action="/view/module/usermanagement/selectedorganization">
+            <form method="POST" action="/view/module/eventmanagement/selectedorganization">
                 <div class="input-group">
                     <select id="organization"
                             name="organization"
