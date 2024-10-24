@@ -7,6 +7,7 @@ struct BaswareAPIBaseContext: Encodable {
     var successMessage: String?
     var settings: SGServerSettingsDTO?
     var orgIndicator: String?
+    var subIndicator: String?
     var tabIndicator: String?
     var actionIndicator: String?
     var userPermissions: UserManagementRoleModelDTO?

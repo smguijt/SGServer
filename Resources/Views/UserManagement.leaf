@@ -63,7 +63,7 @@
         <li><hr/></li>
         <li>
             <a href="/view/module/basware">
-                <i class="bi bi-stopwatch"></i>
+                <i class="bi bi-receipt"></i>
                 <span class="menu-text">Basware API</span>
             </a>
         </li>
@@ -599,7 +599,7 @@
                                                                     #if(!userPermissions.IsAdminUser):disabled#endif
                                                                     value="#(selectedUserPermissions.isAllowedToUseBaswareAPIModule)"
                                                                     #if(selectedUserPermissions.isAllowedToUseBaswareAPIModule):checked#endif 
-                                                                    onchange="handleChange('isAllowedToUseBaswareAPIModule', event)"/>
+                                                                    onchange="handlePermissionsChange('isAllowedToUseBaswareAPIModule', event)"/>
                                                         </div>
                                                     </li>
                                                 </ul>

@@ -5,6 +5,7 @@ struct queryParamsDTO: Content {
 
     let userId: UUID?
     let orgId: UUID?
+    let subIndicator: String?
     let tabIndicator: String?
     let actionIndicator: String?
     let settings: SGServerSettingsDTO?
@@ -15,6 +16,7 @@ struct queryParamsDTO: Content {
     init() {
         userId = nil
         orgId = nil
+        subIndicator = nil
         tabIndicator = nil
         actionIndicator = nil
         settings = nil
@@ -24,8 +26,9 @@ struct queryParamsDTO: Content {
     }
 
     init(userId: UUID?, 
-         orgId: UUID?, 
-         tabIndicator: String?, 
+         orgId: UUID?,
+         subIndicator: String?,
+         tabIndicator: String?,
          actionIndicator: String?, 
          settings: SGServerSettingsDTO?,  
          organizations: [UserManagementOrganizationModelDTO]?, 
@@ -33,6 +36,7 @@ struct queryParamsDTO: Content {
          filter: String?) {
             self.userId = userId
             self.orgId = orgId
+            self.subIndicator = subIndicator
             self.tabIndicator = tabIndicator
             self.actionIndicator = actionIndicator
             self.settings = settings

@@ -17,6 +17,10 @@ func getQueryParams(req: Request) async throws -> queryParamsDTO {
     /* get selectedAction */
     var selectedAction = try? req.query.get(String.self, at: "action")
     if (selectedAction == nil) { selectedAction = "list" }
+    
+    /* get subIndicator */
+    var subIndicator = try? req.query.get(String.self, at: "sub")
+    if (subIndicator == nil) { subIndicator = "" }
 
     /* retrieve tabSettings */
     var tabIndicator: String? = try? req.query.get(String.self, at: "tabid")
@@ -49,6 +53,7 @@ func getQueryParams(req: Request) async throws -> queryParamsDTO {
     /* return */
     return queryParamsDTO(userId: userId, 
                           orgId: UUID(uuidString: selectedOrg!),
+                          subIndicator: subIndicator,
                           tabIndicator: tabIndicator,
                           actionIndicator: selectedAction,
                           settings: mySettingsDTO,

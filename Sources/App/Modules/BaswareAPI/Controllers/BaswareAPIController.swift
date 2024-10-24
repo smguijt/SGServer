@@ -26,6 +26,7 @@ struct BaswareAPIController: RouteCollection {
             BaswareAPIBaseContext(title: "SGServer",
                 settings: params.settings,
                 orgIndicator: params.orgId?.uuidString,
+                subIndicator: params.subIndicator,
                 tabIndicator: params.tabIndicator,
                 actionIndicator: params.actionIndicator,
                 userPermissions: params.permissions,

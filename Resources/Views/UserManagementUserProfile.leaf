@@ -64,7 +64,7 @@
         <li><hr/></li>
         <li>
             <a href="/view/module/basware">
-                <i class="bi bi-stopwatch"></i>
+                <i class="bi bi-receipt"></i>
                 <span class="menu-text">Basware API</span>
             </a>
         </li>

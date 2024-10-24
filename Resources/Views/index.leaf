@@ -172,6 +172,15 @@
             </a>
         </li>
         #endif
+        #if(userPermissions.isAllowedToUseBaswareAPIModule):
+        <li><hr/></li>
+        <li>
+            <a href="/view/module/basware">
+                <i class="bi bi-receipt"></i>
+                <span class="menu-text">Basware API</span>
+            </a>
+        </li>
+        #endif
 
     #endexport
 
