@@ -65,6 +65,14 @@
             </a>
         </li>
         #endif
+        #if(userPermissions.isAllowedToUseBaswareAPIModule):
+        <li>
+            <a href="/view/module/basware">
+                <i class="bi bi-stopwatch"></i>
+                <span class="menu-text">Basware API</span>
+            </a>
+        </li>
+        #endif
 
     #endexport
 

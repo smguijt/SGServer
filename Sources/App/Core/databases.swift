@@ -14,6 +14,7 @@ func CreateDatabaseModels(_ app: Application) throws {
     app.migrations.add(DataMigration.v1.CreateDataModelsForModuleTaskManagement())
     app.migrations.add(DataMigration.v1.CreateDataModelsForModuleTimeManagement())
     app.migrations.add(DataMigration.v1.CreateDataModelsForModuleUserManagement())
+    app.migrations.add(DataMigration.v1.CreateDataModelsForModuleBaswareAPI())
 }
 
 func SeedDatabaseModels(_ app: Application) throws {
@@ -23,4 +24,5 @@ func SeedDatabaseModels(_ app: Application) throws {
     app.migrations.add(DataMigration.v1.SeedDataModelsForModuleTaskManagement())
     app.migrations.add(DataMigration.v1.SeedDataModelsForModuleTimeManagement())
     app.migrations.add(DataMigration.v1.SeedDataModelsForModuleUserManagement())
+    app.migrations.add(DataMigration.v1.SeedDataModelsForModuleBaswareAPI())
 }

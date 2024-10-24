@@ -20,4 +20,5 @@ func routes(_ app: Application) throws {
     try EventManagementRoutes(app)
     try TimeManagementRoutes(app)
     try TaskManagementRoutes(app)
+    try BaswareAPIRoutes(app)
 }

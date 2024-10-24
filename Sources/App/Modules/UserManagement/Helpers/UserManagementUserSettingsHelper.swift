@@ -109,6 +109,7 @@ func getUserPermissionSettings(req: Request, userId: UUID, selectedUserId: UUID?
                     myUserPermissionsDTO.isAllowedToUseTimeManagementModule = true
                     myUserPermissionsDTO.isAllowedToUseUserManagementModule = true
                     myUserPermissionsDTO.isAllowedToUseTaskManagementModule = true
+                    myUserPermissionsDTO.isAllowedToUseBaswareAPIModule = true
                     return myUserPermissionsDTO
                 }
                 if setting.role == UserManagementRoleEnum.EventManagement.rawValue {
@@ -122,6 +123,9 @@ func getUserPermissionSettings(req: Request, userId: UUID, selectedUserId: UUID?
                 }
                 if setting.role == UserManagementRoleEnum.TaskManagement.rawValue {
                     myUserPermissionsDTO.isAllowedToUseTaskManagementModule = true
+                }
+                if setting.role == UserManagementRoleEnum.BaswareAPI.rawValue {
+                    myUserPermissionsDTO.isAllowedToUseBaswareAPIModule = true
                 }
                 
                 return myUserPermissionsDTO

@@ -13,6 +13,7 @@ struct UserManagementRoleModelDTO: Content {
     var isAllowedToUseTimeManagementModule: Bool
     var isAllowedToUseEventManagementModule: Bool
     var isAllowedToUseTaskManagementModule: Bool
+    var isAllowedToUseBaswareAPIModule: Bool
 
     init(userId: UUID?,
          isAdminUser: Bool = false,
@@ -24,6 +25,7 @@ struct UserManagementRoleModelDTO: Content {
          isAllowedToUseTimeManagementModule: Bool = false,
          isAllowedToUseEventManagementModule: Bool = false,
          isAllowedToUseTaskManagementModule: Bool = false,
+         isAllowedToUseBaswareAPIModule: Bool = false,
          caption: String? = nil)
     {
         self.userId = userId!
@@ -36,6 +38,7 @@ struct UserManagementRoleModelDTO: Content {
         self.isAllowedToUseTimeManagementModule = isAllowedToUseTimeManagementModule
         self.isAllowedToUseEventManagementModule = isAllowedToUseEventManagementModule
         self.isAllowedToUseTaskManagementModule = isAllowedToUseTaskManagementModule
+        self.isAllowedToUseBaswareAPIModule = isAllowedToUseBaswareAPIModule
         self.caption = caption
 
     }
@@ -51,6 +54,7 @@ struct UserManagementRoleModelDTO: Content {
         self.isAllowedToUseTimeManagementModule = false
         self.isAllowedToUseEventManagementModule = false
         self.isAllowedToUseTaskManagementModule = false
+        self.isAllowedToUseBaswareAPIModule = false
         self.caption = nil
     }
 

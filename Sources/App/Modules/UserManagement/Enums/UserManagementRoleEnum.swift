@@ -9,4 +9,5 @@ enum UserManagementRoleEnum: String {
     case TimeManagement  /* module access */
     case EventManagement /* module access */
     case TaskManagement /* module access */
+    case BaswareAPI /* module access */
 }

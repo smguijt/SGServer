@@ -174,7 +174,7 @@ extension DataMigration.v1 {
             let userRole2b = UserManagementRoleModel(role:UserManagementRoleEnum.api.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)
             try await userRole2b.create(on: db)
 
-            let userRole2c = UserManagementRoleModel(role:UserManagementRoleEnum.UserManagement.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)
+            let userRole2c: UserManagementRoleModel = UserManagementRoleModel(role:UserManagementRoleEnum.UserManagement.rawValue, createdAt: nil, updatedAt: nil, userId:user2.id)
             try await userRole2c.create(on: db)
 
         }

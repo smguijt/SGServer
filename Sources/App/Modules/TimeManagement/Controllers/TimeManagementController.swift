@@ -65,7 +65,7 @@ struct TimeManagementUserController: RouteCollection {
                 _selectedorganization = selectedOrg ?? ""
             } else {
                 /* retrieve TimeManagement */
-                req.logger.info("EventManagement.renderList retrieve organization linked to user")
+                req.logger.info("TimeManagement.renderList retrieve organization linked to user")
                 let myOrganizations = try await getUserOrganizations(req: req,  userId: userId!, filterByUser: true)
                 req.logger.info("TimeManagement.renderList myOrganizations: \(String(describing:myOrganizations))")
                 if (myOrganizations.count > 0) {

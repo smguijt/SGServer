@@ -191,6 +191,10 @@ struct UserManagementUserProfileController: RouteCollection {
                 ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.TaskManagement)
                 bFound = true
                 break;
+            case "isAllowedToUseBaswareAPIModule":
+                ret = try await setUserPermissionSetting(req: req, form: body, role: UserManagementRoleEnum.BaswareAPI)
+                bFound = true
+                break;                
             default:
                 bFound = false;
                 break;
